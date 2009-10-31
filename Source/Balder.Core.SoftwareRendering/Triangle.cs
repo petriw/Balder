@@ -117,7 +117,7 @@ namespace Balder.Core.SoftwareRendering
 			vertexC = point3;
 		}
 
-		private static Span? GetSpan(int interpolationIndex, Interpolator interpolator, Vertex vertexA, bool useTexture)
+		private static Span GetSpan(int interpolationIndex, Interpolator interpolator, Vertex vertexA, bool useTexture)
 		{
 			var y = ((int)vertexA.TranslatedScreenCoordinates.Y) + interpolationIndex;
 			var xstart = interpolator.Points[0].InterpolatedValues[interpolationIndex];

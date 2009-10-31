@@ -1,9 +1,8 @@
-﻿using System;
-using Balder.Core.Math;
+﻿using Balder.Core.Math;
 
 namespace Balder.Core.SoftwareRendering
 {
-	public struct Span
+	public class Span
 	{
 		public int Y;
 		public int XStart;
@@ -23,5 +22,7 @@ namespace Balder.Core.SoftwareRendering
 		public ColorVector ColorEnd;
 
 		public bool Swap;
+
+		public ISpanDrawer Drawer;
 	}
 }

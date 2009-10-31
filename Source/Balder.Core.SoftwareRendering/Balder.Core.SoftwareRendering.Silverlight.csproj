@@ -86,7 +86,12 @@
     <Compile Include="IFrameBuffer.cs" />
     <Compile Include="ImageContext.cs" />
     <Compile Include="Interpolator.cs" />
+    <Compile Include="ISpanDrawer.cs" />
     <Compile Include="ISpanRenderer.cs" />
+    <Compile Include="Rendering\RenderedSpan.cs" />
+    <Compile Include="Rendering\Scanline.cs" />
+    <Compile Include="Rendering\SpanManager.cs" />
+    <Compile Include="Rendering\SpanRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSpanRenderer.cs" />
     <Compile Include="Span.cs" />
