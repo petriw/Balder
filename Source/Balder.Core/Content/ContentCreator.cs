@@ -61,7 +61,5 @@ namespace Balder.Core.Content
 				);
 			return cylinder;
 		}
-
-
 	}
 }

@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="Assets\AssetLoaderServiceTests.cs" />
     <Compile Include="ColorTests.cs" />
+    <Compile Include="Content\ContentCreatorTests.cs" />
+    <Compile Include="Content\ContentManagerTests.cs" />
     <Compile Include="Extensions\ViewportExtensionsTests.cs" />
     <Compile Include="Fakes\AssetLoaders\Nested\NestedAssetLoader.cs">
       <SubType>Code</SubType>
@@ -87,6 +89,7 @@
     <Compile Include="Fakes\FakePlatform.cs" />
     <Compile Include="RuntimeTests.cs" />
     <Compile Include="SceneTests.cs" />
+    <Compile Include="Stubs\ObjectFactoryStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Models.resx">
