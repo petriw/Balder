@@ -2,6 +2,7 @@
 using System.Windows;
 using Balder.Core;
 using Balder.Silverlight.Execution;
+using Balder.Silverlight.Services;
 
 namespace Balder.Silverlight.TestApp
 {
@@ -22,6 +23,8 @@ namespace Balder.Silverlight.TestApp
 		{
 			//TargetDevice.Initialize();
 			RootVisual = new Page();
+
+			TargetDevice.Initialize<MyGame>();
 
 			/*
 			Platform.Initialize();
