@@ -24,7 +24,15 @@ namespace Balder.Silverlight.Controls
 {
 	public class Camera : Node
 	{
-		public Core.Camera ActualCamera { get { return ActualNode as Core.Camera; } }
+		public Core.Camera ActualCamera
+		{
+			get { return ActualNode as Core.Camera; }
+			set
+			{
+				ActualNode = value;
+				InitializeActualCamera(value);
+			}
+		}
 
 		public Camera()
 		{
@@ -32,10 +40,15 @@ namespace Balder.Silverlight.Controls
 
 		public Camera(Core.Camera camera)
 		{
+			InitializeActualCamera(camera);
+		}
+
+		private void InitializeActualCamera(Core.Camera camera)
+		{
 			var position = camera.Position;
 			ActualNode = camera;
 			var target = new Vector();
-			
+
 			Position.X = position.X;
 			Position.Y = position.Y;
 			Position.Z = position.Z;
@@ -45,6 +58,7 @@ namespace Balder.Silverlight.Controls
 			target.Z = camera.Target.Z;
 
 			Target = target;
+			
 		}
 
 
@@ -52,9 +66,12 @@ namespace Balder.Silverlight.Controls
 		{
 			Target.SetNativeAction((x, y, z) =>
 			{
-				ActualCamera.Target.X = x;
-				ActualCamera.Target.Y = y;
-				ActualCamera.Target.Z = z;
+				if (null != ActualCamera)
+				{
+					ActualCamera.Target.X = x;
+					ActualCamera.Target.Y = y;
+					ActualCamera.Target.Z = z;
+				}
 			});
 
 		}

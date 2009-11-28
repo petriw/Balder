@@ -18,10 +18,10 @@
 #endregion
 using System;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Balder.Core;
 using Balder.Core.Display;
-using Balder.Core.Math;
 using Balder.Silverlight.Helpers;
 using Balder.Silverlight.Input;
 using Color=System.Windows.Media.Color;
@@ -33,7 +33,7 @@ namespace Balder.Silverlight.Controls
 	{
 		private Image _image;
 		private Color _previousBackgroundColor;
-
+		private Core.Node _previousNode;
 
 		protected override void OnLoaded()
 		{
@@ -43,6 +43,7 @@ namespace Balder.Silverlight.Controls
 			InitializeFromPlatform();
 			InitializeGame();
 			InitializeContent();
+			InitializeMouse();
 
 			if( Platform.IsInDesignMode )
 			{
@@ -100,7 +101,14 @@ namespace Balder.Silverlight.Controls
 
 			Viewport = GameClass.Viewport;
 			Scene = GameClass.Scene;
-			Camera = new Camera(GameClass.Camera);
+			if( null == Camera )
+			{
+				Camera = new Camera(GameClass.Camera);	
+			} else
+			{
+				Camera.ActualCamera = GameClass.Camera;
+			}
+			
 		}
 
 		private void InitializeFromPlatform()
@@ -128,6 +136,70 @@ namespace Balder.Silverlight.Controls
 			}
 
 			AddNodesToScene();
+		}
+
+		private void InitializeMouse()
+		{
+			MouseLeftButtonDown += MouseLeftButtonDownOccured;
+			MouseLeftButtonUp += MouseLeftButtonUpOccured;
+			MouseMove += MouseMoveOccured;
+		}
+
+		
+
+		private void MouseMoveOccured(object sender, MouseEventArgs e)
+		{
+			var position = e.GetPosition(this);
+			var hitNode = Scene.GetNodeAtScreenCoordinate(Viewport, (int)position.X, (int)position.Y);
+			if( null != hitNode )
+			{
+				if( null == _previousNode ||
+					!hitNode.Equals(_previousNode))
+				{
+					CallActionOnSilverlightNode(hitNode,n=>n.RaiseMouseEnter(e));
+				} 
+			} else if( null != _previousNode )
+			{
+				CallActionOnSilverlightNode(_previousNode,n=>n.RaiseMouseLeave(e));
+			}
+
+			_previousNode= hitNode;
+		}
+
+		private void MouseLeftButtonDownOccured(object sender, MouseButtonEventArgs e)
+		{
+			RaiseMouseEvent(e, n => n.RaiseMouseLeftButtonDown(e));
+		}
+
+		private void MouseLeftButtonUpOccured(object sender, MouseButtonEventArgs e)
+		{
+			RaiseMouseEvent(e,n=>n.RaiseMouseLeftButtonUp(e));
+		}
+
+		private void RaiseMouseEvent(MouseEventArgs e, Action<Node> a)
+		{
+			var position = e.GetPosition(this);
+			var hitNode = Scene.GetNodeAtScreenCoordinate(Viewport, (int)position.X, (int)position.Y);
+			if (null != hitNode)
+			{
+				CallActionOnSilverlightNode(hitNode,a);
+			}
+		}
+
+		private void CallActionOnSilverlightNode(Core.Node node, Action<Node> a)
+		{
+			foreach (var element in Children)
+			{
+				if (element is Node && !(element is Camera))
+				{
+					var silverlightNode = element as Node;
+					if (null != silverlightNode.ActualNode && silverlightNode.ActualNode == node)
+					{
+						a(silverlightNode);
+					}
+				}
+			}
+			
 		}
 
 		private void AddNodesToScene()

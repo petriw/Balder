@@ -28,7 +28,8 @@ namespace Balder.Core.Debug
 		VertexNormals,
 		Lights,
 		BoundingBoxes,
-		BoundingSpheres
+		BoundingSpheres,
+		All = 0xffff
 	}
 
 	public static class DebugLevelExtensions

@@ -29,7 +29,7 @@ namespace Balder.Silverlight.TestApp
 
 		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
-//			_cameraStoryboard.Begin();
+			_cameraStoryboard.Begin();
 		}
 	}
 }

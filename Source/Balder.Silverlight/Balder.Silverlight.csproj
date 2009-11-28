@@ -84,6 +84,7 @@
     <Compile Include="Content\FilePathHelper.cs" />
     <Compile Include="Controls\BalderControl.cs" />
     <Compile Include="Controls\Camera.cs" />
+    <Compile Include="Controls\DebugInformation.cs" />
     <Compile Include="Controls\EnvironmentalNode.cs" />
     <Compile Include="Controls\Game.cs" />
     <Compile Include="Controls\Geometry.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Helpers\DependencyPropertyHelper.cs" />
     <Compile Include="Content\FileLoader.cs" />
     <Compile Include="Input\MouseDevice.cs" />
+    <Compile Include="Interaction\ICommandSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Display\Display.cs" />
     <Compile Include="Services\TargetDevice.cs" />

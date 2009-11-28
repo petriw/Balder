@@ -16,13 +16,21 @@
 // limitations under the License.
 //
 #endregion
+using System.Windows.Input;
 using Balder.Silverlight.Controls.Math;
 using Balder.Silverlight.Helpers;
+using Balder.Silverlight.Interaction;
 
 namespace Balder.Silverlight.Controls
 {
-	public class Node : BalderControl
+	public class Node : BalderControl, ICommandSource
 	{
+		public new event MouseEventHandler MouseEnter = (s, e) => { };
+		public new event MouseEventHandler MouseLeave = (s, e) => { };
+		public new event MouseButtonEventHandler MouseLeftButtonDown = (s, e) => { };
+		public new event MouseButtonEventHandler MouseLeftButtonUp = (s, e) => { };
+
+
 		private Core.Node _actualNode;
 		public Core.Node ActualNode
 		{
@@ -30,7 +38,11 @@ namespace Balder.Silverlight.Controls
 			protected set
 			{
 				_actualNode = value;
-				Position = new Vector();
+				if( null == Position )
+				{
+					Position = new Vector();	
+				}
+				InitializePosition();
 			}
 		}
 
@@ -38,9 +50,12 @@ namespace Balder.Silverlight.Controls
 		{
 			Position.SetNativeAction((x, y, z) =>
 			{
-				ActualNode.Position.X = x;
-				ActualNode.Position.Y = y;
-				ActualNode.Position.Z = z;
+				if (null != ActualNode)
+				{
+					ActualNode.Position.X = x;
+					ActualNode.Position.Y = y;
+					ActualNode.Position.Z = z;
+				}
 			});
 			
 		}
@@ -50,11 +65,56 @@ namespace Balder.Silverlight.Controls
 		public Vector Position
 		{
 			get { return PositionProperty.GetValue(this); }
-			set
+			set { PositionProperty.SetValue(this, value); }
+		}
+
+
+		public static readonly DependencyProperty<Geometry, ICommand> CommandProperty =
+			DependencyProperty<Geometry, ICommand>.Register(o => o.Command);
+		public ICommand Command
+		{
+			get { return CommandProperty.GetValue(this); }
+			set { CommandProperty.SetValue(this, value); }
+		}
+
+		public static readonly DependencyProperty<Geometry, object> CommandParameterProperty =
+			DependencyProperty<Geometry, object>.Register(o => o.CommandParameter);
+		public object CommandParameter
+		{
+			get { return CommandParameterProperty.GetValue(this); }
+			set { CommandParameterProperty.SetValue(this, value); }
+		}
+
+		protected void OnCommand()
+		{
+			if (null != Command)
 			{
-				PositionProperty.SetValue(this, value);
-				InitializePosition();
+				if (Command.CanExecute(CommandParameter))
+				{
+					Command.Execute(CommandParameter);
+				}
 			}
+		}
+
+		internal virtual void RaiseMouseLeftButtonUp(MouseButtonEventArgs e)
+		{
+			OnCommand();
+			MouseLeftButtonUp(this, e);
+		}
+
+		internal virtual void RaiseMouseLeftButtonDown(MouseButtonEventArgs e)
+		{
+			MouseLeftButtonDown(this, e);
+		}
+
+		internal virtual void RaiseMouseEnter(MouseEventArgs e)
+		{
+			MouseEnter(this, e);
+		}
+
+		internal virtual void RaiseMouseLeave(MouseEventArgs e)
+		{
+			MouseEnter(this, e);
 		}
 	}
 }

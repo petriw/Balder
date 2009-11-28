@@ -16,6 +16,9 @@
 // limitations under the License.
 //
 #endregion
+
+using Balder.Silverlight.Interaction;
+
 namespace Balder.Silverlight.Controls
 {
 	public class Geometry : RenderableNode
