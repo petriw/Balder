@@ -21,7 +21,7 @@
 	</target>
 
 	<target name="Configure">
-		<property name="Build.Config" value="Debug" overwrite="false"/>
+		<property name="Build.Config" value="Release" overwrite="false"/>
 		<property name="Build.AssemblyInfo" value="${Path.Source}/Common/GlobalAssemblyInfo.cs"/>
 		<call target="Configure${Build.Config}"/>
 	</target>
