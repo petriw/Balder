@@ -71,8 +71,15 @@
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Red">
 		<StackPanel Orientation="Vertical">
 			<balder:Game x:Name="_game" Width="800" Height="600" DebugLevel="BoundingSpheres">
-				<balder:Mesh x:Name="_teapot" AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ASE"/>
-				<balder:OmniLight x:Name="_light" Range="2" Diffuse="Green" Ambient="Blue" Specular="White" Position="0,-10,130"/>
+				<balder:Mesh x:Name="_teapot" 
+							 AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ASE" 
+							 Color="Blue"
+							 MouseEnter="_teapot_MouseEnter" 
+							 MouseLeave="_teapot_MouseLeave"
+							 MouseLeftButtonDown="_teapot_MouseLeftButtonDown"
+							 MouseLeftButtonUp="_teapot_MouseLeftButtonUp"
+							 />
+				<balder:OmniLight x:Name="_light" Range="2" Diffuse="Green" Ambient="DarkGreen" Specular="LightGreen" Position="0,-10,130"/>
 				
 				<balder:Game.Camera>
 					<balder:Camera Position="0,0,-100" Target="0,0,1"/>

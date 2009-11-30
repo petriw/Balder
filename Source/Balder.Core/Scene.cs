@@ -93,6 +93,7 @@ namespace Balder.Core
 						var light = node as Light;
 						var currentLightResult = light.Calculate(viewport, vector, normal);
 						var currentLightResultAsVector = currentLightResult;
+						
 						color += currentLightResultAsVector;
 					}
 				}

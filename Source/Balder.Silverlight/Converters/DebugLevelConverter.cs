@@ -16,8 +16,14 @@ namespace Balder.Silverlight.Converters
 			return destinationType.Equals(typeof (DebugLevel));
 		}
 
+		
+
 		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
 		{
+			if (string.IsNullOrEmpty(value as string))
+			{
+				return DebugLevel.None;
+			}
 			var debugLevelsAsString = value.ToString();
 			var debugLevels = debugLevelsAsString.Split('|');
 			

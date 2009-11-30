@@ -17,6 +17,7 @@
 //
 #endregion
 using System.Windows.Input;
+using System.Windows.Media;
 using Balder.Silverlight.Controls.Math;
 using Balder.Silverlight.Helpers;
 using Balder.Silverlight.Interaction;
@@ -42,8 +43,15 @@ namespace Balder.Silverlight.Controls
 				{
 					Position = new Vector();	
 				}
-				InitializePosition();
+				InitializeActualNodesProperties();
 			}
+		}
+
+
+		private void InitializeActualNodesProperties()
+		{
+			InitializePosition();
+			ActualNode.Color = Core.Color.FromSystemColor(Color);
 		}
 
 		private void InitializePosition()
@@ -57,7 +65,23 @@ namespace Balder.Silverlight.Controls
 					ActualNode.Position.Z = z;
 				}
 			});
-			
+		}
+
+
+		public static DependencyProperty<Node, Color> ColorProperty =
+			DependencyProperty<Node, Color>.Register(o => o.Color);
+		public Color Color
+		{
+			get { return ColorProperty.GetValue(this); }
+			set
+			{
+				ColorProperty.SetValue(this, value);
+				if( null != ActualNode )
+				{
+					ActualNode.Color = Core.Color.FromSystemColor(value);	
+				}
+				
+			}
 		}
 
 		public static readonly DependencyProperty<Node, Vector> PositionProperty =
@@ -121,7 +145,7 @@ namespace Balder.Silverlight.Controls
 
 		internal virtual void RaiseMouseLeave(MouseEventArgs e)
 		{
-			MouseEnter(this, e);
+			MouseLeave(this, e);
 		}
 	}
 }

@@ -76,8 +76,15 @@ namespace Balder.Core
 		/// </summary>
 		public bool IsVisible { get; set; }
 
-
 		public Scene Scene { get; set; }
+
+		/// <summary>
+		/// Color of the node - this will be used if node supports it
+		/// during lighting calculations. If Node has different ways of defining
+		/// its color, for instance Materialing or similar - this color
+		/// will most likely be overridden
+		/// </summary>
+		public Color Color { get; set; }
 		#endregion
 
 		protected Matrix PositionMatrix { get; private set; }

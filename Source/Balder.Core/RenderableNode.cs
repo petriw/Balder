@@ -33,15 +33,6 @@ namespace Balder.Core
 		public virtual void BeforeRender() {}
 		public virtual void AfterRender() {}
 
-		/// <summary>
-		/// Color of the node - this will be used if node supports it
-		/// during lighting calculations. If Node has different ways of defining
-		/// its color, for instance Materialing or similar - this color
-		/// will most likely be overridden
-		/// </summary>
-		public Color Color { get; set; }
-
-
 		#region Public Abstract Methods
 
 		public abstract void Render(Viewport viewport, Matrix view, Matrix projection);

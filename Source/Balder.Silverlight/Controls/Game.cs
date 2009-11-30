@@ -34,6 +34,7 @@ namespace Balder.Silverlight.Controls
 
 	public class Game : BalderControl
 	{
+		private static readonly DebugLevelConverter _debugLevelConverter = new DebugLevelConverter();
 		private Image _image;
 		private Color _previousBackgroundColor;
 		private Core.Node _previousNode;
@@ -47,6 +48,7 @@ namespace Balder.Silverlight.Controls
 			InitializeGame();
 			InitializeContent();
 			InitializeMouse();
+			InitializeDebugLevel();
 
 			if( Platform.IsInDesignMode )
 			{
@@ -91,8 +93,6 @@ namespace Balder.Silverlight.Controls
 				throw new ArgumentException("You need to specify Width and Height");
 			}
 		}
-
-
 
 		private void InitializeGame()
 		{
@@ -146,9 +146,16 @@ namespace Balder.Silverlight.Controls
 			MouseLeftButtonDown += MouseLeftButtonDownOccured;
 			MouseLeftButtonUp += MouseLeftButtonUpOccured;
 			MouseMove += MouseMoveOccured;
+			MouseEnter += MouseEnterOccured;
+			MouseLeave += MouseLeaveOccured;
 		}
 
-		
+		private void InitializeDebugLevel()
+		{
+			var debugLevel = (DebugLevel)_debugLevelConverter.ConvertFromString(DebugLevel);
+			Core.Runtime.Instance.DebugLevel = debugLevel;
+		}
+
 
 		private void MouseMoveOccured(object sender, MouseEventArgs e)
 		{
@@ -167,6 +174,29 @@ namespace Balder.Silverlight.Controls
 			}
 
 			_previousNode= hitNode;
+		}
+
+		private void MouseEnterOccured(object sender, MouseEventArgs e)
+		{
+			var position = e.GetPosition(this);
+			var hitNode = Scene.GetNodeAtScreenCoordinate(Viewport, (int)position.X, (int)position.Y);
+			if (null != hitNode)
+			{
+				if (null == _previousNode ||
+					!hitNode.Equals(_previousNode))
+				{
+					CallActionOnSilverlightNode(hitNode, n => n.RaiseMouseEnter(e));
+				}
+			}
+			_previousNode = hitNode;
+		}
+
+		private void MouseLeaveOccured(object sender, MouseEventArgs e)
+		{
+			if (null != _previousNode)
+			{
+				CallActionOnSilverlightNode(_previousNode, n => n.RaiseMouseLeave(e));
+			}
 		}
 
 		private void MouseLeftButtonDownOccured(object sender, MouseButtonEventArgs e)
@@ -226,13 +256,20 @@ namespace Balder.Silverlight.Controls
 		public Viewport Viewport { get; private set; }
 
 		
-		public DependencyProperty<Game, DebugLevel> DebugLevelProperty =
-			DependencyProperty<Game, DebugLevel>.Register(g => g.DebugLevel);
-		[TypeConverter(typeof(DebugLevelConverter))]
-		public DebugLevel DebugLevel
+		public DependencyProperty<Game, string> DebugLevelProperty =
+			DependencyProperty<Game, string>.Register(g => g.DebugLevel);
+		//[TypeConverter(typeof(DebugLevelConverter))]
+
+		
+
+		public string DebugLevel
 		{
 			get { return DebugLevelProperty.GetValue(this); }
-			set { DebugLevelProperty.SetValue(this,value); }
+			set
+			{
+				DebugLevelProperty.SetValue(this,value);
+				
+			}
 		}
 
 
