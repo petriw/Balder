@@ -84,7 +84,6 @@
     <Compile Include="Content\FilePathHelper.cs" />
     <Compile Include="Controls\BalderControl.cs" />
     <Compile Include="Controls\Camera.cs" />
-    <Compile Include="Controls\DebugInformation.cs" />
     <Compile Include="Controls\EnvironmentalNode.cs" />
     <Compile Include="Controls\Game.cs" />
     <Compile Include="Controls\Geometry.cs" />
@@ -95,6 +94,7 @@
     <Compile Include="Controls\Node.cs" />
     <Compile Include="Controls\OmniLight.cs" />
     <Compile Include="Controls\RenderableNode.cs" />
+    <Compile Include="Converters\DebugLevelConverter.cs" />
     <Compile Include="Converters\StringToTypeConverter.cs" />
     <Compile Include="Display\DisplayDevice.cs" />
     <Compile Include="Execution\Platform.cs" />

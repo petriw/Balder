@@ -23,6 +23,7 @@ namespace Balder.Core.Debug
 	[Flags]
 	public enum DebugLevel
 	{
+		None = 0,
 		Geometry,
 		FaceNormals,
 		VertexNormals,

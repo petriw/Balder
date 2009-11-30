@@ -197,7 +197,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, RenderableNode node)
 		{
-			vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.Vector, vertex.Normal, node.Color, node.Color, node.Color);
+			vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.TransformedVector, vertex.Normal, node.Color, node.Color, node.Color);
 		}
 
 		private void RenderFaces(Viewport viewport, Matrix view, Matrix projection, Matrix world)

@@ -17,11 +17,14 @@
 //
 #endregion
 using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Balder.Core;
+using Balder.Core.Debug;
 using Balder.Core.Display;
+using Balder.Silverlight.Converters;
 using Balder.Silverlight.Helpers;
 using Balder.Silverlight.Input;
 using Color=System.Windows.Media.Color;
@@ -221,6 +224,17 @@ namespace Balder.Silverlight.Controls
 		public IDisplay Display { get; private set; }
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
+
+		
+		public DependencyProperty<Game, DebugLevel> DebugLevelProperty =
+			DependencyProperty<Game, DebugLevel>.Register(g => g.DebugLevel);
+		[TypeConverter(typeof(DebugLevelConverter))]
+		public DebugLevel DebugLevel
+		{
+			get { return DebugLevelProperty.GetValue(this); }
+			set { DebugLevelProperty.SetValue(this,value); }
+		}
+
 
 		public DependencyProperty<Game, Core.Execution.Game> GameClassProperty =
 			DependencyProperty<Game, Core.Execution.Game>.Register(g => g.GameClass);

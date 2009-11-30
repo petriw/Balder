@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="Content\FilePathHelperTests.cs" />
     <Compile Include="Controls\GameTests.cs" />
+    <Compile Include="Converters\DebugLevelConverterTests.cs" />
     <Compile Include="Converters\StringToTypeConverterTests.cs" />
     <Compile Include="Execution\PlatformTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

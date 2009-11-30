@@ -65,7 +65,14 @@ namespace Balder.Silverlight.Controls
 		public Vector Position
 		{
 			get { return PositionProperty.GetValue(this); }
-			set { PositionProperty.SetValue(this, value); }
+			set
+			{
+				PositionProperty.SetValue(this, value);
+				if( null != ActualNode )
+				{
+					InitializePosition();
+				}
+			}
 		}
 
 

@@ -11,6 +11,7 @@
 	<UserControl.Resources>
 		<Storyboard x:Name="_cameraStoryboard">
 			
+			
 			<DoubleAnimationUsingKeyFrames x:Name="_animation" 
 										   Storyboard.TargetName="_game" 
 										   Storyboard.TargetProperty="(Game.Camera).(Camera.Position).(Vector.Y)" 
@@ -28,8 +29,9 @@
 				</EasingDoubleKeyFrame>
 			</DoubleAnimationUsingKeyFrames>
 			
+			
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_light"
-										   Storyboard.TargetProperty="(Light.Position).(Vector.X)"
+										   Storyboard.TargetProperty="(Light.Position).(Vector.Y)"
 										   AutoReverse="True"
 										   RepeatBehavior="Forever">
 				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="-150">
@@ -37,13 +39,15 @@
 						<CircleEase EasingMode="EaseInOut"/>
 					</EasingDoubleKeyFrame.EasingFunction>
 				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:02" Value="150">
+				<EasingDoubleKeyFrame KeyTime="00:00:05" Value="150">
 					<EasingDoubleKeyFrame.EasingFunction>
 						<CircleEase EasingMode="EaseInOut"/>
 					</EasingDoubleKeyFrame.EasingFunction>
 				</EasingDoubleKeyFrame>
 			</DoubleAnimationUsingKeyFrames>
-
+			
+			
+			<!--
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_light"
 										   Storyboard.TargetProperty="(Light.Position).(Vector.Z)"
 										   AutoReverse="True"
@@ -53,23 +57,23 @@
 						<CircleEase EasingMode="EaseInOut"/>
 					</EasingDoubleKeyFrame.EasingFunction>
 				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:02" Value="150">
+				<EasingDoubleKeyFrame KeyTime="00:00:05" Value="150">
 					<EasingDoubleKeyFrame.EasingFunction>
 						<CircleEase EasingMode="EaseInOut"/>
 					</EasingDoubleKeyFrame.EasingFunction>
 				</EasingDoubleKeyFrame>
-			</DoubleAnimationUsingKeyFrames>
+			</DoubleAnimationUsingKeyFrames>-->
+			
 
 		</Storyboard>
 	</UserControl.Resources>
 	
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Red">
 		<StackPanel Orientation="Vertical">
-			<balder:DebugInformation IsBoundingSpheresVisible="true"/>
-			
-			<balder:Game x:Name="_game" Width="800" Height="600">
+			<balder:Game x:Name="_game" Width="800" Height="600" DebugLevel="BoundingSpheres">
 				<balder:Mesh x:Name="_teapot" AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ASE"/>
 				<balder:OmniLight x:Name="_light" Range="2" Diffuse="Green" Ambient="Blue" Specular="White" Position="0,-10,130"/>
+				
 				<balder:Game.Camera>
 					<balder:Camera Position="0,0,-100" Target="0,0,1"/>
 				</balder:Game.Camera>

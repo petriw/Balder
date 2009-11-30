@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Core.Tests.Silverlig
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{67FF2401-5E46-474C-A0AE-02D1A6B9ED2C}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\Build\Balder.build = ..\..\Build\Balder.build
 		..\..\build.cmd = ..\..\build.cmd
 	EndProjectSection
 EndProject

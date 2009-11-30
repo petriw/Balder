@@ -43,7 +43,7 @@ namespace Balder.Core.Lighting
             var ambient = actualAmbient  * Strength;
 
             // Diffuse light
-            var lightDir = Position - point;
+            var lightDir = point - Position;
             lightDir.Normalize();
             normal.Normalize();
             var dfDot = lightDir.Dot(normal);
