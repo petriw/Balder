@@ -71,8 +71,8 @@
 				 optimize="${Build.Optimize}"
 				 define="${Build.Defines}"
 				 output="${Current.Path.Drop}/Balder.Core.dll"
-				 doc="${Current.Path.Drop}/Balder.Core.xml"
-				 >
+				 
+				 ><!--doc="${Current.Path.Drop}/Balder.Core.xml"-->
 			<sources basedir="${Path.Source}">
 				<include name="${Build.AssemblyInfo}"/>
 				<include name="Balder.Core/**/*.cs"/>

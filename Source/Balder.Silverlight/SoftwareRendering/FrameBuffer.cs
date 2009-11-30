@@ -1,31 +1,36 @@
-﻿using System;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
 using Balder.Core.SoftwareRendering;
 
 namespace Balder.Silverlight.SoftwareRendering
 {
     public class FrameBuffer : IFrameBuffer
     {
-    	public event FrameBufferUpdated Updated = () => { };
-    	public event FrameBufferRender Render = () => { };
-    	public event FrameBufferClear Clear = () => { };
-    	public event FrameBufferSwapped Swapped = () => { };
-
     	private int[] _renderbuffer;
 		private int[] _clearBuffer;
 		private int[] _showBuffer;
     	private int[] _emptyBuffer;
-
-
-    	private WriteableBitmap _writeableBitmap;
     	private int _length;
-
 
     	public void Initialize(int width, int height)
     	{
     		Stride = width;
-			_writeableBitmap = new WriteableBitmap(width, height);
 			_length = width * height;
 
 			_renderbuffer = new int[_length];
@@ -34,12 +39,6 @@ namespace Balder.Silverlight.SoftwareRendering
 			_emptyBuffer = new int[_length];
 
 			Swap();
-
-			FrameBufferManager.Instance.Updated += FrameBufferManagerUpdated;
-    		FrameBufferManager.Instance.Render += FrameBufferManagerRender;
-    		FrameBufferManager.Instance.Clear += FrameBufferManagerClear;
-    		FrameBufferManager.Instance.Swapped += FrameBufferManagerSwapped;
-    		FrameBufferManager.Instance.Show += FrameBufferManagerShow;
     	}
 
 
@@ -48,21 +47,10 @@ namespace Balder.Silverlight.SoftwareRendering
 		public int BluePosition { get { return 0; } }
 		public int GreenPosition { get { return 1; } }
 		public int AlphaPosition { get { return 3; } }
-		public BitmapSource BitmapSource { get { return _writeableBitmap;  } }
 		public int[] Pixels { get { return _renderbuffer; } }
+		public int[] BackBuffer { get { return _showBuffer;  } }
 
-    	public void SetPixel(int x, int y, Color color)
-    	{
-    	}
-
-    	public Color GetPixel(int x, int y)
-    	{
-    		return Colors.Black;
-    	}
-
-
-
-		private void Swap()
+		public void Swap()
 		{
 			var renderBuffer = _renderbuffer;
 			var clearBuffer = _clearBuffer;
@@ -71,39 +59,22 @@ namespace Balder.Silverlight.SoftwareRendering
 			_renderbuffer = clearBuffer;
 			_showBuffer = renderBuffer;
 			_clearBuffer = showBuffer;
-
-			Swapped();
 		}
 
-		#region FrameBufferManager Event Handlers
-		private void FrameBufferManagerUpdated()
-		{
-			_writeableBitmap.Invalidate();
-			Updated();
-		}
 
-		private void FrameBufferManagerRender()
-		{
-			Render();
-		}
-
-		private void FrameBufferManagerClear()
+		public void Clear()
 		{
 			_emptyBuffer.CopyTo(_clearBuffer, 0);
 			//_clearBuffer = new int[_length];
-			Clear();
 		}
 
-		private void FrameBufferManagerSwapped()
+
+		public void Show()
 		{
-			Swap();
 		}
 
-		private void FrameBufferManagerShow()
+		public void Update()
 		{
-			_showBuffer.CopyTo(_writeableBitmap.Pixels, 0);
 		}
-		#endregion
-
 	}
 }

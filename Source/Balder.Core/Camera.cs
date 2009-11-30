@@ -1,4 +1,22 @@
-﻿using Balder.Core.Interfaces;
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
+using Balder.Core.Display;
 using Balder.Core.Math;
 
 namespace Balder.Core
@@ -7,7 +25,7 @@ namespace Balder.Core
 	{
 		public const float DefaultFieldOfView = 40f;
 		public const float DefaultFar = 4000f;
-		public const float DefaultNear = 0f;
+		public const float DefaultNear = 1f;
 
 		private float _fieldOfView;
 		private float _near;
@@ -15,7 +33,7 @@ namespace Balder.Core
 
 
 		#region Constructor(s)
-		public Camera()
+		public Camera(Viewport viewport)
 		{
 			Position = new Vector(0f, -30f, 50f);
 			Target = new Vector(0f, 0f, 0f);
@@ -28,12 +46,14 @@ namespace Balder.Core
 			UpdateDepthDivisor();
 
 			Frustum = new Frustum();
+
+			Viewport = viewport;
 		}
 		#endregion
 
 		#region Public Properties
 
-		public IViewport Viewport { get; private set; }
+		public Viewport Viewport { get; private set; }
 
 		public Frustum Frustum { get; private set; }
 
@@ -96,6 +116,12 @@ namespace Balder.Core
 		/// </summary>
 		public float DepthDivisor { get; private set; }
 
+		/// <summary>
+		/// Gets the value that indicates the actual zero/start of the depth, typically used by depth buffers
+		/// </summary>
+		public float DepthZero { get; private set; }
+
+
 
 		/// <summary>
 		/// Gets or sets the field of view for the camera
@@ -132,19 +158,19 @@ namespace Balder.Core
 				AspectRatio, 
 				Near, 
 				Far);
-			
 		}
 
 		private void UpdateDepthDivisor()
 		{
 			DepthDivisor = Far - Near;
+			DepthZero = Near/DepthDivisor;
 			SetupProjection();
 		}
 		#endregion
 
 		#region Public Methods
 
-		public override void Prepare(IViewport viewport)
+		public override void Prepare(Viewport viewport)
 		{
 			Viewport = viewport;
 			SetupProjection();
@@ -153,7 +179,8 @@ namespace Balder.Core
 
 		public override void Update()
 		{
-			Up = new Vector(-(float)System.Math.Sin(Roll), (float)System.Math.Cos(Roll), Up.Z);
+			//Up = new Vector(-(float)System.Math.Sin(Roll), (float)System.Math.Cos(Roll), Up.Z);
+			Up = new Vector(0,-1,0);
 			ViewMatrix = Matrix.CreateLookAt(Position, Target, Up);
 			SetupProjection();
 			Frustum.SetCameraDefinition(this);

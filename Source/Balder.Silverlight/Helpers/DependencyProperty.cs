@@ -1,14 +1,31 @@
-﻿using System;
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
+using System;
 using System.Linq.Expressions;
 using System.Windows;
-using System.Windows.Data;
 using Balder.Silverlight.Extensions;
 
 
 namespace Balder.Silverlight.Helpers
 {
 	public class DependencyProperty<T1,T>
-		where T1:FrameworkElement
+		where T1:DependencyObject
 	{
 		public DependencyProperty ActualDependencyProperty { get; private set; }
 		public string PropertyName { get; private set; }
@@ -54,6 +71,7 @@ namespace Balder.Silverlight.Helpers
 		}
 
 
+		/*
 		public System.Windows.Data.Binding SetBinding(T1 obj, string path)
 		{
 			var binding = new System.Windows.Data.Binding(path);
@@ -77,5 +95,6 @@ namespace Balder.Silverlight.Helpers
 			obj.SetBinding(this.ActualDependencyProperty, binding);
 			return binding;
 		}
+		 * */
 	}
 }

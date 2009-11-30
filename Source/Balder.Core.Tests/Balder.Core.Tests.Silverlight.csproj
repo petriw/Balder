@@ -64,25 +64,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetLoaderServiceTests.cs" />
-    <Compile Include="Fakes\AssetLoaders\Nested\NestedAssetLoader.cs" />
-    <Compile Include="Fakes\AssetLoaders\RootAssetLoader.cs" />
-    <Compile Include="Fakes\Display.cs" />
-    <Compile Include="Fakes\FileLoader.cs" />
-    <Compile Include="Fakes\GeometryContext.cs" />
-    <Compile Include="Fakes\ImageContext.cs" />
-    <Compile Include="Fakes\MockGame.cs" />
-    <Compile Include="Fakes\MockGeometry.cs" />
-    <Compile Include="Fakes\SpriteFrameContext.cs" />
-    <Compile Include="Fakes\TargetDevice.cs" />
-    <Compile Include="Fakes\Viewport.cs" />
+    <Compile Include="ColorTests.cs" />
+    <Compile Include="Content\ContentCreatorTests.cs" />
+    <Compile Include="Content\ContentManagerTests.cs" />
+    <Compile Include="Extensions\ViewportExtensionsTests.cs" />
+    <Compile Include="Fakes\AssetLoaders\Nested\NestedAssetLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Fakes\AssetLoaders\RootAssetLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Fakes\FakeDisplayDevice.cs" />
+    <Compile Include="Input\MouseButtonStateTests.cs" />
+    <Compile Include="Input\MouseManagerTests.cs" />
+    <Compile Include="Math\BoundingSphereTests.cs" />
     <Compile Include="Math\FrustumTests.cs" />
     <Compile Include="Math\PlaneTests.cs" />
+    <Compile Include="Math\RayTests.cs" />
     <Compile Include="Resources\Models.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\EngineRuntimeTests.cs" />
+    <Compile Include="Fakes\FakePlatform.cs" />
+    <Compile Include="RuntimeTests.cs" />
+    <Compile Include="SceneTests.cs" />
+    <Compile Include="Stubs\ObjectFactoryStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Models.resx">

@@ -1,16 +1,30 @@
-﻿#if(SILVERLIGHT)
-using System.Windows.Media;
-#else
-using System.Drawing;
-#endif
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
 using Balder.Core.Collections;
-using Balder.Core.Interfaces;
+using Balder.Core.Display;
+using Balder.Core.Input;
 using Balder.Core.Lighting;
 using Balder.Core.Math;
 using Balder.Core.Objects.Flat;
 using Balder.Core.Objects.Geometries;
-using Geometry=Balder.Core.Objects.Geometries.Geometry;
-using Matrix=Balder.Core.Math.Matrix;
+using Geometry = Balder.Core.Objects.Geometries.Geometry;
+using Matrix = Balder.Core.Math.Matrix;
 using Balder.Core.Extensions;
 
 namespace Balder.Core
@@ -35,43 +49,68 @@ namespace Balder.Core
 		public void AddNode(Node node)
 		{
 			node.Scene = this;
-			if( node is RenderableNode )
+			if (node is RenderableNode)
 			{
-				_renderableNodes.Add(node);
-				if( node is Sprite )
+				lock (_renderableNodes)
 				{
-					_flatNodes.Add(node);
+					_renderableNodes.Add(node);
+
 				}
-			} else
+				if (node is Sprite)
+				{
+					lock (_flatNodes)
+					{
+						_flatNodes.Add(node);
+					}
+				}
+			}
+			else
 			{
-				_environmentalNodes.Add(node);
+				lock (_environmentalNodes)
+				{
+					_environmentalNodes.Add(node);
+				}
 			}
 		}
 
+		public NodeCollection RenderableNodes { get { return _renderableNodes; } }
 
-		public Color CalculateColorForVector(IViewport viewport, Vector vector, Vector normal)
+		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal)
 		{
-			var color = AmbientColor.ToVector();
-
-			foreach( var node in _environmentalNodes )
-			{
-				if( node is Light )
-				{
-					var light = node as Light;
-					var currentLightResult = light.Calculate(viewport, vector, normal);
-					var currentLightResultAsVector = currentLightResult.ToVector();
-					color += currentLightResultAsVector;
-				}
-			}
-			return color.ToColorWithClamp();
+			return CalculateColorForVector(viewport, vector, normal, Color.Black, Color.Black, Color.Black);
 		}
 
-		public void Render(IViewport viewport, Matrix view, Matrix projection)
+		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal, Color vectorAmbient, Color vectorDiffuse, Color vectorSpecular)
 		{
-			foreach( RenderableNode node in _renderableNodes )
+			var color = AmbientColor.Additive(vectorDiffuse);
+
+			lock (_environmentalNodes)
 			{
-				node.PrepareRender();
-				node.Render(viewport,view,projection);
+				foreach (var node in _environmentalNodes)
+				{
+					if (node is Light)
+					{
+						var light = node as Light;
+						var currentLightResult = light.Calculate(viewport, vector, normal);
+						var currentLightResultAsVector = currentLightResult;
+						
+						color += currentLightResultAsVector;
+					}
+				}
+				color.Clamp();
+				return color;
+			}
+		}
+
+		public void Render(Viewport viewport, Matrix view, Matrix projection)
+		{
+			lock (_renderableNodes)
+			{
+				foreach (RenderableNode node in _renderableNodes)
+				{
+					node.PrepareRender();
+					node.Render(viewport, view, projection);
+				}
 			}
 		}
 
@@ -80,9 +119,9 @@ namespace Balder.Core
 			get
 			{
 				var count = 0;
-				foreach( var node in _renderableNodes )
+				foreach (var node in _renderableNodes)
 				{
-					if( node is Geometry )
+					if (node is Geometry)
 					{
 						var geometry = node as Geometry;
 						count += geometry.GeometryContext.VertexCount;
@@ -104,7 +143,7 @@ namespace Balder.Core
 						var geometry = node as Geometry;
 						count += geometry.GeometryContext.FaceCount;
 					}
-					if( node is Mesh)
+					if (node is Mesh)
 					{
 						var mesh = node as Mesh;
 						count += mesh.TotalFaceCount;
@@ -120,6 +159,56 @@ namespace Balder.Core
 			{
 				return _flatNodes.Count;
 			}
+		}
+
+		public void HandleMouseEvents(Viewport viewport, Mouse mouse)
+		{
+			var objectHit = GetNodeAtScreenCoordinate(viewport, mouse.XPosition, mouse.YPosition);
+			if (null != objectHit)
+			{
+				objectHit.OnHover();
+				if( mouse.LeftButton.IsEdge )
+				{
+					objectHit.OnClick();
+				}
+			}
+		}
+
+
+		public RenderableNode GetNodeAtScreenCoordinate(Viewport viewport, int x, int y)
+		{
+			var nearSource = new Vector((float)x, (float)y, 0f);
+			var farSource = new Vector((float)x, (float)y, 1f);
+			var camera = viewport.Camera;
+			var nearPoint = viewport.Unproject(nearSource, camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
+			var farPoint = viewport.Unproject(farSource, camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
+
+			var direction = farPoint - nearPoint;
+			direction.Normalize();
+
+			var pickRay = new Ray(nearPoint, direction);
+
+			var closestObjectDistance = float.MaxValue;
+			RenderableNode closestObject = null;
+
+			lock (_renderableNodes)
+			{
+				foreach (var node in _renderableNodes)
+				{
+					var transformedSphere = node.BoundingSphere.Transform(node.World);
+					var distance = pickRay.Intersects(transformedSphere);
+					if (distance.HasValue)
+					{
+						if (distance < closestObjectDistance)
+						{
+							closestObject = node as RenderableNode;
+							closestObjectDistance = distance.Value;
+						}
+					}
+				}
+			}
+
+			return closestObject;
 		}
 	}
 }

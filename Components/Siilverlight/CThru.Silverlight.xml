@@ -1,0 +1,43 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CThru.Silverlight
+</name>
+</assembly>
+<members>
+<member name="M:CThru.Silverlight.DispatcherTimerRedirects.SetValue(System.Windows.DependencyProperty,System.Object)">
+	<summary>
+ This SetValue behavior is based on the description provided here:
+ http://blog.ningzhang.org/2008/11/dependencyproperty-validation-coercion_10.html
+ yes. It is totally open to recursive failures and allows invalid values.
+ </summary>
+	<param name="dp"></param>
+	<param name="value"></param>
+	<remarks></remarks>
+</member><member name="T:CThru.Silverlight.DispatcherTimerRedirects">
+	<summary>
+ This fake timer will fire only once
+ </summary>
+	<remarks></remarks>
+</member><member name="M:CThru.Silverlight.DependencyObjectRedirects.SetValue(System.Windows.DependencyProperty,System.Object)">
+	<summary>
+ This SetValue behavior is based on the description provided here:
+ http://blog.ningzhang.org/2008/11/dependencyproperty-validation-coercion_10.html
+ yes. It is totally open to recursive failures and allows invalid values.
+ </summary>
+	<param name="dp"></param>
+	<param name="value"></param>
+	<remarks></remarks>
+</member><member name="M:CThru.Silverlight.ItemCollectionRedirects.SetValue(System.Windows.DependencyProperty,System.Object)">
+	<summary>
+ This SetValue behavior is based on the description provided here:
+ http://blog.ningzhang.org/2008/11/dependencyproperty-validation-coercion_10.html
+ yes. It is totally open to recursive failures and allows invalid values.
+ </summary>
+	<param name="dp"></param>
+	<param name="value"></param>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

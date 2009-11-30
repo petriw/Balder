@@ -1,6 +1,9 @@
-﻿using System.Windows.Controls;
-using Balder.Core.Math;
-using Balder.Silverlight.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using Balder.Core;
+using Color=Balder.Core.Color;
 
 namespace Balder.Silverlight.TestApp
 {
@@ -9,15 +12,46 @@ namespace Balder.Silverlight.TestApp
 		public Page()
 		{
 			InitializeComponent();
+
+			Loaded += Page_Loaded;
+
+
+
 		}
 
-		private float _angle = 0f;
-
-		private void Updated(RenderingContainer renderingContainer)
+		void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
 		{
-			//_audi.Node.World = Matrix.CreateRotationY(_angle);
-			_angle += 0.5f;
-			//_renderingContainer.Camera.Position = new Vector(0,-5,-20);
+			int i = 0;
+			i++;
+
+			
+			
+		}
+
+		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			_cameraStoryboard.Begin();
+		}
+
+		private void _teapot_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			_teapot.Color = Colors.Brown;
+		}
+
+		private void _teapot_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			_teapot.Color = Colors.Blue;
+		}
+
+		private void _teapot_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			_teapot.Color = Colors.Red;
+
+		}
+
+		private void _teapot_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			_teapot.Color = Colors.Brown;
 		}
 	}
 }

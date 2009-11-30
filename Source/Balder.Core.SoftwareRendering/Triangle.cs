@@ -1,9 +1,21 @@
-﻿#if(SILVERLIGHT)
-using System.Windows.Media;
-#else
-using Color = System.Drawing.Color;
-#endif
-using Balder.Core.Extensions;
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
 using Balder.Core.Imaging;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
@@ -249,21 +261,21 @@ namespace Balder.Core.SoftwareRendering
 
 			if (shade == TriangleShade.Gouraud && !useTexture)
 			{
-				var vertexAColor = vertexA.Color.ToVector();
-				var vertexBColor = vertexB.Color.ToVector();
-				var vertexCColor = vertexC.Color.ToVector();
+				var vertexAColor = vertexA.Color;
+				var vertexBColor = vertexB.Color;
+				var vertexCColor = vertexC.Color;
 
-				interpolator.SetPoint(4, vertexAColor.Red, vertexCColor.Red);
-				interpolator.SetPoint(5, vertexAColor.Red, vertexBColor.Red, vertexBColor.Red, vertexCColor.Red, secondaryStartY);
+				interpolator.SetPoint(4, vertexAColor.RedAsFloat, vertexCColor.RedAsFloat);
+				interpolator.SetPoint(5, vertexAColor.RedAsFloat, vertexBColor.RedAsFloat, vertexBColor.RedAsFloat, vertexCColor.RedAsFloat, secondaryStartY);
 
-				interpolator.SetPoint(6, vertexAColor.Green, vertexCColor.Green);
-				interpolator.SetPoint(7, vertexAColor.Green, vertexBColor.Green, vertexBColor.Green, vertexCColor.Green, secondaryStartY);
+				interpolator.SetPoint(6, vertexAColor.GreenAsFloat, vertexCColor.GreenAsFloat);
+				interpolator.SetPoint(7, vertexAColor.GreenAsFloat, vertexBColor.GreenAsFloat, vertexBColor.GreenAsFloat, vertexCColor.GreenAsFloat, secondaryStartY);
 
-				interpolator.SetPoint(8, vertexAColor.Blue, vertexCColor.Blue);
-				interpolator.SetPoint(9, vertexAColor.Blue, vertexBColor.Blue, vertexBColor.Blue, vertexCColor.Blue, secondaryStartY);
+				interpolator.SetPoint(8, vertexAColor.BlueAsFloat, vertexCColor.BlueAsFloat);
+				interpolator.SetPoint(9, vertexAColor.BlueAsFloat, vertexBColor.BlueAsFloat, vertexBColor.BlueAsFloat, vertexCColor.BlueAsFloat, secondaryStartY);
 
-				interpolator.SetPoint(10, vertexAColor.Alpha, vertexCColor.Alpha);
-				interpolator.SetPoint(11, vertexAColor.Alpha, vertexBColor.Alpha, vertexBColor.Alpha, vertexCColor.Alpha, secondaryStartY);
+				interpolator.SetPoint(10, vertexAColor.AlphaAsFloat, vertexCColor.AlphaAsFloat);
+				interpolator.SetPoint(11, vertexAColor.AlphaAsFloat, vertexBColor.AlphaAsFloat, vertexBColor.AlphaAsFloat, vertexCColor.AlphaAsFloat, secondaryStartY);
 			}
 			else
 			{
@@ -328,14 +340,14 @@ namespace Balder.Core.SoftwareRendering
 								}
 								else
 								{
-									actualSpan.ColorStart.Red = interpolator.Points[4 + swapIndex].InterpolatedValues[index];
-									actualSpan.ColorEnd.Red = interpolator.Points[5 - swapIndex].InterpolatedValues[index];
-									actualSpan.ColorStart.Green = interpolator.Points[6 + swapIndex].InterpolatedValues[index];
-									actualSpan.ColorEnd.Green = interpolator.Points[7 - swapIndex].InterpolatedValues[index];
-									actualSpan.ColorStart.Blue = interpolator.Points[8 + swapIndex].InterpolatedValues[index];
-									actualSpan.ColorEnd.Blue = interpolator.Points[9 - swapIndex].InterpolatedValues[index];
-									actualSpan.ColorStart.Alpha = interpolator.Points[10 + swapIndex].InterpolatedValues[index];
-									actualSpan.ColorEnd.Alpha = interpolator.Points[11 - swapIndex].InterpolatedValues[index];
+									actualSpan.ColorStart.RedAsFloat = interpolator.Points[4 + swapIndex].InterpolatedValues[index];
+									actualSpan.ColorEnd.RedAsFloat = interpolator.Points[5 - swapIndex].InterpolatedValues[index];
+									actualSpan.ColorStart.GreenAsFloat = interpolator.Points[6 + swapIndex].InterpolatedValues[index];
+									actualSpan.ColorEnd.GreenAsFloat = interpolator.Points[7 - swapIndex].InterpolatedValues[index];
+									actualSpan.ColorStart.BlueAsFloat = interpolator.Points[8 + swapIndex].InterpolatedValues[index];
+									actualSpan.ColorEnd.BlueAsFloat = interpolator.Points[9 - swapIndex].InterpolatedValues[index];
+									actualSpan.ColorStart.AlphaAsFloat = interpolator.Points[10 + swapIndex].InterpolatedValues[index];
+									actualSpan.ColorEnd.AlphaAsFloat = interpolator.Points[11 - swapIndex].InterpolatedValues[index];
 									renderer.Gouraud(buffers, actualSpan);
 								}
 							}

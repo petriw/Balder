@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Balder.Silverlight.Design.Controls.VectorEditorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+    <Grid DataContext="{Binding Value}">
+		<StackPanel Orientation="Horizontal">
+			<TextBox Text="{Binding Path=X, Mode=TwoWay}"/>
+			<TextBox Text="{Binding Path=Y, Mode=TwoWay}"/>
+			<TextBox Text="{Binding Path=Z, Mode=TwoWay}"/>
+		</StackPanel>
+     </Grid>
+</UserControl>

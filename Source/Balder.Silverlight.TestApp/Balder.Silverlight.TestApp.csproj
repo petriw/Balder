@@ -122,6 +122,8 @@
     <Resource Include="Assets\audi.ASE" />
     <Resource Include="Assets\evolve.ASE" />
     <Resource Include="Assets\pumpkin.ASE" />
+    <Resource Include="Assets\box.ASE" />
+    <Resource Include="Assets\CoordinateSystem.ASE" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +154,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Balder.Core.SoftwareRendering\Balder.Core.SoftwareRendering.Silverlight.csproj">
+      <Project>{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}</Project>
+      <Name>Balder.Core.SoftwareRendering.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Balder.Core\Balder.Core.Silverlight.csproj">
       <Project>{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}</Project>
       <Name>Balder.Core.Silverlight</Name>

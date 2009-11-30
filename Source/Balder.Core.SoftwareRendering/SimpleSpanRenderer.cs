@@ -1,12 +1,23 @@
-﻿using System;
-#if(SILVERLIGHT)
-using System.Windows.Media;
-#else
-using Color = System.Drawing.Color;
-#endif
+﻿#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
+using System;
 using Balder.Core.Imaging;
-using Balder.Core.Math;
-using Balder.Core.Extensions;
 
 namespace Balder.Core.SoftwareRendering
 {
@@ -17,7 +28,7 @@ namespace Balder.Core.SoftwareRendering
 		private static readonly Interpolator DepthInterpolator;
 		private static readonly Interpolator GouraudInterpolator;
 		private static readonly Interpolator TextureInterpolator;
-		private static ColorVector ColorAsVector;
+		private static Color WorkingColor;
 
 		static SimpleSpanRenderer()
 		{
@@ -58,7 +69,7 @@ namespace Balder.Core.SoftwareRendering
 				{
 					var z = DepthInterpolator.Points[0].InterpolatedValues[index];
 					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
-
+					
 					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
 					    z < 1f
@@ -66,11 +77,6 @@ namespace Balder.Core.SoftwareRendering
 					{
 						buffer.FrameBuffer.Pixels[bufferOffset] = colorAsInt;
 						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
-					}
-					else
-					{
-						int i = 0;
-						i++;
 					}
 				}
 
@@ -84,10 +90,10 @@ namespace Balder.Core.SoftwareRendering
 		{
 			var spreadCount = span.XEnd - span.XStart;
 			GouraudInterpolator.SetPoint(0, span.ZStart, span.ZEnd);
-			GouraudInterpolator.SetPoint(1, span.ColorStart.Red, span.ColorEnd.Red);
-			GouraudInterpolator.SetPoint(2, span.ColorStart.Green, span.ColorEnd.Green);
-			GouraudInterpolator.SetPoint(3, span.ColorStart.Blue, span.ColorEnd.Blue);
-			GouraudInterpolator.SetPoint(4, span.ColorStart.Alpha, span.ColorEnd.Alpha);
+			GouraudInterpolator.SetPoint(1, span.ColorStart.RedAsFloat, span.ColorEnd.RedAsFloat);
+			GouraudInterpolator.SetPoint(2, span.ColorStart.GreenAsFloat, span.ColorEnd.GreenAsFloat);
+			GouraudInterpolator.SetPoint(3, span.ColorStart.BlueAsFloat, span.ColorEnd.BlueAsFloat);
+			GouraudInterpolator.SetPoint(4, span.ColorStart.AlphaAsFloat, span.ColorEnd.AlphaAsFloat);
 
 			var yOffset = buffer.FrameBuffer.Stride * span.Y;
 			var rOffset = buffer.FrameBuffer.RedPosition;
@@ -108,7 +114,6 @@ namespace Balder.Core.SoftwareRendering
 					var z = GouraudInterpolator.Points[0].InterpolatedValues[index];
 					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
 
-
 					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
 					    z < 1f
@@ -116,11 +121,12 @@ namespace Balder.Core.SoftwareRendering
 					{
 						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
 
-						ColorAsVector.Red = GouraudInterpolator.Points[1].InterpolatedValues[index];
-						ColorAsVector.Green = GouraudInterpolator.Points[2].InterpolatedValues[index];
-						ColorAsVector.Blue = GouraudInterpolator.Points[3].InterpolatedValues[index];
-						ColorAsVector.Alpha = GouraudInterpolator.Points[4].InterpolatedValues[index];
-						var color = (int)ColorAsVector.ToColor().ToUInt32();
+						WorkingColor.RedAsFloat = GouraudInterpolator.Points[1].InterpolatedValues[index];
+						WorkingColor.GreenAsFloat = GouraudInterpolator.Points[2].InterpolatedValues[index];
+						WorkingColor.BlueAsFloat = GouraudInterpolator.Points[3].InterpolatedValues[index];
+						WorkingColor.AlphaAsFloat = GouraudInterpolator.Points[4].InterpolatedValues[index];
+						WorkingColor.Clamp();
+						var color = (int)WorkingColor.ToUInt32();
 						buffer.FrameBuffer.Pixels[bufferOffset] = color;
 					}
 				}
@@ -164,8 +170,6 @@ namespace Balder.Core.SoftwareRendering
 					var intv = (int) (v*image.Height) & (image.Height - 1);
 
 					var texel = ((intv*image.Width) + intu);
-
-
 					
 					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
@@ -184,5 +188,4 @@ namespace Balder.Core.SoftwareRendering
 			}
 		}
 	}
-
 }

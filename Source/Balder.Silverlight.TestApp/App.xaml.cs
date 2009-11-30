@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Windows;
-using Balder.Core.Runtime;
+using Balder.Core;
+using Balder.Silverlight.Execution;
 using Balder.Silverlight.Services;
 
 namespace Balder.Silverlight.TestApp
 {
 	public partial class App : Application
 	{
+		public static MyGame MyGame;
+
 		public App()
 		{
 			Startup += Application_Startup;
@@ -20,7 +23,18 @@ namespace Balder.Silverlight.TestApp
 		{
 			//TargetDevice.Initialize();
 			RootVisual = new Page();
-			TargetDevice.Initialize<MyGame>();
+
+
+
+			/*
+			 * TargetDevice.Initialize<MyGame>();
+			Platform.Initialize();
+			
+			var game = Runtime.Instance.CreateGame<MyGame>();
+			Runtime.Instance.RegisterGame(game);
+			 * */
+
+			//MyGame = TargetDevice.Initialize<MyGame>();
 			
 		}
 

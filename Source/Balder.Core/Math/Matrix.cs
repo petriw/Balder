@@ -1,3 +1,21 @@
+#region License
+//
+// Author: Einar Ingebrigtsen <einar@dolittle.com>
+// Copyright (c) 2007-2009, DoLittle Studios
+//
+// Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the license at 
+//
+//   http://balder.codeplex.com/license
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#endregion
 namespace Balder.Core.Math
 {
     public class Matrix
@@ -12,7 +30,7 @@ namespace Balder.Core.Math
         public Matrix(float[] Matrix)
         {
 			Initialize();
-			for (int i = 0; i < data.Length; i++)
+			for (var i = 0; i < data.Length; i++)
 			{
 				data[i] = Matrix[i];
 			}
@@ -41,15 +59,19 @@ namespace Balder.Core.Math
         {
             get
             {
-                if (data == null)
-                    data = new float[4*4];
-                return data[(i << 2) + j];
+				if (data == null)
+				{
+					data = new float[4*4];
+				}
+            	return data[(i << 2) + j];
             }
             set
             {
-                if (data == null)
-                    data = new float[4 * 4];
-                data[(i << 2) + j] = value;
+				if (data == null)
+				{
+					data = new float[4*4];
+				}
+            	data[(i << 2) + j] = value;
             }
         }
 
@@ -61,8 +83,8 @@ namespace Balder.Core.Math
 
 		public static Matrix operator +(Matrix matrix1, Matrix matrix2)
 		{
-			Matrix matrix = new Matrix();
-			for( int i=0; i<matrix.data.Length; i++ )
+			var matrix = new Matrix();
+			for( var i=0; i<matrix.data.Length; i++ )
 			{
 				matrix.data[i] = matrix1.data[i] + matrix2.data[i];
 			}
@@ -75,24 +97,6 @@ namespace Balder.Core.Math
         // [ ][ ][ ][ ]   [ ][ ][ ][ ]
         public static Matrix operator *(Matrix matrix1, Matrix matrix2)
         {
-			/*
-        	Matrix result = Matrix.Identity;
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					result[i, j] = 0;
-					for (int k = 0; k < 4; k++)
-					{
-						result[i,j] += matrix1[i,k] * matrix2[k,j];
-					}
-				}
-			}
-			 
-
-            return result;
-			*/
-			
         	Matrix matrix = Matrix.Identity;
 			matrix[0,0] = (((matrix1[0,0] * matrix2[0,0]) + (matrix1[0,1] * matrix2[1,0])) + (matrix1[0,2] * matrix2[2,0])) + (matrix1[0,3] * matrix2[3,0]);
 			matrix[0,1] = (((matrix1[0,0] * matrix2[0,1]) + (matrix1[0,1] * matrix2[1,1])) + (matrix1[0,2] * matrix2[2,1])) + (matrix1[0,3] * matrix2[3,1]);
@@ -110,64 +114,27 @@ namespace Balder.Core.Math
 			matrix[3,1] = (((matrix1[3,0] * matrix2[0,1]) + (matrix1[3,1] * matrix2[1,1])) + (matrix1[3,2] * matrix2[2,1])) + (matrix1[3,3] * matrix2[3,1]);
 			matrix[3,2] = (((matrix1[3,0] * matrix2[0,2]) + (matrix1[3,1] * matrix2[1,2])) + (matrix1[3,2] * matrix2[2,2])) + (matrix1[3,3] * matrix2[3,2]);
 			matrix[3,3] = (((matrix1[3,0] * matrix2[0,3]) + (matrix1[3,1] * matrix2[1,3])) + (matrix1[3,2] * matrix2[2,3])) + (matrix1[3,3] * matrix2[3,3]);
-			
-
         	return matrix;
-			
 		}
 
 
-		private static readonly float[] vectorOut = new float[4];
-		private static readonly float[] vectorIn = new float[4];
-
-		public static Vector operator *(Vector vector, Matrix matrix)
+    	public static Vector operator *(Vector vector, Matrix matrix)
 		{
-			Vector retval = Vector.Transform(vector, matrix);
-				//matrix.ApplyToVector(vector);
-			return retval;
+			var returnVector = Vector.Transform(vector, matrix);
+			return returnVector;
 		}
 
-        public static explicit operator Vector(Matrix Matrix)
+        public static explicit operator Vector(Matrix matrix)
         {
-            return new Vector( Matrix[3, 0], Matrix[3, 1], Matrix[3, 2]) ;
+            return new Vector( matrix[3, 0], matrix[3, 1], matrix[3, 2]) ;
         }
-
-
-		/*
-		public Vector ApplyToVector(Vector position)
-		{
-			Vector outVector = new Vector();
-			//Create a new vector and make it 4d homogenous
-			vectorIn[0] = position.X;
-			vectorIn[1] = position.Y;
-			vectorIn[2] = position.Z;
-			vectorIn[3] = 1.0d;
-
-			for (int i = 0; i < 4; i++)
-			{
-				vectorOut[i] = 0.0d;
-				for (int j = 0; j < 4; j++)
-				{
-					vectorOut[i] += vectorIn[j] * this[i, j];
-				}
-			}
-
-			//Unhomogenize the result vector and return a 3d vector
-			outVector.X = vectorOut[0]/vectorOut[3];
-			outVector.Y = vectorOut[1]/vectorOut[3];
-			outVector.Z = vectorOut[2]/vectorOut[3];
-
-			return outVector;
-		}
-		 * */
-
 
 
         public static Matrix Identity
         {
 			get 
 			{
-				Matrix identityMatrix = new Matrix();
+				var identityMatrix = new Matrix();
 				SetIdentity(identityMatrix);
 				return identityMatrix;
 			}
@@ -175,10 +142,10 @@ namespace Balder.Core.Math
 
 		public static Matrix CreateLookAt(Vector cameraPosition, Vector cameraTarget, Vector cameraUpVector)
 		{
-			Matrix matrix = Matrix.Identity;
-			Vector vector = Vector.Normalize(cameraPosition - cameraTarget);
-			Vector vector2 = Vector.Normalize(Vector.Cross(cameraUpVector, vector));
-			Vector vector3 = Vector.Cross(vector, vector2);
+			var matrix = Matrix.Identity;
+			var vector = Vector.Normalize(cameraPosition - cameraTarget);
+			var vector2 = Vector.Normalize(Vector.Cross(cameraUpVector, vector));
+			var vector3 = Vector.Cross(vector, vector2);
 			matrix[0,0] = vector2.X;
 			matrix[0,1] = vector3.X;
 			matrix[0,2] = vector.X;
@@ -200,8 +167,8 @@ namespace Balder.Core.Math
 
 		public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
 		{
-			Matrix matrix = new Matrix(); //Matrix.Identity);
-			float num = 1f / (float)System.Math.Tan(fieldOfView * 0.5);
+			Matrix matrix = new Matrix();// Matrix.Identity; 
+			float num = 1f / (float)System.Math.Tan((double)(fieldOfView * 0.5f));
 			float num9 = num / aspectRatio;
 			matrix[0, 0] = num9;
 			matrix[0, 1] = matrix[0, 2] = matrix[0, 3] = 0f;
@@ -312,6 +279,10 @@ namespace Balder.Core.Math
 			return matrix;
 		}
 
+		public static Matrix CreateScale(float scale)
+		{
+			return CreateScale(new Vector(scale, scale, scale));
+		}
 
 		public static Matrix CreateScale(Vector scales)
 		{
@@ -401,21 +372,19 @@ namespace Balder.Core.Math
 
 		public override string ToString()
 		{
-			string format = "[ {0:##.##} - {1:##.##} - {2:##.##} - {3:##.##} ])";
-			string row1 = string.Format(format,
+			var format = "[ {0:##.##} - {1:##.##} - {2:##.##} - {3:##.##} ])";
+			var row1 = string.Format(format,
 										this[0, 0], this[0, 1], this[0, 2], this[0, 3]
 				);
-			string row2 = string.Format(format,
+			var row2 = string.Format(format,
 										this[1, 0], this[1, 1], this[1, 2], this[1, 3]
 				);
-			string row3 = string.Format(format,
+			var row3 = string.Format(format,
 										this[2, 0], this[2, 1], this[2, 2], this[2, 3]
 				);
-			string row4 = string.Format(format,
+			var row4 = string.Format(format,
 										this[3, 0], this[3, 1], this[3, 2], this[3, 3]
 				);
-
-
 
 			return string.Format("{0}\n{1}\n{2}\n{3}\n",
 			                     row1,
