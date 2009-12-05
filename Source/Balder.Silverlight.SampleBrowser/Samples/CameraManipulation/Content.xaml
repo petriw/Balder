@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.CameraManipulation.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:balder="clr-namespace:Balder.Silverlight.Controls;assembly=Balder.Silverlight"
+	xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.CameraManipulation"
+	>
+	<Grid x:Name="LayoutRoot">
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+			<balder:Game x:Name="_game" Width="800" Height="600" DebugLevel="BoundingSpheres">
+				<balder:OmniLight Position="0,120,0" Ambient="DarkGray" Diffuse="Brown" Specular="White"/>
+				<balder:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/CameraManipulation/Assets/plane.ase"/>
+				<balder:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/CameraManipulation/Assets/box.ase"/>
+				<balder:Game.Camera>
+					<balder:Camera Position="0,100,-340"/>
+				</balder:Game.Camera>
+			</balder:Game>
+
+			<Grid HorizontalAlignment="Center">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50"/>
+					<ColumnDefinition Width="200"/>
+					<ColumnDefinition Width="50"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="30"/>
+				</Grid.RowDefinitions>
+				
+				<TextBlock Text="X Axis" Grid.Row="0" Grid.Column="0"/>
+				<Slider x:Name="_xSlider" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="360" Value="200" ValueChanged="Slider_ValueChanged"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_xSlider, Mode=OneWay}" Grid.Row="0" Grid.Column="2"/>
+
+				<TextBlock Text="Y Axis" Grid.Row="1" Grid.Column="0"/>
+				<Slider x:Name="_ySlider" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="360" Value="200" ValueChanged="Slider_ValueChanged"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_ySlider, Mode=OneWay}" Grid.Row="1" Grid.Column="2"/>
+
+				<TextBlock Text="Zoom" Grid.Row="2" Grid.Column="0"/>
+				<Slider x:Name="_zoomSlider" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="1" Minimum="200" Maximum="500" ValueChanged="Slider_ValueChanged"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_zoomSlider, Mode=OneWay}" Grid.Row="2" Grid.Column="2"/>
+			</Grid>
+			
+		</StackPanel>
+	</Grid>
+</UserControl>

@@ -14,15 +14,15 @@
 			
 			<DoubleAnimationUsingKeyFrames x:Name="_animation" 
 										   Storyboard.TargetName="_game" 
-										   Storyboard.TargetProperty="(Game.Camera).(Camera.Position).(Vector.Y)" 
+										   Storyboard.TargetProperty="(Game.Camera).(Camera.Target).(Vector.Y)" 
 										   AutoReverse="True" 
 										   RepeatBehavior="Forever">
-				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="115" >
+				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="5" >
 					<EasingDoubleKeyFrame.EasingFunction>
 						<CircleEase EasingMode="EaseOut"/>
 					</EasingDoubleKeyFrame.EasingFunction>
 				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:02" Value="50" >
+				<EasingDoubleKeyFrame KeyTime="00:00:02" Value="0" >
 					<EasingDoubleKeyFrame.EasingFunction>
 						<CircleEase EasingMode="EaseIn"/>
 					</EasingDoubleKeyFrame.EasingFunction>

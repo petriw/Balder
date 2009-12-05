@@ -20,7 +20,6 @@ namespace Balder.Silverlight.TestApp
 
 		public override void LoadContent()
 		{
-			
 			_teapot = ContentManager.Load<Mesh>("teapot.ASE");
 			_teapot.Color = Color.FromArgb(0xff,0,0,0xff);
 			_teapot.Click += teapotClick;
