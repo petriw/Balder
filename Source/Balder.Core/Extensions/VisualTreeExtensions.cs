@@ -21,7 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Balder.Silverlight.Extensions
+namespace Balder.Core.Extensions
 {
 	public static class VisualTreeExtensions
 	{

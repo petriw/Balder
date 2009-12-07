@@ -19,7 +19,8 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
-using Balder.Silverlight.Helpers;
+using Balder.Core.Extensions;
+using Balder.Core.Helpers;
 using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Balder.Silverlight.Extensions

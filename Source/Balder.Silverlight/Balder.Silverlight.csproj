@@ -98,17 +98,6 @@
     <Compile Include="Converters\StringToTypeConverter.cs" />
     <Compile Include="Display\DisplayDevice.cs" />
     <Compile Include="Execution\Platform.cs" />
-    <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
-    <Compile Include="Extensions\DependencyPropertySubscription.cs" />
-    <Compile Include="Extensions\ExpressionExtensions.cs" />
-    <Compile Include="Extensions\ICollectionExtensions.cs" />
-    <Compile Include="Extensions\IListExtensions.cs" />
-    <Compile Include="Extensions\NotificationExtensions.cs" />
-    <Compile Include="Extensions\StoryboardExtensions.cs" />
-    <Compile Include="Extensions\VisualStateExtensions.cs" />
-    <Compile Include="Extensions\VisualTreeExtensions.cs" />
-    <Compile Include="Helpers\DependencyProperty.cs" />
-    <Compile Include="Helpers\DependencyPropertyHelper.cs" />
     <Compile Include="Content\FileLoader.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Interaction\ICommandSource.cs" />

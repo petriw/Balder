@@ -16,18 +16,32 @@
 // limitations under the License.
 //
 #endregion
-using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media.Animation;
 
-namespace Balder.Silverlight.Extensions
+namespace Balder.Core.Extensions
 {
-	public static class ICollectionExtensions
+	public static class StoryboardExtensions
 	{
-		public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> range)
+		public static void SetValueForKeyFrame(this Storyboard storyboard, string keyFrameName, double value)
 		{
-			foreach (var item in range)
+			foreach (var timeline in storyboard.Children)
 			{
-				collection.Add(item);
-			}
+				if (timeline is DoubleAnimationUsingKeyFrames)
+				{
+					var animation = timeline as DoubleAnimationUsingKeyFrames;
+					foreach (DoubleKeyFrame keyframe in animation.KeyFrames)
+					{
+						string name = keyframe.GetValue(FrameworkElement.NameProperty) as string;
+						if (null != name && name == keyFrameName)
+						{
+							keyframe.Value = value;
+							return;
+						}
+					}
+				}
+			}			
 		}
+
 	}
 }

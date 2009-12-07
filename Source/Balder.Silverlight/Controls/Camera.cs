@@ -17,8 +17,8 @@
 //
 #endregion
 
+using Balder.Core.Helpers;
 using Balder.Silverlight.Controls.Math;
-using Balder.Silverlight.Helpers;
 
 namespace Balder.Silverlight.Controls
 {

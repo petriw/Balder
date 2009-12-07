@@ -18,8 +18,8 @@
 #endregion
 using System.Windows.Input;
 using System.Windows.Media;
+using Balder.Core.Helpers;
 using Balder.Silverlight.Controls.Math;
-using Balder.Silverlight.Helpers;
 using Balder.Silverlight.Interaction;
 
 namespace Balder.Silverlight.Controls

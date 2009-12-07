@@ -19,8 +19,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using Balder.Silverlight.Extensions;
-using Balder.Silverlight.Helpers;
+using Balder.Core.Extensions;
+using Balder.Core.Helpers;
 using Balder.Silverlight.TypeConverters;
 
 namespace Balder.Silverlight.Controls.Math

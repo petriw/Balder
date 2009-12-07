@@ -16,10 +16,27 @@
 // limitations under the License.
 //
 #endregion
-namespace Balder.Core
-{
-	public class EngineObject
-	{
+using System.Collections;
+using System.Collections.Generic;
 
+namespace Balder.Core.Extensions
+{
+	public static class IListExtensions
+	{
+		public static void AddRange(this IList list, IEnumerable range)
+		{
+			foreach (var item in range)
+			{
+				list.Add(item);
+			}
+		}
+
+		public static void AddRange<T>(this IList<T> list, IEnumerable<T> range)
+		{
+			foreach( var item in range )
+			{
+				list.Add(item);
+			}
+		}
 	}
 }

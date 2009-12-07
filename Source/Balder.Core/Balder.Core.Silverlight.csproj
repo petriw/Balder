@@ -99,12 +99,24 @@
     <Compile Include="DisplayActivationContext.cs" />
     <Compile Include="Display\IDisplayDevice.cs" />
     <Compile Include="Display\Viewport.cs" />
-    <Compile Include="EngineObject.cs" />
     <Compile Include="Exceptions\AssetNotFoundException.cs" />
     <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
+    <Compile Include="Execution\Property.cs" />
+    <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
+    <Compile Include="Extensions\DependencyPropertySubscription.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\ImageFormatExtensions.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
+    <Compile Include="Extensions\StoryboardExtensions.cs" />
     <Compile Include="Extensions\ViewportExtensions.cs" />
+    <Compile Include="Extensions\VisualStateExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
+    <Compile Include="Helpers\DependencyProperty.cs" />
+    <Compile Include="Helpers\DependencyPropertyHelper.cs" />
+    <Compile Include="INode.cs" />
     <Compile Include="Input\IMouseDevice.cs" />
     <Compile Include="Input\IMouseManager.cs" />
     <Compile Include="Input\Mouse.cs" />
@@ -115,8 +127,15 @@
     <Compile Include="Math\BoundingSphere.cs" />
     <Compile Include="Math\ContainmentType.cs" />
     <Compile Include="Math\Gjk.cs" />
+    <Compile Include="Math\IVector.cs" />
     <Compile Include="Math\PlaneIntersectionType.cs" />
     <Compile Include="Math\Ray.cs" />
+    <Compile Include="Math\Vector.Silverlight.cs">
+      <DependentUpon>Math\Vector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Node.Silverlight.cs">
+      <DependentUpon>Node.cs</DependentUpon>
+    </Compile>
     <Compile Include="Objects\Flat\ISpriteContext.cs" />
     <Compile Include="ColorSpace.cs" />
     <Compile Include="ColorSpaces.cs" />
@@ -135,6 +154,7 @@
     <Compile Include="Execution\IObjectFactory.cs" />
     <Compile Include="Execution\IPlatform.cs" />
     <Compile Include="IRuntime.cs" />
+    <Compile Include="TypeConverters\VectorTypeConverter.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />
     <Compile Include="PixelFormat.cs" />

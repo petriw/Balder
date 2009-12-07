@@ -4,9 +4,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows;
 using System.ComponentModel;
-using DependencyPropertyHelper = Balder.Silverlight.Helpers.DependencyPropertyHelper;
+using Balder.Silverlight.Extensions;
+using DependencyPropertyHelper = Balder.Core.Helpers.DependencyPropertyHelper;
 
-namespace Balder.Silverlight.Extensions
+namespace Balder.Core.Extensions
 {
 	public static class DependencyPropertyExtensions
 	{

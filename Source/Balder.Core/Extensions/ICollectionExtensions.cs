@@ -16,26 +16,17 @@
 // limitations under the License.
 //
 #endregion
-using System.Collections;
 using System.Collections.Generic;
 
-namespace Balder.Silverlight.Extensions
+namespace Balder.Core.Extensions
 {
-	public static class IListExtensions
+	public static class ICollectionExtensions
 	{
-		public static void AddRange(this IList list, IEnumerable range)
+		public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> range)
 		{
 			foreach (var item in range)
 			{
-				list.Add(item);
-			}
-		}
-
-		public static void AddRange<T>(this IList<T> list, IEnumerable<T> range)
-		{
-			foreach( var item in range )
-			{
-				list.Add(item);
+				collection.Add(item);
 			}
 		}
 	}

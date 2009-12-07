@@ -20,9 +20,9 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Linq.Expressions;
-using Balder.Silverlight.Extensions;
+using Balder.Core.Extensions;
 
-namespace Balder.Silverlight.Helpers
+namespace Balder.Core.Helpers
 {
 	public static class DependencyPropertyHelper
 	{

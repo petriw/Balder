@@ -1,5 +1,5 @@
 ﻿using System.Windows.Media;
-using Balder.Silverlight.Helpers;
+using Balder.Core.Helpers;
 
 namespace Balder.Silverlight.Controls
 {

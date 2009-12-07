@@ -24,8 +24,8 @@ using System.Windows.Media;
 using Balder.Core;
 using Balder.Core.Debug;
 using Balder.Core.Display;
+using Balder.Core.Helpers;
 using Balder.Silverlight.Converters;
-using Balder.Silverlight.Helpers;
 using Balder.Silverlight.Input;
 using Color=System.Windows.Media.Color;
 

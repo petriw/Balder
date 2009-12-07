@@ -26,7 +26,7 @@ namespace Balder.Core
 	/// <summary>
 	/// Abstract class representing a node in a scene
 	/// </summary>
-	public abstract class Node : EngineObject
+	public abstract partial class Node : INode
 	{
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
@@ -46,45 +46,9 @@ namespace Balder.Core
 
 		#region Public Properties
 
-		/// <summary>
-		/// Get and set the position in space for the node
-		/// </summary>
-		public Vector Position;
-
-		/// <summary>
-		/// Get and set the scale of the node
-		/// </summary>
-		public Vector Scale;
-
-		/// <summary>
-		/// Get and set the matrix representing the node in the world
-		/// </summary>
-		public Matrix World;
-
-		/// <summary>
-		/// Get and set the name of the node
-		/// </summary>
-		public string Name;
-
-		/// <summary>
-		/// The bounding sphere surrounding the node
-		/// </summary>
-		public BoundingSphere BoundingSphere;
-
-		/// <summary>
-		/// Get and set wether or not the node is visible
-		/// </summary>
-		public bool IsVisible { get; set; }
 
 		public Scene Scene { get; set; }
 
-		/// <summary>
-		/// Color of the node - this will be used if node supports it
-		/// during lighting calculations. If Node has different ways of defining
-		/// its color, for instance Materialing or similar - this color
-		/// will most likely be overridden
-		/// </summary>
-		public Color Color { get; set; }
 		#endregion
 
 		protected Matrix PositionMatrix { get; private set; }
