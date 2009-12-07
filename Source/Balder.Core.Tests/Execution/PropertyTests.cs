@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading;
-using System.Windows;
+using System.Windows.Controls;
 using Balder.Core.Execution;
 using CThru.Silverlight;
 using NUnit.Framework;
@@ -10,11 +11,21 @@ namespace Balder.Core.Tests.Execution
 	[TestFixture]
 	public class PropertyTests
 	{
-		public class ControlStub : DependencyObject,INotifyPropertyChanged
+		public partial class ControlStub
+		{
+			
+		}
+
+		public partial class ControlStub : Control,INotifyPropertyChanged, ICanNotifyChanges
 		{
 			public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 			public static readonly Property<ControlStub, string> SomeStringProperty = Property<ControlStub, string>.Register(c => c.SomeString);
 			public string SomeString { get; set; }
+
+			public void Notify(string propertyName, object oldValue, object newValue)
+			{
+				PropertyChanged(this,new PropertyChangedEventArgs(propertyName));
+			}
 		}
 
 

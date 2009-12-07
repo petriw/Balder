@@ -101,6 +101,7 @@
     <Compile Include="Display\Viewport.cs" />
     <Compile Include="Exceptions\AssetNotFoundException.cs" />
     <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
+    <Compile Include="Execution\ICanNotifyChanges.cs" />
     <Compile Include="Execution\Property.cs" />
     <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
     <Compile Include="Extensions\DependencyPropertySubscription.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
     <Compile Include="Helpers\DependencyProperty.cs" />
     <Compile Include="Helpers\DependencyPropertyHelper.cs" />
-    <Compile Include="INode.cs" />
     <Compile Include="Input\IMouseDevice.cs" />
     <Compile Include="Input\IMouseManager.cs" />
     <Compile Include="Input\Mouse.cs" />
