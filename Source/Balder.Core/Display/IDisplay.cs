@@ -23,5 +23,6 @@ namespace Balder.Core.Display
 		Color BackgroundColor { get; set; }
 
 		void Initialize(int width, int height);
+		void InitializeContainer(object container);
 	}
 }

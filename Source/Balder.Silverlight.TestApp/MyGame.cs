@@ -12,13 +12,13 @@ namespace Balder.Silverlight.TestApp
 		private Mesh _teapot;
 
 
-		public override void Initialize()
+		public override void OnInitialize()
 		{
 			Runtime.Instance.DebugLevel |= DebugLevel.BoundingSpheres;
 			Camera.Position.Z = -100;
 		}
 
-		public override void LoadContent()
+		public override void OnLoadContent()
 		{
 			
 			_teapot = ContentManager.Load<Mesh>("teapot.ASE");
@@ -46,7 +46,7 @@ namespace Balder.Silverlight.TestApp
 
 
 		private double sin = 0;
-		public override void Update()
+		public override void OnUpdate()
 		{
 			//Camera.Position.X = (float)(System.Math.Sin(sin) * 100.0);
 			//Camera.Position.Z = (float)(System.Math.Cos(sin) * 100.0);

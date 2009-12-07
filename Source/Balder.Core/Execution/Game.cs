@@ -21,17 +21,20 @@ using Balder.Core.Math;
 
 namespace Balder.Core.Execution
 {
-	public class Game : Actor
+	public partial class Game : Actor
 	{
 		protected Game()
 		{
+			Constructed();
 		}
+
+		partial void Constructed();
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
 		public Camera Camera { get; private set; }
 
-		public override void BeforeInitialize()
+		public override void OnBeforeInitialize()
 		{
 			Scene = new Scene();
 			Viewport = new Viewport {Scene = Scene, Width = 800, Height = 600};
@@ -40,10 +43,10 @@ namespace Balder.Core.Execution
 			// Todo: bi-directional referencing..  Not a good idea!
 			Viewport.Camera = Camera;
 
-			base.BeforeInitialize();
+			base.OnBeforeInitialize();
 		}
 
-		public override void BeforeUpdate()
+		public override void OnBeforeUpdate()
 		{
 			if( null != MouseManager)
 			{

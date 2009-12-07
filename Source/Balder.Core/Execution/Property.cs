@@ -76,16 +76,19 @@ namespace Balder.Core.Execution
 
 		private void NotifyChanges(T obj, TP oldValue, TP value)
 		{
-			var oldValueAsObject = (object) oldValue;
-			var valueAsObject = (object) value;
-
-			var notify = (null == oldValueAsObject && null != valueAsObject) ||
-						 (null != oldValueAsObject && null == valueAsObject) ||
-						 (null != oldValueAsObject && !oldValueAsObject.Equals(valueAsObject));
-
-			if (notify)
+			if (_canNotiify)
 			{
-				((ICanNotifyChanges)obj).Notify(_propertyName,oldValue,value);
+				var oldValueAsObject = (object) oldValue;
+				var valueAsObject = (object) value;
+
+				var notify = (null == oldValueAsObject && null != valueAsObject) ||
+				             (null != oldValueAsObject && null == valueAsObject) ||
+				             (null != oldValueAsObject && !oldValueAsObject.Equals(valueAsObject));
+
+				if (notify)
+				{
+					((ICanNotifyChanges) obj).Notify(_propertyName, oldValue, value);
+				}
 			}
 		}
 	}

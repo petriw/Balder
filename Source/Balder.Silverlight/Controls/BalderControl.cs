@@ -30,6 +30,7 @@ namespace Balder.Silverlight.Controls
 		public BalderControl()
 		{
 			Loaded += ControlLoaded;
+			
 		}
 
 

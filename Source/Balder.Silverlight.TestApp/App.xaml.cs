@@ -21,20 +21,20 @@ namespace Balder.Silverlight.TestApp
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			//TargetDevice.Initialize();
+			//TargetDevice.OnInitialize();
 			RootVisual = new Page();
 
 
 
 			/*
-			 * TargetDevice.Initialize<MyGame>();
-			Platform.Initialize();
+			 * TargetDevice.OnInitialize<MyGame>();
+			Platform.OnInitialize();
 			
 			var game = Runtime.Instance.CreateGame<MyGame>();
 			Runtime.Instance.RegisterGame(game);
 			 * */
 
-			//MyGame = TargetDevice.Initialize<MyGame>();
+			//MyGame = TargetDevice.OnInitialize<MyGame>();
 			
 		}
 

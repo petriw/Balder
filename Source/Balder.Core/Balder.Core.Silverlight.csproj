@@ -71,6 +71,10 @@
       <HintPath>..\..\Components\Siilverlight\Ninject.Core.dll</HintPath>
     </Reference>
     <Reference Include="system" />
+    <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows" />
@@ -101,6 +105,9 @@
     <Compile Include="Display\Viewport.cs" />
     <Compile Include="Exceptions\AssetNotFoundException.cs" />
     <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
+    <Compile Include="Execution\Actor.Silverlight.cs" />
+    <Compile Include="Execution\ActorState.cs" />
+    <Compile Include="Execution\Game.Silverlight.cs" />
     <Compile Include="Execution\ICanNotifyChanges.cs" />
     <Compile Include="Execution\Property.cs" />
     <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
@@ -149,11 +156,15 @@
     <Compile Include="Imaging\ImageHelper.cs" />
     <Compile Include="Imaging\ImagePalette.cs" />
     <Compile Include="Objects\Geometries\Line.cs" />
+    <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
     <Compile Include="Execution\IObjectFactory.cs" />
     <Compile Include="Execution\IPlatform.cs" />
     <Compile Include="IRuntime.cs" />
+    <Compile Include="RuntimeImports.cs" />
+    <Compile Include="TypeConverters\ColorConverter.cs" />
+    <Compile Include="TypeConverters\FloatTypeConverter.cs" />
     <Compile Include="TypeConverters\VectorTypeConverter.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />

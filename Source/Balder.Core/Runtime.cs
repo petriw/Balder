@@ -44,10 +44,10 @@ namespace Balder.Core
 		private static Runtime _instance;
 		private static readonly object InstanceLockObject = new object();
 
-		private readonly IPlatform _platform;
 		private readonly IObjectFactory _objectFactory;
 		private readonly IAssetLoaderService _assetLoaderService;
 		private readonly Dictionary<IDisplay, ActorCollection> _gamesPerDisplay;
+		private readonly IPlatform _platform;
 
 		private bool _hasPlatformInitialized;
 		private bool _hasPlatformLoaded;
@@ -55,8 +55,8 @@ namespace Balder.Core
 
 		public Runtime(IPlatform platform, IObjectFactory objectFactory, IAssetLoaderService assetLoaderService)
 		{
-			_gamesPerDisplay = new Dictionary<IDisplay, ActorCollection>();
 			_platform = platform;
+			_gamesPerDisplay = new Dictionary<IDisplay, ActorCollection>();
 			_objectFactory = objectFactory;
 			_assetLoaderService = assetLoaderService;
 			InitializePlatformEventHandlers();
@@ -68,10 +68,13 @@ namespace Balder.Core
 		{
 			get
 			{
-				lock( InstanceLockObject )
+				lock (InstanceLockObject)
 				{
-					if( null == _instance )
+					if (null == _instance)
 					{
+						var runtimeImports = new RuntimeImports();
+						Initialize(runtimeImports.Platform);
+
 						_instance = _kernel.Get<IRuntime>() as Runtime;
 					}
 					return _instance;
@@ -79,8 +82,11 @@ namespace Balder.Core
 			}
 		}
 
+		public IPlatform Platform { get { return _platform; } }
+
 		public static void Initialize(IPlatform platform)
 		{
+
 			var runtimeModule = GetRuntimeModule(platform);
 			_kernel = new AutoKernel(runtimeModule);
 			_kernel.AddBindingResolver<IDisplay>(DisplayBindingResolver);
@@ -132,17 +138,18 @@ namespace Balder.Core
 		private static void WireUpGame(IDisplay display, Game objectToWire)
 		{
 			var displayActivationContext = new DisplayActivationContext(display, _kernel, objectToWire.GetType(),
-			                                                            _kernel.CreateScope());
-			_kernel.Inject(objectToWire,displayActivationContext);
+																		_kernel.CreateScope());
+			_kernel.Inject(objectToWire, displayActivationContext);
 		}
 
 		private ActorCollection GetGameCollectionForDisplay(IDisplay display)
 		{
 			ActorCollection actorCollection = null;
-			if( _gamesPerDisplay.ContainsKey(display) )
+			if (_gamesPerDisplay.ContainsKey(display))
 			{
 				actorCollection = _gamesPerDisplay[display];
-			} else
+			}
+			else
 			{
 				actorCollection = new ActorCollection();
 				_gamesPerDisplay[display] = actorCollection;
@@ -176,9 +183,9 @@ namespace Balder.Core
 
 		private void HandleEventsForGames()
 		{
-			foreach( var games in _gamesPerDisplay.Values )
+			foreach (var games in _gamesPerDisplay.Values)
 			{
-				foreach (var game in games )
+				foreach (var game in games)
 				{
 					HandleEventsForActor(game);
 				}
@@ -187,18 +194,18 @@ namespace Balder.Core
 
 		private void HandleEventsForActor<T>(T actor) where T : Actor
 		{
-			if( !actor.HasInitialized && HasPlatformInitialized )
+			if (!actor.HasInitialized && HasPlatformInitialized)
 			{
 				actor.ChangeState(ActorState.Initialize);
 			}
-			if( !actor.HasLoaded && HasPlatformLoaded )
+			if (!actor.HasLoaded && HasPlatformLoaded)
 			{
 				actor.ChangeState(ActorState.Load);
 				actor.ChangeState(ActorState.Run);
 			}
-			if( !actor.HasUpdated && 
-				HasPlatformRun && 
-				actor.State == ActorState.Run )
+			if (!actor.HasUpdated &&
+				HasPlatformRun &&
+				actor.State == ActorState.Run)
 			{
 				actor.OnUpdate();
 			}
@@ -206,11 +213,11 @@ namespace Balder.Core
 
 		private bool IsPlatformInStateOrLater(PlatformState state, ref bool field)
 		{
-			if( field )
+			if (field)
 			{
 				return true;
 			}
-			if( _platform.CurrentState >= state )
+			if (_platform.CurrentState >= state)
 			{
 				return true;
 			}
@@ -224,9 +231,9 @@ namespace Balder.Core
 
 		private void PlatformUpdate(IDisplay display)
 		{
-			if( _platform.CurrentState == PlatformState.Run )
+			if (_platform.CurrentState == PlatformState.Run)
 			{
-				CallMethodOnGames(display, g => g.OnUpdate(), g => g.State == ActorState.Run);	
+				CallMethodOnGames(display, g => g.OnUpdate(), g => g.State == ActorState.Run);
 			}
 		}
 
@@ -238,20 +245,21 @@ namespace Balder.Core
 			}
 		}
 
-		private void CallMethodOnGames(IDisplay display, Action<Game> action, Func<Game,bool> advice)
+		private void CallMethodOnGames(IDisplay display, Action<Game> action, Func<Game, bool> advice)
 		{
-			if( _gamesPerDisplay.ContainsKey(display))
+			if (_gamesPerDisplay.ContainsKey(display))
 			{
 				var games = _gamesPerDisplay[display];
 				foreach (Game game in games)
 				{
-					if( null != advice )
+					if (null != advice)
 					{
-						if( advice(game))
+						if (advice(game))
 						{
 							action(game);
 						}
-					} else
+					}
+					else
 					{
 						action(game);
 					}

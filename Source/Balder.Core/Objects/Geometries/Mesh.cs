@@ -23,7 +23,7 @@ using Balder.Core.Math;
 
 namespace Balder.Core.Objects.Geometries
 {
-	public class Mesh : RenderableNode, IAsset
+	public partial class Mesh : RenderableNode, IAsset
 	{
 		private Geometry[] _geometries;
 		private readonly IAssetLoaderService _assetLoaderService;

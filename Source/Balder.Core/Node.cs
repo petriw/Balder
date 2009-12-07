@@ -17,9 +17,10 @@
 //
 #endregion
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
 using System;
-using Matrix=Balder.Core.Math.Matrix;
+using Matrix = Balder.Core.Math.Matrix;
 
 namespace Balder.Core
 {
@@ -39,14 +40,35 @@ namespace Balder.Core
 
 			PositionMatrix = Matrix.Identity;
 			ScaleMatrix = Matrix.Identity;
-			Scale = new Vector(1f,1f,1f);
+			Scale = new Vector(1f, 1f, 1f);
 			Position = Vector.Zero;
+
+			Initialize();
 		}
 		#endregion
 
+		partial void Initialize();
+
 		#region Public Properties
+		public static readonly Property<Node, Vector> PositionProp = Property<Node, Vector>.Register(n => n.Position);
+		public Vector Position
+		{
+			get { return PositionProp.GetValue(this); }
+			set { PositionProp.SetValue(this, value); }
+		}
+
+		public static readonly Property<Node, bool> IsVisibleProp = Property<Node, bool>.Register(n => n.IsVisible);
+		public bool IsVisible
+		{
+			get { return IsVisibleProp.GetValue(this); }
+			set { IsVisibleProp.SetValue(this, value); }
+		}
 
 
+		public Vector Scale { get; set; }
+		public Matrix World { get; set; }
+
+		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
 
 		#endregion
@@ -54,8 +76,8 @@ namespace Balder.Core
 		protected Matrix PositionMatrix { get; private set; }
 		protected Matrix ScaleMatrix { get; private set; }
 
-		public virtual void Prepare(Viewport viewport) {}
-		public virtual void Update() {}
+		public virtual void Prepare(Viewport viewport) { }
+		public virtual void Update() { }
 
 
 		internal void OnHover()

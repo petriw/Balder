@@ -16,13 +16,17 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
 using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Balder.Core;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.SoftwareRendering;
 using Balder.Silverlight.SoftwareRendering;
+using Color=Balder.Core.Color;
 
 namespace Balder.Silverlight.Display
 {
@@ -33,6 +37,7 @@ namespace Balder.Silverlight.Display
 		private readonly IPlatform _platform;
 		private IBuffers _buffers;
 		private bool _initialized;
+		private Image _image;
 
 		public Display(IPlatform platform)
 		{
@@ -45,6 +50,20 @@ namespace Balder.Silverlight.Display
 			FramebufferBitmap = new WriteableBitmap(width, height);
 			_initialized = true;
 			BackgroundColor = Color.FromArgb(0xff, 0, 0, 0);
+		}
+
+		public void InitializeContainer(object container)
+		{
+			_image = new Image
+			{
+				Source = FramebufferBitmap,
+				Stretch = Stretch.None
+			};
+
+			if( container is Grid )
+			{
+				((Grid)container).Children.Add(_image);	
+			}
 		}
 
 		public Color BackgroundColor { get; set; }

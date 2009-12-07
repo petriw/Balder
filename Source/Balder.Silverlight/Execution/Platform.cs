@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows;
 using Balder.Core;
 using Balder.Core.Assets;
@@ -32,6 +33,7 @@ using Balder.Silverlight.Input;
 
 namespace Balder.Silverlight.Execution
 {
+	[Export(typeof(IPlatform))]
 	public class Platform : IPlatform
 	{
 		public static IRuntime Runtime;

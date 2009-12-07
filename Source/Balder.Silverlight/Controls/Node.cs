@@ -68,22 +68,6 @@ namespace Balder.Silverlight.Controls
 		}
 
 
-		public static DependencyProperty<Node, Color> ColorProperty =
-			DependencyProperty<Node, Color>.Register(o => o.Color);
-		public Color Color
-		{
-			get { return ColorProperty.GetValue(this); }
-			set
-			{
-				ColorProperty.SetValue(this, value);
-				if( null != ActualNode )
-				{
-					ActualNode.Color = Core.Color.FromSystemColor(value);	
-				}
-				
-			}
-		}
-
 		public static readonly DependencyProperty<Node, Vector> PositionProperty =
 			DependencyProperty<Node, Vector>.Register(o => o.Position);
 		public Vector Position
@@ -96,6 +80,22 @@ namespace Balder.Silverlight.Controls
 				{
 					InitializePosition();
 				}
+			}
+		}
+
+		public static DependencyProperty<Node, Color> ColorProperty =
+			DependencyProperty<Node, Color>.Register(o => o.Color);
+		public Color Color
+		{
+			get { return ColorProperty.GetValue(this); }
+			set
+			{
+				ColorProperty.SetValue(this, value);
+				if (null != ActualNode)
+				{
+					ActualNode.Color = Core.Color.FromSystemColor(value);
+				}
+
 			}
 		}
 

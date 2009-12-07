@@ -34,7 +34,7 @@ namespace Balder.Silverlight.Controls
 			}
 		}
 
-		protected override void Initialize()
+		protected override void OnLoaded()
 		{
 			if( null != AssetName )
 			{
