@@ -133,13 +133,11 @@
     <Compile Include="Math\BoundingFrustum.cs" />
     <Compile Include="Math\BoundingSphere.cs" />
     <Compile Include="Math\ContainmentType.cs" />
+    <Compile Include="Math\Coordinate.cs" />
+    <Compile Include="Math\Coordinate.Silverlight.cs" />
     <Compile Include="Math\Gjk.cs" />
-    <Compile Include="Math\IVector.cs" />
     <Compile Include="Math\PlaneIntersectionType.cs" />
     <Compile Include="Math\Ray.cs" />
-    <Compile Include="Math\Vector.Silverlight.cs">
-      <DependentUpon>Math\Vector.cs</DependentUpon>
-    </Compile>
     <Compile Include="Node.Silverlight.cs">
       <DependentUpon>Node.cs</DependentUpon>
     </Compile>
@@ -165,7 +163,7 @@
     <Compile Include="RuntimeImports.cs" />
     <Compile Include="TypeConverters\ColorConverter.cs" />
     <Compile Include="TypeConverters\FloatTypeConverter.cs" />
-    <Compile Include="TypeConverters\VectorTypeConverter.cs" />
+    <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />
     <Compile Include="PixelFormat.cs" />

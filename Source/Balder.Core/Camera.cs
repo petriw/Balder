@@ -17,6 +17,7 @@
 //
 #endregion
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
 
 namespace Balder.Core
@@ -35,9 +36,9 @@ namespace Balder.Core
 		#region Constructor(s)
 		public Camera(Viewport viewport)
 		{
-			Position = new Vector(0f, -30f, 50f);
-			Target = new Vector(0f, 0f, 0f);
-            Up = new Vector(0f, -1f, 0f);
+			Position = new Coordinate(0f, -30f, 50f);
+			Target = new Coordinate(0f, 0f, 0f);
+			Up = new Vector(0f, -1f, 0f);
 			Near = DefaultNear;
 			Far = DefaultFar;
 			Roll = 0;
@@ -60,10 +61,16 @@ namespace Balder.Core
 		public Matrix ViewMatrix { get; private set; }
 		public Matrix ProjectionMatrix { get; private set; }
 
+
+		public static readonly Property<Camera, Coordinate> TargetProp = Property<Camera, Coordinate>.Register(c => c.Target);
 		/// <summary>
 		/// Get and set the target for the Camera - The location the camera is looking at
 		/// </summary>
-		public Vector Target;
+		public Coordinate Target
+		{
+			get { return TargetProp.GetValue(this); }
+			set { TargetProp.SetValue(this, value); }
+		}
 
 		/// <summary>
 		/// Get the forward vector for the camera. This is calculated from the target and position
@@ -139,7 +146,7 @@ namespace Balder.Core
 			}
 		}
 
-		public float AspectRatio { get { return ((float) Viewport.Width)/((float) Viewport.Height); } }
+		public float AspectRatio { get { return ((float)Viewport.Width) / ((float)Viewport.Height); } }
 		#endregion
 
 		#region Private Methods
@@ -149,21 +156,21 @@ namespace Balder.Core
 		/// </summary>
 		private void SetupProjection()
 		{
-			if( null == Viewport )
+			if (null == Viewport)
 			{
 				return;
 			}
 			ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-				MathHelper.ToRadians(FieldOfView), 
-				AspectRatio, 
-				Near, 
+				MathHelper.ToRadians(FieldOfView),
+				AspectRatio,
+				Near,
 				Far);
 		}
 
 		private void UpdateDepthDivisor()
 		{
 			DepthDivisor = Far - Near;
-			DepthZero = Near/DepthDivisor;
+			DepthZero = Near / DepthDivisor;
 			SetupProjection();
 		}
 		#endregion
@@ -180,7 +187,7 @@ namespace Balder.Core
 		public override void Update()
 		{
 			//Up = new Vector(-(float)System.Math.Sin(Roll), (float)System.Math.Cos(Roll), Up.Z);
-			Up = new Vector(0,-1,0);
+			Up = new Vector(0, -1, 0);
 			ViewMatrix = Matrix.CreateLookAt(Position, Target, Up);
 			SetupProjection();
 			Frustum.SetCameraDefinition(this);

@@ -5,7 +5,7 @@ using Balder.Core.Math;
 
 namespace Balder.Core.TypeConverters
 {
-	public class VectorTypeConverter : TypeConverter
+	public class CoordinateTypeConverter : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
@@ -14,7 +14,7 @@ namespace Balder.Core.TypeConverters
 
 		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
 		{
-			return destinationType.Equals(typeof (Vector));
+			return destinationType.Equals(typeof (Coordinate));
 		}
 
 		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
@@ -26,7 +26,7 @@ namespace Balder.Core.TypeConverters
 			{
 				throw new ArgumentException("The format needs to be ([x],[y],[z])");
 			}
-			var vector = new Vector
+			var vector = new Coordinate
 			             	{
 			             		X = float.Parse(values[0]), 
 								Y = float.Parse(values[1]), 
@@ -37,7 +37,7 @@ namespace Balder.Core.TypeConverters
 
 		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
 		{
-			var vector = value as Vector;
+			var vector = value as Coordinate;
 			var vectorAsString = string.Format("{0},{1},{2}", vector.X, vector.Y, vector.Z);
 			return vectorAsString;
 		}

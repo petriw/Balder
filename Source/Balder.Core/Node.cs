@@ -50,8 +50,8 @@ namespace Balder.Core
 		partial void Initialize();
 
 		#region Public Properties
-		public static readonly Property<Node, Vector> PositionProp = Property<Node, Vector>.Register(n => n.Position);
-		public Vector Position
+		public static readonly Property<Node, Coordinate> PositionProp = Property<Node, Coordinate>.Register(n => n.Position);
+		public Coordinate Position
 		{
 			get { return PositionProp.GetValue(this); }
 			set { PositionProp.SetValue(this, value); }
