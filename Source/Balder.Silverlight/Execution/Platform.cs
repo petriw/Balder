@@ -20,7 +20,6 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
-using Balder.Core;
 using Balder.Core.Assets;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -36,20 +35,8 @@ namespace Balder.Silverlight.Execution
 	[Export(typeof(IPlatform))]
 	public class Platform : IPlatform
 	{
-
 		public event PlatformStateChange BeforeStateChange = (p, s) => { };
 		public event PlatformStateChange StateChanged = (p, s) => { };
-
-		/*
-		public static IRuntime Runtime;
-
-		static Platform()
-		{
-			var platform = new Platform();
-			Core.Runtime.Initialize(platform);
-			Runtime = Core.Runtime.Instance;
-		}
-		 * */
 
 		public Platform()
 		{
