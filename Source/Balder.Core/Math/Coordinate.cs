@@ -9,14 +9,12 @@ namespace Balder.Core.Math
 			
 		}
 
-
 		public Coordinate(float x, float y, float z)
 		{
 			X = x;
 			Y = y;
 			Z = z;
 		}
-
 
 		public static readonly Property<Coordinate, float> XProp = Property<Coordinate, float>.Register(c => c.X);
 		public float X

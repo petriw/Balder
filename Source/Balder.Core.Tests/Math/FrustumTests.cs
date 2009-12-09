@@ -18,6 +18,7 @@
 #endregion
 using Balder.Core.Display;
 using Balder.Core.Math;
+using CThru.Silverlight;
 using NUnit.Framework;
 
 namespace Balder.Core.Tests.Math
@@ -27,7 +28,7 @@ namespace Balder.Core.Tests.Math
 	{
 		private Frustum _frustum;
 
-		[TestFixtureSetUp]
+		[TestFixtureSetUp, SilverlightSetUp]
 		public void Setup()
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
@@ -38,7 +39,7 @@ namespace Balder.Core.Tests.Math
 			_frustum.SetCameraDefinition(camera);
 		}
 
-		[Test]
+		[Test, SilverlightUnitTest]
 		public void VectorInsideShouldNotBeClipped()
 		{
 			var vectorToTest = new Vector(0f, 0f, 0.5f);
