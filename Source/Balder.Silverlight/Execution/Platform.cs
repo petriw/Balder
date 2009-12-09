@@ -36,10 +36,12 @@ namespace Balder.Silverlight.Execution
 	[Export(typeof(IPlatform))]
 	public class Platform : IPlatform
 	{
-		public static IRuntime Runtime;
 
 		public event PlatformStateChange BeforeStateChange = (p, s) => { };
 		public event PlatformStateChange StateChanged = (p, s) => { };
+
+		/*
+		public static IRuntime Runtime;
 
 		static Platform()
 		{
@@ -47,6 +49,7 @@ namespace Balder.Silverlight.Execution
 			Core.Runtime.Initialize(platform);
 			Runtime = Core.Runtime.Instance;
 		}
+		 * */
 
 		public Platform()
 		{

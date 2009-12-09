@@ -38,7 +38,8 @@ namespace Balder.Silverlight.Controls
 		{
 			if( null == Runtime )
 			{
-				Runtime = Execution.Platform.Runtime;
+
+				Runtime = Core.Runtime.Instance;// Execution.Platform.Runtime;
 				Core.Runtime.Instance.WireUpDependencies(this);
 				OnLoaded();
 				

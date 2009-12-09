@@ -86,7 +86,6 @@ namespace Balder.Core
 
 		public static void Initialize(IPlatform platform)
 		{
-
 			var runtimeModule = GetRuntimeModule(platform);
 			_kernel = new AutoKernel(runtimeModule);
 			_kernel.AddBindingResolver<IDisplay>(DisplayBindingResolver);

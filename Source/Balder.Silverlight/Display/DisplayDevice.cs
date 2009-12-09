@@ -21,9 +21,11 @@ using Balder.Core.Display;
 using System.Collections.Generic;
 using Balder.Core.Execution;
 using Balder.Silverlight.SoftwareRendering;
+using Ninject.Core;
 
 namespace Balder.Silverlight.Display
 {
+	[Singleton]
 	public class DisplayDevice : IDisplayDevice
 	{
 		public event DisplayEvent Update = (d) => { };

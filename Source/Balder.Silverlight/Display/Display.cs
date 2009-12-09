@@ -37,7 +37,6 @@ namespace Balder.Silverlight.Display
 		private readonly IPlatform _platform;
 		private IBuffers _buffers;
 		private bool _initialized;
-		private Image _image;
 
 		public Display(IPlatform platform)
 		{
@@ -54,15 +53,14 @@ namespace Balder.Silverlight.Display
 
 		public void InitializeContainer(object container)
 		{
-			_image = new Image
-			{
-				Source = FramebufferBitmap,
-				Stretch = Stretch.None
-			};
-
 			if( container is Grid )
 			{
-				((Grid)container).Children.Add(_image);	
+				var image = new Image
+				{
+					Source = FramebufferBitmap,
+					Stretch = Stretch.None
+				};
+				((Grid)container).Children.Add(image);	
 			}
 		}
 
