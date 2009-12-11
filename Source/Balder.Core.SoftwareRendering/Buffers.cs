@@ -88,6 +88,7 @@ namespace Balder.Core.SoftwareRendering
 			{
 				lock (ClearingDepthBufferLock)
 				{
+					//Array.Clear(FrontDepthBuffer,0,FrontDepthBuffer.Length);
 					_clearingDepthBuffer.CopyTo(FrontDepthBuffer, 0);
 				}
 			}

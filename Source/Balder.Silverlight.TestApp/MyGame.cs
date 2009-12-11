@@ -28,7 +28,7 @@ namespace Balder.Silverlight.TestApp
 			light.Range = 2.0f;
 			light.Position.X = 0;
 			light.Position.Y = 0;
-			light.Position.Z = 130;
+			light.Position.Z = -130;
 			light.Diffuse = Color.FromArgb(0xff, 255, 121, 32);
 			light.Specular = Color.FromArgb(0xff, 0xff, 0xff, 0xff);
 			light.Ambient = Color.FromArgb(0xff, 0x7f, 0x3f, 0x10);

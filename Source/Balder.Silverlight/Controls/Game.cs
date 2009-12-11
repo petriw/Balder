@@ -130,7 +130,7 @@ namespace Balder.Silverlight.Controls
 			{
 				_image = new Image
 							{
-								Source = ((Display.Display)Display).FramebufferBitmap,
+								//Source = ((Display.Display)Display).FramebufferBitmap,
 								Stretch = Stretch.None
 							};
 				Children.Add(_image);

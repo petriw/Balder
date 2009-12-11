@@ -14,6 +14,7 @@ namespace Balder.Core.Execution
 		{
 			Validate();
 			RegisterGame();
+			AddNodesToScene();
 		}
 
 		private void RegisterGame()
@@ -30,6 +31,18 @@ namespace Balder.Core.Execution
 				0 == Height || Height.Equals(double.NaN))
 			{
 				throw new ArgumentException("You need to specify Width and Height");
+			}
+		}
+
+		private void AddNodesToScene()
+		{
+			foreach (var element in Children)
+			{
+				if( element is Node )
+				{
+					Scene.AddNode(element as Node);	
+				}
+				
 			}
 		}
 	}

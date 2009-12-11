@@ -23,7 +23,7 @@ namespace Balder.Core.Execution
 {
 	public partial class Game : Actor
 	{
-		protected Game()
+		public Game()
 		{
 			Constructed();
 		}
@@ -32,7 +32,7 @@ namespace Balder.Core.Execution
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
-		public Camera Camera { get; private set; }
+		public Camera Camera { get; set; }
 
 		public override void OnBeforeInitialize()
 		{

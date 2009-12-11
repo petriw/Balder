@@ -1,5 +1,4 @@
 ﻿using System;
-using Balder.Core.Content;
 using Balder.Core.Helpers;
 
 namespace Balder.Core.Objects.Geometries
@@ -18,7 +17,7 @@ namespace Balder.Core.Objects.Geometries
 		{
 			if (null != AssetName)
 			{
-				//ActualNode = ContentManager.Load<Core.Objects.Geometries.Mesh>(AssetName.ToString());
+				Load(AssetName.ToString());
 			}
 		}
 	}

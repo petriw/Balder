@@ -20,24 +20,26 @@ using Balder.Core.Assets;
 using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Math;
+using Ninject.Core;
 
 namespace Balder.Core.Objects.Geometries
 {
 	public partial class Mesh : RenderableNode, IAsset
 	{
 		private Geometry[] _geometries;
-		private readonly IAssetLoaderService _assetLoaderService;
-		private readonly IDebugRenderer _debugRenderer;
 
-		public Mesh(IAssetLoaderService assetLoaderService, IDebugRenderer debugRenderer)
+		[Inject]
+		public IAssetLoaderService AssetLoaderService { get; set; }
+		[Inject]
+		public IDebugRenderer DebugRenderer { get; set; }
+
+		public Mesh()
 		{
-			_assetLoaderService = assetLoaderService;
-			_debugRenderer = debugRenderer;
 		}
 
 		public void Load(string assetName)
 		{
-			var loader = _assetLoaderService.GetLoader<Geometry>(assetName);
+			var loader = AssetLoaderService.GetLoader<Geometry>(assetName);
 			_geometries = loader.Load(assetName);
 
 			var boundingSphere = new BoundingSphere(Vector.Zero,0);
@@ -60,7 +62,7 @@ namespace Balder.Core.Objects.Geometries
 
 				if (Runtime.Instance.DebugLevel.IsBoundingSpheresSet())
 				{
-					_debugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, localWorld);
+					DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, localWorld);
 				}
 				
 				geometry.GeometryContext.Render(viewport,this,view,projection,localWorld);
