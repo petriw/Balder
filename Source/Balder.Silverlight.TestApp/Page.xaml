@@ -4,19 +4,22 @@
 	xmlns:local="clr-namespace:Balder.Silverlight.TestApp" 
 	xmlns:execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core"
 	xmlns:geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core"
+	xmlns:lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core"
 	xmlns:core="clr-namespace:Balder.Core;assembly=Balder.Core"
+	xmlns:view="clr-namespace:Balder.Core.View;assembly=Balder.Core"
 	x:Class="Balder.Silverlight.TestApp.Page"
     >
 	
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Red">
-		<local:MyGame Width="800" Height="600"/>
+		<!--<local:MyGame Width="800" Height="600"/>-->
 		
-		<!--
+		
 		<execution:Game Width="800" Height="600">
+			<lighting:OmniLight Position="0,0,-130" Diffuse="Green" Specular="White" Ambient="DarkGreen"/>
 			<geometries:Mesh AssetName="teapot.ase"/>
 			<execution:Game.Camera>
-				<core:Camera Position="0,0,-130" Target="0,0,0"/>
+				<view:Camera Position="0,0,-130" Target="0,0,0"/>
 			</execution:Game.Camera>
-		</execution:Game>-->
+		</execution:Game>
 	</Grid>
 </UserControl>

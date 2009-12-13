@@ -26,6 +26,9 @@ namespace Balder.Core.Execution
 	{
 		public Game()
 		{
+			Scene = new Scene();
+			Viewport = new Viewport { Scene = Scene, Width = 800, Height = 600 };
+			Camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
 			Constructed();
 		}
 
@@ -42,15 +45,6 @@ namespace Balder.Core.Execution
 				_camera = value;
 				Viewport.View = value;
 			}
-		}
-
-		public override void OnBeforeInitialize()
-		{
-			Scene = new Scene();
-			Viewport = new Viewport {Scene = Scene, Width = 800, Height = 600};
-			Camera = new Camera() {Target = Vector.Forward, Position = Vector.Zero};
-
-			base.OnBeforeInitialize();
 		}
 
 		public override void OnBeforeUpdate()

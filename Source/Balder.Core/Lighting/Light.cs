@@ -16,16 +16,43 @@
 // limitations under the License.
 //
 #endregion
+
+using System.ComponentModel;
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
+using Balder.Core.TypeConverters;
 
 namespace Balder.Core.Lighting
 {
 	public abstract class Light : EnvironmentalNode
 	{
-		public Color Diffuse;
-        public Color Specular;
-        public Color Ambient;
+		public static readonly Property<Light,Color> DiffuseProp = Property<Light,Color>.Register(l =>l.Diffuse);
+
+		[TypeConverter(typeof(ColorConverter))]
+		public Color Diffuse
+		{
+			get { return DiffuseProp.GetValue(this); }
+			set { DiffuseProp.SetValue(this,value); }
+		}
+
+		public static readonly Property<Light, Color> SpecularProp = Property<Light, Color>.Register(l => l.Specular);
+
+		[TypeConverter(typeof(ColorConverter))]
+		public Color Specular
+		{
+			get { return SpecularProp.GetValue(this); }
+			set { SpecularProp.SetValue(this, value); }
+		}
+
+		public static readonly Property<Light, Color> AmbientProp = Property<Light, Color>.Register(l => l.Ambient);
+
+		[TypeConverter(typeof(ColorConverter))]
+		public Color Ambient
+		{
+			get { return AmbientProp.GetValue(this); }
+			set { AmbientProp.SetValue(this, value); }
+		}
 
 		public abstract Color Calculate(Viewport viewport, Vector point, Vector normal);
 	}
