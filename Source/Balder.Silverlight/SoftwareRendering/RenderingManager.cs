@@ -27,7 +27,6 @@ namespace Balder.Silverlight.SoftwareRendering
 
 	public class RenderingManager
 	{
-		public static int Framecounter;
 		public static readonly RenderingManager Instance = new RenderingManager();
 
 		public event RenderEventHandler Updated = () => { };
@@ -86,10 +85,10 @@ namespace Balder.Silverlight.SoftwareRendering
 		{
 			while (_frameBufferManagerAlive)
 			{
-				//_renderEvent.WaitOne();
+				_renderEvent.WaitOne(200);
 				_renderEvent.Reset();
-				Render();
-				
+				//Render();
+
 				_hasRendered = true;
 			}
 		}
@@ -98,10 +97,10 @@ namespace Balder.Silverlight.SoftwareRendering
 		{
 			while (_frameBufferManagerAlive)
 			{
-				//_clearEvent.WaitOne();
+				_clearEvent.WaitOne(200);
 				_clearEvent.Reset();
-				Clear();
-				
+				//Clear();
+
 				_hasCleared = true;
 			}
 		}
@@ -115,17 +114,19 @@ namespace Balder.Silverlight.SoftwareRendering
 			                  	};
 
 			Updated();
-			if (_hasCleared && _hasRendered)
+			//if (_hasCleared && _hasRendered)
 			{
+				Render();
 				Swapped();
+				Clear();
 				Show();
-
-				startEvents.SetAll();
+				
 				_hasCleared = false;
 				_hasRendered = false;
-				
-				Framecounter++;
 			}
+			startEvents.SetAll();
+			
+			
 		}
 	}
 }

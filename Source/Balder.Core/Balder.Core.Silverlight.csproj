@@ -195,7 +195,7 @@
     <Compile Include="Assets\IAsset.cs" />
     <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Collections\NodeCollection.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="View\Camera.cs" />
     <Compile Include="Runtime.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Utils\EnumHelper.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="Execution\StateMachine.cs" />
     <Compile Include="Execution\StateMachineManager.cs" />
     <Compile Include="Utils\AssemblyHelper.cs" />
+    <Compile Include="View\IView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadableRex\Notes.txt" />

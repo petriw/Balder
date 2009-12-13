@@ -198,11 +198,11 @@ namespace Balder.Core.SoftwareRendering
 			var n = vertex.TransformedNormal;
 			var r = Vector.Reflect(n, u);
 			var m = Math.Core.Sqrt((r.X * r.X) + (r.Y * r.Y) +
-									 ((r.Z + 1f) * (r.Z + 1f)));
-			var s = (r.X / m) + 0.5f;
-			var t = (r.Y / m) + 0.5f;
-			textureCoordinate.U = s;
-			textureCoordinate.V = t;
+									 ((r.Z + 0f) * (r.Z + 0f)));
+			var s = (r.X/m); // +0.5f;
+			var t = (r.Y/m); // +0.5f;
+			textureCoordinate.U = (s*0.5f)+0.5f;
+			textureCoordinate.V = (t * 0.5f) + 0.5f;
 		}
 
 		private static TextureCoordinate ZeroTextureCoordinate = new TextureCoordinate(0, 0);
@@ -231,11 +231,11 @@ namespace Balder.Core.SoftwareRendering
 			}
 
 			
-			/*
+			
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexA, ref textureA);
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexB, ref textureB);
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexC, ref textureC);
-			*/
+			
 
 			GetSortedPoints(ref vertexA, ref vertexB, ref vertexC, ref textureA, ref textureB, ref textureC);
 

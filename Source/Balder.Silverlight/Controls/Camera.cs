@@ -24,9 +24,9 @@ namespace Balder.Silverlight.Controls
 {
 	public class Camera : Node
 	{
-		public Core.Camera ActualCamera
+		public Core.View.Camera ActualCamera
 		{
-			get { return ActualNode as Core.Camera; }
+			get { return ActualNode as Core.View.Camera; }
 			set
 			{
 				ActualNode = value;
@@ -38,12 +38,12 @@ namespace Balder.Silverlight.Controls
 		{
 		}
 
-		public Camera(Core.Camera camera)
+		public Camera(Core.View.Camera camera)
 		{
 			InitializeActualCamera(camera);
 		}
 
-		private void InitializeActualCamera(Core.Camera camera)
+		private void InitializeActualCamera(Core.View.Camera camera)
 		{
 			var position = camera.Position;
 			ActualNode = camera;

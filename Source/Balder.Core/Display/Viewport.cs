@@ -16,6 +16,9 @@
 // limitations under the License.
 //
 #endregion
+
+using Balder.Core.View;
+
 namespace Balder.Core.Display
 {
 	public class Viewport
@@ -26,6 +29,8 @@ namespace Balder.Core.Display
 		public int Height { get; set; }
 
 		public Scene Scene { get; set; }
-		public Camera Camera { get; set; }
+		public IView View { get; set; }
+
+		public float AspectRatio { get { return ((float)Width) / ((float)Height); } }
 	}
 }

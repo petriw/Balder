@@ -20,47 +20,34 @@ using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Math;
 
-namespace Balder.Core
+namespace Balder.Core.View
 {
-	public class Camera : Node
+	public class Camera : Node, IView
 	{
-		public const float DefaultFieldOfView = 40f;
+		public const float DefaultFieldOfView = 45f;
 		public const float DefaultFar = 4000f;
 		public const float DefaultNear = 1f;
 
-		private float _fieldOfView;
-		private float _near;
-		private float _far;
+		private readonly Frustum _frustum;
 
-
-		#region Constructor(s)
-		public Camera(Viewport viewport)
+		public Camera()
 		{
-			Position = new Coordinate(0f, -30f, 50f);
-			Target = new Coordinate(0f, 0f, 0f);
+			Position = new Coordinate(0f, 0f, 0f);
+			Target = new Coordinate(0f, 0f, 1f);
 			Up = new Vector(0f, -1f, 0f);
 			Near = DefaultNear;
 			Far = DefaultFar;
-			Roll = 0;
 			FieldOfView = DefaultFieldOfView;
 			ProjectionMatrix = null;
 			UpdateDepthDivisor();
 
-			Frustum = new Frustum();
-
-			Viewport = viewport;
+			_frustum = new Frustum();
 		}
-		#endregion
 
 		#region Public Properties
 
-		public Viewport Viewport { get; private set; }
-
-		public Frustum Frustum { get; private set; }
-
 		public Matrix ViewMatrix { get; private set; }
 		public Matrix ProjectionMatrix { get; private set; }
-
 
 		public static readonly Property<Camera, Coordinate> TargetProp = Property<Camera, Coordinate>.Register(c => c.Target);
 		/// <summary>
@@ -72,6 +59,8 @@ namespace Balder.Core
 			set { TargetProp.SetValue(this, value); }
 		}
 
+		public Vector Up { get; set; }
+
 		/// <summary>
 		/// Get the forward vector for the camera. This is calculated from the target and position
 		/// </summary>
@@ -80,43 +69,15 @@ namespace Balder.Core
 			get { return Target - Position; }
 		}
 
-
-		/// <summary>
-		/// Get the up vector for the camera. Whenever you change the roll, this vector changes!
-		/// </summary>
-		public Vector Up { get; private set; }
-
-
-		/// <summary>
-		/// Gets or sets the roll of the camera. 
-		/// </summary>
-		public float Roll { get; set; }
-
 		/// <summary>
 		/// Gets or sets the near distance clipping plane
 		/// </summary>
-		public float Near
-		{
-			get { return _near; }
-			set
-			{
-				_near = value;
-				UpdateDepthDivisor();
-			}
-		}
+		public float Near { get; set; }
 
 		/// <summary>
 		/// Gets or sets the far distance clipping plane
 		/// </summary>
-		public float Far
-		{
-			get { return _far; }
-			set
-			{
-				_far = value;
-				UpdateDepthDivisor();
-			}
-		}
+		public float Far { get; set; }
 
 		/// <summary>
 		/// Gets the divisor used for transforming Z values for purposes such as depth buffers
@@ -129,24 +90,11 @@ namespace Balder.Core
 		public float DepthZero { get; private set; }
 
 
-
 		/// <summary>
 		/// Gets or sets the field of view for the camera
 		/// </summary>
-		public float FieldOfView
-		{
-			get
-			{
-				return _fieldOfView;
-			}
-			set
-			{
-				_fieldOfView = value;
-				SetupProjection();
-			}
-		}
+		public float FieldOfView { get; set; }
 
-		public float AspectRatio { get { return ((float)Viewport.Width) / ((float)Viewport.Height); } }
 		#endregion
 
 		#region Private Methods
@@ -154,15 +102,11 @@ namespace Balder.Core
 		/// <summary>
 		/// Calculates the projection matrix
 		/// </summary>
-		private void SetupProjection()
+		private void SetupProjection(Viewport viewport)
 		{
-			if (null == Viewport)
-			{
-				return;
-			}
 			ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
 				MathHelper.ToRadians(FieldOfView),
-				AspectRatio,
+				viewport.AspectRatio,
 				Near,
 				Far);
 		}
@@ -171,37 +115,28 @@ namespace Balder.Core
 		{
 			DepthDivisor = Far - Near;
 			DepthZero = Near / DepthDivisor;
-			SetupProjection();
 		}
 		#endregion
 
 		#region Public Methods
 
-		public override void Prepare(Viewport viewport)
+		public void Update(Viewport viewport)
 		{
-			Viewport = viewport;
-			SetupProjection();
-			base.Prepare(viewport);
-		}
-
-		public override void Update()
-		{
-			//Up = new Vector(-(float)System.Math.Sin(Roll), (float)System.Math.Cos(Roll), Up.Z);
-			Up = new Vector(0, -1, 0);
 			ViewMatrix = Matrix.CreateLookAt(Position, Target, Up);
-			SetupProjection();
-			Frustum.SetCameraDefinition(this);
+			SetupProjection(viewport);
+			UpdateDepthDivisor();
+			_frustum.SetCameraDefinition(viewport, this);
 		}
 
 
-		public bool IsVectorVisible(Vector vector)
+		public bool IsInView(Vector vector)
 		{
-			return Frustum.IsPointInFrustum(vector) == FrustumIntersection.Inside;
+			return _frustum.IsPointInFrustum(vector) == FrustumIntersection.Inside;
 		}
 
-		public bool IsPointVisible(float x, float y, float z)
+		public bool IsInView(Coordinate coordinate)
 		{
-			return Frustum.IsPointInFrustum(new Vector(x, y, z)) == FrustumIntersection.Inside;
+			return _frustum.IsPointInFrustum(coordinate) == FrustumIntersection.Inside;
 		}
 
 		#endregion

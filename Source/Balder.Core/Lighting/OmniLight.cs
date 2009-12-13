@@ -53,7 +53,7 @@ namespace Balder.Core.Lighting
             // Specular highlight
             var reflection = 2f * dfDot * normal - lightDir;
             reflection.Normalize();
-            var view = viewport.Camera.Position - point;
+            var view = viewport.View.Position - point;
             view.Normalize();
             var spDot = reflection.Dot(view);
             MathHelper.Saturate(ref spDot);

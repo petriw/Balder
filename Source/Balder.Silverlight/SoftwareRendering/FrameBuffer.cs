@@ -73,7 +73,7 @@ namespace Balder.Silverlight.SoftwareRendering
 			var frontBufferBitmap = _frontBufferBitmap;
 			var backBufferBitmap = _backBufferBitmap;
 			var clearBufferBitmap = _clearBufferBitmap;
-
+			
 			_frontBufferBitmap = backBufferBitmap;
 			_clearBufferBitmap = frontBufferBitmap;
 			_backBufferBitmap = clearBufferBitmap;

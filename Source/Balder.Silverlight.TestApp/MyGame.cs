@@ -18,7 +18,7 @@ namespace Balder.Silverlight.TestApp
 
 		public override void OnLoadContent()
 		{
-			_teapot = ContentManager.Load<Mesh>("teapot.ASE");
+			_teapot = ContentManager.Load<Mesh>("teapot_bricks.ASE");
 			_teapot.Color = Color.FromArgb(0xff,0,0,0xff);
 			_teapot.Click += teapotClick;
 			Scene.AddNode(_teapot);
@@ -43,12 +43,15 @@ namespace Balder.Silverlight.TestApp
 
 
 		private double sin = 0;
+		private double sin2 = 0;
 		public override void OnUpdate()
 		{
-			Camera.Position.X = (float)(System.Math.Sin(sin) * 100.0);
-			Camera.Position.Z = (float)(System.Math.Cos(sin) * 100.0);
+			Camera.Position.X = (float)(System.Math.Sin(sin) * 200.0);
+			Camera.Position.Y = (float) (System.Math.Sin(sin2)*150.0);
+			Camera.Position.Z = (float)(System.Math.Cos(sin) * 200.0);
 
-			sin += 0.1;
+			sin += 0.05;
+			sin2 += 0.025;
 			
 		}
 	}

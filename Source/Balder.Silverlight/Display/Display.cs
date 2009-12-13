@@ -103,8 +103,17 @@ namespace Balder.Silverlight.Display
 						var bitmap = ((FrameBuffer)_buffers.FrameBuffer).FrontBufferBitmap;
 						if (null != bitmap)
 						{
-							_image.Source = bitmap;
-							bitmap.Invalidate();
+							if (bitmap.CheckAccess())
+							{
+								_image.Source = bitmap;
+								bitmap.Invalidate();
+
+							}
+							else
+							{
+								int i = 0;
+								i++;
+							}
 						}
 					}
 					//);

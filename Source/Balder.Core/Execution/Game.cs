@@ -18,6 +18,7 @@
 #endregion
 using Balder.Core.Display;
 using Balder.Core.Math;
+using Balder.Core.View;
 
 namespace Balder.Core.Execution
 {
@@ -32,16 +33,22 @@ namespace Balder.Core.Execution
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
-		public Camera Camera { get; set; }
+		private Camera _camera;
+		public Camera Camera
+		{
+			get { return _camera; }
+			set
+			{
+				_camera = value;
+				Viewport.View = value;
+			}
+		}
 
 		public override void OnBeforeInitialize()
 		{
 			Scene = new Scene();
 			Viewport = new Viewport {Scene = Scene, Width = 800, Height = 600};
-			Camera = new Camera(Viewport) {Target = Vector.Forward, Position = Vector.Zero};
-
-			// Todo: bi-directional referencing..  Not a good idea!
-			Viewport.Camera = Camera;
+			Camera = new Camera() {Target = Vector.Forward, Position = Vector.Zero};
 
 			base.OnBeforeInitialize();
 		}
@@ -57,7 +64,7 @@ namespace Balder.Core.Execution
 
 		public virtual void OnRender()
 		{
-			Camera.Update();
+			Camera.Update(Viewport);
 			Scene.Render(Viewport, Camera.ViewMatrix, Camera.ProjectionMatrix);
 			Scene.HandleMouseEvents(Viewport, Mouse);
 		}

@@ -19,6 +19,7 @@
 using Balder.Core.Display;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
+using Balder.Core.View;
 using NUnit.Framework;
 
 namespace Balder.Core.Tests
@@ -31,8 +32,8 @@ namespace Balder.Core.Tests
 		{
 			var viewport = new Viewport {Width = 640, Height = 480};
 			var scene = new Scene();
-			var camera = new Camera(viewport) {Position = {Z = -10}};
-			camera.Update();
+			var camera = new Camera() {Position = {Z = -10}};
+			camera.Update(viewport);
 
 			var node = new Geometry
 			           	{
@@ -50,11 +51,11 @@ namespace Balder.Core.Tests
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
 			var scene = new Scene();
-			var camera = new Camera(viewport);
+			var camera = new Camera();
 
 			camera.Position.Z = -100;
 
-			camera.Update();
+			camera.Update(viewport);
 
 			var node = new Geometry
 			           	{
