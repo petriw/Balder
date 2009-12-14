@@ -8,20 +8,16 @@ namespace Balder.Core.TypeConverters
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
-			return sourceType.Equals(typeof(string)) | sourceType.Equals(typeof(System.Windows.Media.Color));
+			return sourceType.Equals(typeof(string));
 		}
 
 		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
 		{
-			return destinationType.Equals(typeof(string)) | destinationType.Equals(typeof(System.Windows.Media.Color));
+			return destinationType.Equals(typeof(string));
 		}
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			if (value is System.Windows.Media.Color)
-			{
-				return Color.FromSystemColor((System.Windows.Media.Color) value);
-			}
 			if (value is string)
 			{
 

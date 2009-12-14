@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System.Windows;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Math;

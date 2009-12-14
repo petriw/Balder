@@ -129,6 +129,7 @@
     <Compile Include="Input\Mouse.cs" />
     <Compile Include="Input\MouseButtonState.cs" />
     <Compile Include="Input\MouseManager.cs" />
+    <Compile Include="Lighting\Light.Silverlight.cs" />
     <Compile Include="Math\BoundingBox.cs" />
     <Compile Include="Math\BoundingFrustum.cs" />
     <Compile Include="Math\BoundingSphere.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="IRuntime.cs" />
     <Compile Include="RuntimeImports.cs" />
     <Compile Include="TypeConverters\ColorConverter.cs" />
-    <Compile Include="TypeConverters\FloatTypeConverter.cs" />
     <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />

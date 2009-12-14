@@ -16,30 +16,9 @@ namespace Balder.Core.Math
 			Z = z;
 		}
 
-		public static readonly Property<Coordinate, float> XProp = Property<Coordinate, float>.Register(c => c.X);
-		public float X
-		{
-			get { return XProp.GetValue(this); }
-			set { XProp.SetValue(this, value); }
-		}
-
-		public static readonly Property<Coordinate, float> YProp = Property<Coordinate, float>.Register(c => c.Y);
-		public float Y
-		{
-			get { return YProp.GetValue(this); }
-			set { YProp.SetValue(this, value); }
-		}
-
-		public static readonly Property<Coordinate, float> ZProp = Property<Coordinate, float>.Register(c => c.Z);
-		public float Z
-		{
-			get { return ZProp.GetValue(this); }
-			set { ZProp.SetValue(this, value); }
-		}
-
 		public Vector ToVector()
 		{
-			var vector = new Vector(X, Y, Z);
+			var vector = new Vector((float)X, (float)Y, (float)Z);
 			return vector;
 		}
 

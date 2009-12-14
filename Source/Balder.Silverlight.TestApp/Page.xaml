@@ -9,17 +9,29 @@
 	xmlns:view="clr-namespace:Balder.Core.View;assembly=Balder.Core"
 	x:Class="Balder.Silverlight.TestApp.Page"
     >
-	
+	<UserControl.Resources>
+		<Storyboard x:Key="_testStoryboard">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_game" Storyboard.TargetProperty="(Game.Camera).(Camera.Target).(Coordinate.Y)">
+				<LinearDoubleKeyFrame KeyTime="00:00:00" Value="-100"/>
+				<LinearDoubleKeyFrame KeyTime="00:00:02" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Red">
 		<!--<local:MyGame Width="800" Height="600"/>-->
+
 		
-		
-		<execution:Game Width="800" Height="600">
-			<lighting:OmniLight Position="0,0,-130" Diffuse="Green" Specular="White" Ambient="DarkGreen"/>
-			<geometries:Mesh AssetName="teapot.ase"/>
-			<execution:Game.Camera>
-				<view:Camera Position="0,0,-130" Target="0,0,0"/>
-			</execution:Game.Camera>
-		</execution:Game>
+
+		<StackPanel Orientation="Vertical">
+			<execution:Game x:Name="_game" Width="800" Height="600">
+				<lighting:OmniLight Position="0,0,-130" Diffuse="Green" Specular="White" Ambient="DarkGreen"/>
+				<geometries:Mesh x:Name="_teapot" AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ase"/>
+				<execution:Game.Camera>
+					<view:Camera x:Name="_camera" Position="0,0,-130" Target="0,0,0"/>
+				</execution:Game.Camera>
+			</execution:Game>
+			<Button Width="100" Height="30" Content="Click me" Click="Button_Click"/>
+		</StackPanel>
 	</Grid>
 </UserControl>

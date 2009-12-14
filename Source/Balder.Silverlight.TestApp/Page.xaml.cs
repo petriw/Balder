@@ -1,9 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using Balder.Core;
-using Color=Balder.Core.Color;
 
 namespace Balder.Silverlight.TestApp
 {
@@ -12,6 +8,13 @@ namespace Balder.Silverlight.TestApp
 		public Page()
 		{
 			InitializeComponent();
+		}
+
+		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			var storyboard = Resources["_testStoryboard"] as Storyboard;
+			storyboard.Begin();
+
 		}
 	}
 }

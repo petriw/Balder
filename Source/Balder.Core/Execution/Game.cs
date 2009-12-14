@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System.Windows;
 using Balder.Core.Display;
 using Balder.Core.Math;
 using Balder.Core.View;
@@ -36,13 +38,15 @@ namespace Balder.Core.Execution
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
-		private Camera _camera;
+
+
+		public static readonly Property<Game, Camera> CameraProp = Property<Game, Camera>.Register(g => g.Camera);
 		public Camera Camera
 		{
-			get { return _camera; }
+			get { return CameraProp.GetValue(this); }
 			set
 			{
-				_camera = value;
+				CameraProp.SetValue(this,value);
 				Viewport.View = value;
 			}
 		}
