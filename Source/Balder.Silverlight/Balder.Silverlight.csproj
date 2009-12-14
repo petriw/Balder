@@ -98,7 +98,6 @@
     <Compile Include="Services\TargetDevice.cs" />
     <Compile Include="SoftwareRendering\FrameBuffer.cs" />
     <Compile Include="SoftwareRendering\RenderingManager.cs" />
-    <Compile Include="TypeConverters\VectorTypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

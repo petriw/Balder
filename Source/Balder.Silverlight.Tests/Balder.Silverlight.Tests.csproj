@@ -145,7 +145,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Content\FilePathHelperTests.cs" />
-    <Compile Include="Controls\GameTests.cs" />
     <Compile Include="Converters\DebugLevelConverterTests.cs" />
     <Compile Include="Converters\StringToTypeConverterTests.cs" />
     <Compile Include="Execution\PlatformTests.cs" />
@@ -203,6 +202,9 @@
       <Project>{E39B101E-9447-49EE-B849-BA2A9E4664D0}</Project>
       <Name>Balder.Silverlight</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" Condition="" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
