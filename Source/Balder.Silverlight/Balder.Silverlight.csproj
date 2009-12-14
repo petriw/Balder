@@ -86,7 +86,6 @@
     </Compile>
     <Compile Include="AssetLoaders\ImageLoader.cs" />
     <Compile Include="Content\FilePathHelper.cs" />
-    <Compile Include="Converters\DebugLevelConverter.cs" />
     <Compile Include="Converters\StringToTypeConverter.cs" />
     <Compile Include="Display\DisplayDevice.cs" />
     <Compile Include="Execution\Platform.cs" />

@@ -1,9 +1,13 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
 using Balder.Core.Math;
+using Balder.Silverlight.SampleBrowser.Content;
 
-namespace Balder.Silverlight.SampleBrowser.Samples.CameraManipulation
+namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation
 {
-	public partial class Content : UserControl
+	[Category("View")]
+	[SamplePage("Camera Manipulation")]
+	[Description("Sample showing how to manipulate camera in Xaml")]
+	public partial class Content
 	{
 		public Content()
 		{
@@ -36,8 +40,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.CameraManipulation
 			var position = zoomedForward*combined;
 
 			var target = new Vector((float)_game.Camera.Target.X, 
-									(float)_game.Camera.Target.Y, 
-									(float)_game.Camera.Target.Z);
+			                        (float)_game.Camera.Target.Y, 
+			                        (float)_game.Camera.Target.Z);
 			var actualPosition = target - position;
 
 			_game.Camera.Position.X = actualPosition.X;

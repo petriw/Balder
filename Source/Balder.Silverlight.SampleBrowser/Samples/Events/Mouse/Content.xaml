@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.Events.Mouse.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Debug="clr-namespace:Balder.Core.Debug;assembly=Balder.Core" 
+    >
+	<Grid x:Name="LayoutRoot" MouseMove="LayoutRoot_MouseMove">
+		<Execution:Game Width="800" Height="600">
+			<Execution:Game.DebugLevel>
+				<Debug:DebugLevel BoundingSpheres="true"/>
+			</Execution:Game.DebugLevel>
+			
+			<Geometries:Mesh 
+				x:Name="Box1"
+				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
+				MouseEnter="Mesh_MouseEnter"
+				MouseLeave="Mesh_MouseLeave"
+				MouseLeftButtonDown="Mesh_MouseLeftButtonDown"
+				MouseLeftButtonUp="Mesh_MouseLeftButtonUp"
+				Position="-80,0,-50"
+				/>
+
+			<Geometries:Mesh 
+				x:Name="Box2"
+				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
+				MouseEnter="Mesh_MouseEnter"
+				MouseLeave="Mesh_MouseLeave"
+				MouseLeftButtonDown="Mesh_MouseLeftButtonDown"
+				MouseLeftButtonUp="Mesh_MouseLeftButtonUp"
+				Position="0,0,0"
+				/>
+
+			<Geometries:Mesh
+				x:Name="Box3"
+				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
+				MouseEnter="Mesh_MouseEnter"
+				MouseLeave="Mesh_MouseLeave"
+				MouseLeftButtonDown="Mesh_MouseLeftButtonDown"
+				MouseLeftButtonUp="Mesh_MouseLeftButtonUp"
+				Position="80,0,50"
+				/>
+
+			<Lighting:OmniLight Position="0,0,-80" Ambient="DarkGreen" Diffuse="Green" Specular="LightGreen"/>
+			<Execution:Game.Camera>
+				<View:Camera Position="-250,240,-280"/>
+			</Execution:Game.Camera>
+		</Execution:Game>
+
+
+		<Grid x:Name="_infoBox" Width="150" Height="150" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+			<Grid.RenderTransform>
+				<TranslateTransform x:Name="_infoBoxTranslation"/>
+			</Grid.RenderTransform>
+			<Grid.Background>
+				<SolidColorBrush Opacity="0.5" Color="Gray"/>
+			</Grid.Background>
+			<Border BorderBrush="White" BorderThickness="1">
+				<TextBlock Foreground="White">
+					<Run>X Position : </Run><Run x:Name="_xpos"/><LineBreak/>
+					<Run>Y Position : </Run><Run x:Name="_ypos"/><LineBreak/>
+					<Run>Mouse Over : </Run><Run x:Name="_mouseEnter"/><LineBreak/>
+					<Run>Object : </Run><Run x:Name="_object"/><LineBreak/>
+					<Run>Mouse LButton Down : </Run><Run x:Name="_mouseLButtonDown"/><LineBreak/>
+					<Run>Mouse LButton Up : </Run><Run x:Name="_mouseLButtonUp"/><LineBreak/>
+				</TextBlock>
+			</Border>
+		</Grid>
+	</Grid>
+</UserControl>

@@ -60,7 +60,7 @@ namespace Balder.Core.Objects.Geometries
 
 				var localWorld = World * geometry.World * PositionMatrix;
 
-				if (Runtime.Instance.DebugLevel.IsBoundingSpheresSet())
+				if (viewport.DebugLevel.BoundingSpheres)
 				{
 					DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, localWorld);
 				}

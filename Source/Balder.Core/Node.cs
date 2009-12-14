@@ -75,7 +75,7 @@ namespace Balder.Core
 
 		#endregion
 
-		protected Matrix PositionMatrix { get; private set; }
+		public Matrix PositionMatrix { get; private set; }
 		protected Matrix ScaleMatrix { get; private set; }
 
 		public virtual void Prepare(Viewport viewport) { }

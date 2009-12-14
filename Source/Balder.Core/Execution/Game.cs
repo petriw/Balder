@@ -18,6 +18,7 @@
 #endregion
 
 using System.Windows;
+using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Math;
 using Balder.Core.View;
@@ -38,6 +39,11 @@ namespace Balder.Core.Execution
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
+		public DebugLevel DebugLevel
+		{
+			get { return Viewport.DebugLevel; }
+			set { Viewport.DebugLevel = value; }
+		}
 
 
 		public static readonly Property<Game, Camera> CameraProp = Property<Game, Camera>.Register(g => g.Camera);
