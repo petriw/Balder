@@ -129,6 +129,39 @@ namespace Balder.Core
 			HandleEventsForActor(game);
 		}
 
+		public void UnregisterGame(Game game)
+		{
+			var displaysToRemove = new List<IDisplay>();
+			foreach( var display in _gamesPerDisplay.Keys )
+			{
+				var gameFound = false;
+				var actorCollection = _gamesPerDisplay[display];
+				foreach( var actor in actorCollection )
+				{
+					if( actor is Game && actor.Equals(game) )
+					{
+						gameFound = true;
+						break;
+					}
+				}
+				if( gameFound )
+				{
+					actorCollection.Remove(game);
+					if( actorCollection.Count == 0 )
+					{
+						displaysToRemove.Add(display);
+					}
+				}
+			}
+
+			foreach( var display in displaysToRemove )
+			{
+				_gamesPerDisplay.Remove(display);
+				Platform.DisplayDevice.RemoveDisplay(display);
+			}
+		}
+
+
 		public void WireUpDependencies(object objectToWire)
 		{
 			_objectFactory.WireUpDependencies(objectToWire);

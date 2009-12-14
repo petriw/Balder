@@ -30,9 +30,14 @@
 				</Grid.ColumnDefinitions>
 				<SampleBrowser:SampleNavigationControl Grid.Column="0"/>
 
-				<controls:TabControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<controls:TabControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" >
 					<controls:TabItem Header="Sample">
-						<navigation:Frame x:Name="ContentFrame" UriMapper="{StaticResource uriMapper}" Source="Home" JournalOwnership="OwnsJournal">
+						<navigation:Frame x:Name="ContentFrame" 
+										  Navigating="ContentFrame_Navigating"
+										  Navigated="ContentFrame_Navigated"
+										  UriMapper="{StaticResource uriMapper}" 
+										  Source="Home" 
+										  JournalOwnership="OwnsJournal">
 							<navigation:Frame.Background>
 								<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
 									<GradientStop Offset="0" Color="AliceBlue"/>
@@ -42,15 +47,11 @@
 							</navigation:Frame.Background>
 						</navigation:Frame>
 					</controls:TabItem>
-					<!--
+					
 					<controls:TabItem Header="Resources">
 
-					</controls:TabItem>-->
-
+					</controls:TabItem>
 				</controls:TabControl>
-
-
-
 			</Grid>
 		</StackPanel>
 	</Grid>

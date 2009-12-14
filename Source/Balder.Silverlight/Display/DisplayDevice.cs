@@ -95,6 +95,15 @@ namespace Balder.Silverlight.Display
 			return display;
 		}
 
+
+		public void RemoveDisplay(IDisplay display)
+		{
+			if (display is Display)
+			{
+				_displays.Remove(display as Display);
+			}
+		}
+
 		private void CallMethodOnDisplays(Action<Display> displayAction)
 		{
 			foreach (var display in _displays)

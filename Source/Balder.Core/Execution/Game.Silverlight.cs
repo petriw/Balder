@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Balder.Core.Display;
 using Balder.Core.View;
 
 namespace Balder.Core.Execution
@@ -8,10 +9,17 @@ namespace Balder.Core.Execution
 	public partial class Game
 	{
 		private Node _previousNode;
+		private IDisplay _display;
 
 		partial void Constructed()
 		{
 			Loaded += GameLoaded;
+		}
+
+
+		public void Unload()
+		{
+			Runtime.Instance.UnregisterGame(this);
 		}
 
 		private void GameLoaded(object sender, RoutedEventArgs e)
@@ -24,10 +32,10 @@ namespace Balder.Core.Execution
 
 		private void RegisterGame()
 		{
-			var display = Runtime.Instance.Platform.DisplayDevice.CreateDisplay();
-			display.Initialize((int)Width,(int)Height);
-			Runtime.Instance.RegisterGame(display,this);
-			display.InitializeContainer(this);
+			_display = Runtime.Instance.Platform.DisplayDevice.CreateDisplay();
+			_display.Initialize((int)Width,(int)Height);
+			Runtime.Instance.RegisterGame(_display,this);
+			_display.InitializeContainer(this);
 		}
 
 		private void Validate()
