@@ -78,6 +78,7 @@ namespace Balder.Silverlight.SampleBrowser
 		private void RemoveGame(Game game)
 		{
 			game.Unload();
+			/*
 			var parent = VisualTreeHelper.GetParent(game);
 			if( null != parent )
 			{
@@ -92,6 +93,7 @@ namespace Balder.Silverlight.SampleBrowser
 					((ContentControl) parent).Content = null;
 				}
 			}
+			 */
 		}
 
 		private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

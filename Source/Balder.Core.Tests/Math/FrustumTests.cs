@@ -34,12 +34,13 @@ namespace Balder.Core.Tests.Math
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
 			var camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
+			viewport.View = camera;
 			camera.Update(viewport);
 			_frustum = new Frustum();
 			_frustum.SetCameraDefinition(viewport, camera);
 		}
 
-		[Test, SilverlightUnitTest]
+		[Test]
 		public void VectorInsideShouldNotBeClipped()
 		{
 			var vectorToTest = new Vector(0f, 0f, 0.5f);

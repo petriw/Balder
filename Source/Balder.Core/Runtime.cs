@@ -167,11 +167,18 @@ namespace Balder.Core
 			_objectFactory.WireUpDependencies(objectToWire);
 		}
 
-		private static void WireUpGame(IDisplay display, Game objectToWire)
+		private void WireUpGame(IDisplay display, Game objectToWire)
 		{
-			var displayActivationContext = new DisplayActivationContext(display, _kernel, objectToWire.GetType(),
-																		_kernel.CreateScope());
-			_kernel.Inject(objectToWire, displayActivationContext);
+			if (null != _kernel)
+			{
+				var displayActivationContext = new DisplayActivationContext(display, _kernel, objectToWire.GetType(),
+																			_kernel.CreateScope());
+				_kernel.Inject(objectToWire, displayActivationContext);
+			}
+			else
+			{
+				_objectFactory.WireUpDependencies(objectToWire);
+			}
 		}
 
 		private ActorCollection GetGameCollectionForDisplay(IDisplay display)

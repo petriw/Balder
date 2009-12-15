@@ -49,7 +49,7 @@
 					</controls:TabItem>
 					
 					<controls:TabItem Header="Resources">
-
+						
 					</controls:TabItem>
 				</controls:TabControl>
 			</Grid>

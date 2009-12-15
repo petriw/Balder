@@ -1,4 +1,4 @@
-﻿using Balder.Core;>
+﻿using Balder.Core;
 using Balder.Core.Debug;
 using Balder.Core.Execution;
 using Balder.Core.Lighting;
@@ -12,7 +12,7 @@ namespace Balder.Silverlight.TestApp
 
 		public override void OnInitialize()
 		{
-			Runtime.Instance.DebugLevel |= DebugLevel.BoundingSpheres;
+			Runtime.Instance.DebugLevel.BoundingSpheres = true;
 			Camera.Position.Z = -100;
 		}
 

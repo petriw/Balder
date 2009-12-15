@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
 using Balder.Core.Display;
 using Moq;
 
@@ -32,6 +34,11 @@ namespace Balder.Core.Tests.Fakes
 		{
 			var mock = new Mock<IDisplay>();
 			return mock.Object;
+		}
+
+		public void RemoveDisplay(IDisplay display)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void FireUpdateEvent(IDisplay display)

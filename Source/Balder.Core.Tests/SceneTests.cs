@@ -20,6 +20,7 @@ using Balder.Core.Display;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
 using Balder.Core.View;
+using CThru.Silverlight;
 using NUnit.Framework;
 
 namespace Balder.Core.Tests
@@ -27,12 +28,13 @@ namespace Balder.Core.Tests
 	[TestFixture]
 	public class SceneTests
 	{
-		[Test]
+		[Test, SilverlightUnitTest]
 		public void GettingObjectAtCenterOfScreenWithSingleObjectAtCenterOfSceneShouldReturnTheObject()
 		{
 			var viewport = new Viewport {Width = 640, Height = 480};
 			var scene = new Scene();
 			var camera = new Camera() {Position = {Z = -10}};
+			viewport.View = camera;
 			camera.Update(viewport);
 
 			var node = new Geometry
@@ -46,13 +48,13 @@ namespace Balder.Core.Tests
 			Assert.That(nodeAtCoordinate, Is.EqualTo(node));
 		}
 
-		[Test]
+		[Test, SilverlightUnitTest]
 		public void GettingObjectAtTopLeftOfScreenWithSingleObjectAtCenterOfSceneShouldReturnTheObject()
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
 			var scene = new Scene();
 			var camera = new Camera();
-
+			viewport.View = camera;
 			camera.Position.Z = -100;
 
 			camera.Update(viewport);

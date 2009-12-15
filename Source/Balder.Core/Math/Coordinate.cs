@@ -24,7 +24,7 @@ namespace Balder.Core.Math
 
 		public static implicit operator Coordinate(Vector vector)
 		{
-			var coordinate = new Coordinate(vector.X, vector.Y, vector.Z);
+			var coordinate = new Coordinate {X = vector.X, Y = vector.Y, Z = vector.Z};
 			return coordinate;
 		}
 

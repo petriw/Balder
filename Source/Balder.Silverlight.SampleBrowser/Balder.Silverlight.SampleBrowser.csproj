@@ -51,6 +51,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core_SL, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Castle.Core_SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy_SL, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Castle.DynamicProxy_SL.dll</HintPath>
+    </Reference>
+    <Reference Include="FlawlessCode.MissingTypes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\FlawlessCode.MissingTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=0.0.0.0, Culture=neutral, PublicKeyToken=ef0f8c0372b87f18, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\MVVMLight\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=0.0.0.0, Culture=neutral, PublicKeyToken=d00cdb000b1d698d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\MVVMLight\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
@@ -83,6 +103,9 @@
     </Compile>
     <Compile Include="Constants\Categories.cs" />
     <Compile Include="Content\SamplePageAttribute.cs" />
+    <Compile Include="Controls\ResourceViewer.xaml.cs">
+      <DependentUpon>ResourceViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SampleNavigationControl.xaml.cs">
       <DependentUpon>SampleNavigationControl.xaml</DependentUpon>
     </Compile>
@@ -121,6 +144,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\ResourceViewer.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
     <Page Include="Controls\SampleNavigationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
