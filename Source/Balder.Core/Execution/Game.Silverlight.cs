@@ -22,6 +22,28 @@ namespace Balder.Core.Execution
 			Runtime.Instance.UnregisterGame(this);
 		}
 
+		public static readonly Property<Game, Camera> CameraProp = Property<Game, Camera>.Register(g => g.Camera);
+		public Camera Camera
+		{
+			get { return CameraProp.GetValue(this); }
+			set
+			{
+				var previousCamera = Camera;
+				if( null != previousCamera )
+				{
+					if( Children.Contains(previousCamera) )
+					{
+						Children.Remove(previousCamera);
+					}
+				}
+				CameraProp.SetValue(this, value);
+				Viewport.View = value;
+
+				Children.Add(value);
+			}
+		}
+
+
 		private void GameLoaded(object sender, RoutedEventArgs e)
 		{
 			Validate();

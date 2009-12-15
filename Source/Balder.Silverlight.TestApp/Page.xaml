@@ -11,7 +11,7 @@
     >
 	<UserControl.Resources>
 		<Storyboard x:Key="_testStoryboard">
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_game" Storyboard.TargetProperty="(Game.Camera).(Camera.Target).(Coordinate.Y)">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_camera" Storyboard.TargetProperty="(Camera.Target).(Coordinate.Y)">
 				<LinearDoubleKeyFrame KeyTime="00:00:00" Value="-100"/>
 				<LinearDoubleKeyFrame KeyTime="00:00:02" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>

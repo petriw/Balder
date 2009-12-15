@@ -16,8 +16,6 @@
 // limitations under the License.
 //
 #endregion
-
-using System.Windows;
 using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Math;
@@ -46,16 +44,6 @@ namespace Balder.Core.Execution
 		}
 
 
-		public static readonly Property<Game, Camera> CameraProp = Property<Game, Camera>.Register(g => g.Camera);
-		public Camera Camera
-		{
-			get { return CameraProp.GetValue(this); }
-			set
-			{
-				CameraProp.SetValue(this,value);
-				Viewport.View = value;
-			}
-		}
 
 		public override void OnBeforeUpdate()
 		{
