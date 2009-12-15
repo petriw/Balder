@@ -32,6 +32,7 @@ namespace Balder.Core
 			Display = display;
 		}
 
+
 		public DisplayActivationContext(IDisplay display, IKernel kernel, Type service, IContext parent)
 			: base(kernel, service, parent)
 		{

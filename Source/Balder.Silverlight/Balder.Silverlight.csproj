@@ -71,6 +71,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\Siilverlight\Ninject.Core.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -82,33 +86,9 @@
     </Compile>
     <Compile Include="AssetLoaders\ImageLoader.cs" />
     <Compile Include="Content\FilePathHelper.cs" />
-    <Compile Include="Controls\BalderControl.cs" />
-    <Compile Include="Controls\Camera.cs" />
-    <Compile Include="Controls\EnvironmentalNode.cs" />
-    <Compile Include="Controls\Game.cs" />
-    <Compile Include="Controls\Geometry.cs" />
-    <Compile Include="Controls\InternalGame.cs" />
-    <Compile Include="Controls\Light.cs" />
-    <Compile Include="Controls\Math\Vector.cs" />
-    <Compile Include="Controls\Mesh.cs" />
-    <Compile Include="Controls\Node.cs" />
-    <Compile Include="Controls\OmniLight.cs" />
-    <Compile Include="Controls\RenderableNode.cs" />
-    <Compile Include="Converters\DebugLevelConverter.cs" />
     <Compile Include="Converters\StringToTypeConverter.cs" />
     <Compile Include="Display\DisplayDevice.cs" />
     <Compile Include="Execution\Platform.cs" />
-    <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
-    <Compile Include="Extensions\DependencyPropertySubscription.cs" />
-    <Compile Include="Extensions\ExpressionExtensions.cs" />
-    <Compile Include="Extensions\ICollectionExtensions.cs" />
-    <Compile Include="Extensions\IListExtensions.cs" />
-    <Compile Include="Extensions\NotificationExtensions.cs" />
-    <Compile Include="Extensions\StoryboardExtensions.cs" />
-    <Compile Include="Extensions\VisualStateExtensions.cs" />
-    <Compile Include="Extensions\VisualTreeExtensions.cs" />
-    <Compile Include="Helpers\DependencyProperty.cs" />
-    <Compile Include="Helpers\DependencyPropertyHelper.cs" />
     <Compile Include="Content\FileLoader.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Interaction\ICommandSource.cs" />
@@ -117,7 +97,6 @@
     <Compile Include="Services\TargetDevice.cs" />
     <Compile Include="SoftwareRendering\FrameBuffer.cs" />
     <Compile Include="SoftwareRendering\RenderingManager.cs" />
-    <Compile Include="TypeConverters\VectorTypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -143,6 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

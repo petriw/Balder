@@ -65,7 +65,7 @@ namespace Balder.Core.Objects.Flat
 			var transformedPosition = Vector.Transform(position, World, view);
 			var translatedPosition = Vector.Translate(transformedPosition, projection, viewport.Width, viewport.Height);
 
-			var distanceVector = viewport.Camera.Position - actualPosition;
+			var distanceVector = viewport.View.Position - actualPosition;
 			var distance = distanceVector.Length;
 			var n = 100.0f;
 			distance = MathHelper.Abs(distance);

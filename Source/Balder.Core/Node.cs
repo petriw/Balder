@@ -16,17 +16,20 @@
 // limitations under the License.
 //
 #endregion
+
+using System.Windows;
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
 using System;
-using Matrix=Balder.Core.Math.Matrix;
+using Matrix = Balder.Core.Math.Matrix;
 
 namespace Balder.Core
 {
 	/// <summary>
 	/// Abstract class representing a node in a scene
 	/// </summary>
-	public abstract class Node : EngineObject
+	public abstract partial class Node
 	{
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
@@ -39,59 +42,44 @@ namespace Balder.Core
 
 			PositionMatrix = Matrix.Identity;
 			ScaleMatrix = Matrix.Identity;
-			Scale = new Vector(1f,1f,1f);
+			Scale = new Vector(1f, 1f, 1f);
 			Position = Vector.Zero;
+
+			Initialize();
 		}
 		#endregion
 
+		partial void Initialize();
+
 		#region Public Properties
+		public static readonly Property<Node, Coordinate> PositionProp = Property<Node, Coordinate>.Register(n => n.Position);
+		public Coordinate Position
+		{
+			get { return PositionProp.GetValue(this); }
+			set { PositionProp.SetValue(this, value); }
+		}
 
-		/// <summary>
-		/// Get and set the position in space for the node
-		/// </summary>
-		public Vector Position;
+		public static readonly Property<Node, bool> IsVisibleProp = Property<Node, bool>.Register(n => n.IsVisible);
+		public bool IsVisible
+		{
+			get { return IsVisibleProp.GetValue(this); }
+			set { IsVisibleProp.SetValue(this, value); }
+		}
 
-		/// <summary>
-		/// Get and set the scale of the node
-		/// </summary>
-		public Vector Scale;
 
-		/// <summary>
-		/// Get and set the matrix representing the node in the world
-		/// </summary>
-		public Matrix World;
+		public Vector Scale { get; set; }
+		public Matrix World { get; set; }
 
-		/// <summary>
-		/// Get and set the name of the node
-		/// </summary>
-		public string Name;
-
-		/// <summary>
-		/// The bounding sphere surrounding the node
-		/// </summary>
-		public BoundingSphere BoundingSphere;
-
-		/// <summary>
-		/// Get and set wether or not the node is visible
-		/// </summary>
-		public bool IsVisible { get; set; }
-
+		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
 
-		/// <summary>
-		/// Color of the node - this will be used if node supports it
-		/// during lighting calculations. If Node has different ways of defining
-		/// its color, for instance Materialing or similar - this color
-		/// will most likely be overridden
-		/// </summary>
-		public Color Color { get; set; }
 		#endregion
 
-		protected Matrix PositionMatrix { get; private set; }
+		public Matrix PositionMatrix { get; private set; }
 		protected Matrix ScaleMatrix { get; private set; }
 
-		public virtual void Prepare(Viewport viewport) {}
-		public virtual void Update() {}
+		public virtual void Prepare(Viewport viewport) { }
+		public virtual void Update() { }
 
 
 		internal void OnHover()

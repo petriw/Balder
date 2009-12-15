@@ -1,91 +1,37 @@
 ﻿<UserControl
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:balder="clr-namespace:Balder.Silverlight.Controls;assembly=Balder.Silverlight"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="clr-namespace:Balder.Silverlight.TestApp"
-	xmlns:Math="clr-namespace:Balder.Silverlight.Controls.Math;assembly=Balder.Silverlight" 
+	xmlns:local="clr-namespace:Balder.Silverlight.TestApp" 
+	xmlns:execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core"
+	xmlns:geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core"
+	xmlns:lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core"
+	xmlns:core="clr-namespace:Balder.Core;assembly=Balder.Core"
+	xmlns:view="clr-namespace:Balder.Core.View;assembly=Balder.Core"
 	x:Class="Balder.Silverlight.TestApp.Page"
-	Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
     >
-	
 	<UserControl.Resources>
-		<Storyboard x:Name="_cameraStoryboard">
-			
-			
-			<DoubleAnimationUsingKeyFrames x:Name="_animation" 
-										   Storyboard.TargetName="_game" 
-										   Storyboard.TargetProperty="(Game.Camera).(Camera.Position).(Vector.Y)" 
-										   AutoReverse="True" 
-										   RepeatBehavior="Forever">
-				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="115" >
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseOut"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:02" Value="50" >
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseIn"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
+		<Storyboard x:Key="_testStoryboard">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_camera" Storyboard.TargetProperty="(Camera.Target).(Coordinate.Y)">
+				<LinearDoubleKeyFrame KeyTime="00:00:00" Value="-100"/>
+				<LinearDoubleKeyFrame KeyTime="00:00:02" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>
-			
-			
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_light"
-										   Storyboard.TargetProperty="(Light.Position).(Vector.Y)"
-										   AutoReverse="True"
-										   RepeatBehavior="Forever">
-				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="-150">
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseInOut"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:05" Value="150">
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseInOut"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-			</DoubleAnimationUsingKeyFrames>
-			
-			
-			<!--
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="_light"
-										   Storyboard.TargetProperty="(Light.Position).(Vector.Z)"
-										   AutoReverse="True"
-										   RepeatBehavior="Forever">
-				<EasingDoubleKeyFrame KeyTime="00:00:00" Value="-150">
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseInOut"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-				<EasingDoubleKeyFrame KeyTime="00:00:05" Value="150">
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CircleEase EasingMode="EaseInOut"/>
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-			</DoubleAnimationUsingKeyFrames>-->
-			
-
 		</Storyboard>
 	</UserControl.Resources>
-	
+
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Red">
+		<!--<local:MyGame Width="800" Height="600"/>-->
+
+		
+
 		<StackPanel Orientation="Vertical">
-			<balder:Game x:Name="_game" Width="800" Height="600" DebugLevel="BoundingSpheres">
-				<balder:Mesh x:Name="_teapot" 
-							 AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ASE" 
-							 Color="Blue"
-							 MouseEnter="_teapot_MouseEnter" 
-							 MouseLeave="_teapot_MouseLeave"
-							 MouseLeftButtonDown="_teapot_MouseLeftButtonDown"
-							 MouseLeftButtonUp="_teapot_MouseLeftButtonUp"
-							 />
-				<balder:OmniLight x:Name="_light" Range="2" Diffuse="Green" Ambient="DarkGreen" Specular="LightGreen" Position="0,-10,130"/>
-				
-				<balder:Game.Camera>
-					<balder:Camera Position="0,0,-100" Target="0,0,1"/>
-				</balder:Game.Camera>
-			</balder:Game>
-			<Button Content="Click me" Width="50" Height="30" Click="Button_Click"/>
+			<execution:Game x:Name="_game" Width="800" Height="600">
+				<lighting:OmniLight Position="0,0,-130" Diffuse="Green" Specular="White" Ambient="DarkGreen"/>
+				<geometries:Mesh x:Name="_teapot" AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ase"/>
+				<execution:Game.Camera>
+					<view:Camera x:Name="_camera" Position="0,0,-130" Target="0,0,0"/>
+				</execution:Game.Camera>
+			</execution:Game>
+			<Button Width="100" Height="30" Content="Click me" Click="Button_Click"/>
 		</StackPanel>
 	</Grid>
 </UserControl>

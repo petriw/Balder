@@ -47,7 +47,7 @@ namespace Balder.Core.SoftwareRendering
 			var position = new Vector(0, 0, 0);
 			var transformedPosition = Vector.Transform(position, world, view);
 			var translatedPosition = Vector.Translate(transformedPosition, projection, viewport.Width, viewport.Height);
-			var depthBufferAdjustedZ = -transformedPosition.Z / viewport.Camera.DepthDivisor;
+			var depthBufferAdjustedZ = -transformedPosition.Z / viewport.View.DepthDivisor;
 			var positionOffset = (((int)translatedPosition.X)) + (((int)translatedPosition.Y) * buffer.FrameBuffer.Stride);
 
 			var bufferSize = buffer.FrameBuffer.Stride*buffer.Height;

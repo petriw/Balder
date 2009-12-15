@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Core.Silverlight", "..\Balder.Core\Balder.Core.Silverlight.csproj", "{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Core.SoftwareRendering.Silverlight", "..\Balder.Core.SoftwareRendering\Balder.Core.SoftwareRendering.Silverlight.csproj", "{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Silverlight", "..\Balder.Silverlight\Balder.Silverlight.csproj", "{E39B101E-9447-49EE-B849-BA2A9E4664D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2AC081A1-6E83-40C1-9632-127AF77F0065}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{4076D1C6-DE6E-47F4-85B2-C2B77920B8BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Silverlight.SampleBrowser", "..\Balder.Silverlight.SampleBrowser\Balder.Silverlight.SampleBrowser.csproj", "{492069AA-09BC-4B9C-B474-5E71E300755C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxTextBox", "..\Balder.Silverlight.SampleBrowser\SyntaxTextBox\SyntaxTextBox.csproj", "{E3B485C3-BA26-4563-AF64-F739ECE64D3D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs03.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\Balder.Core\\Balder.Core.Silverlight.csproj
+		SccProjectName1 = ../Balder.Core
+		SccLocalPath1 = ..\\Balder.Core
+		SccProjectUniqueName2 = ..\\Balder.Core.SoftwareRendering\\Balder.Core.SoftwareRendering.Silverlight.csproj
+		SccProjectName2 = ../Balder.Core.SoftwareRendering
+		SccLocalPath2 = ..\\Balder.Core.SoftwareRendering
+		SccProjectUniqueName3 = ..\\Balder.Silverlight\\Balder.Silverlight.csproj
+		SccProjectName3 = ../Balder.Silverlight
+		SccLocalPath3 = ..\\Balder.Silverlight
+		SccProjectUniqueName4 = ..\\Balder.Silverlight.TestApp\\Balder.Silverlight.TestApp.csproj
+		SccProjectName4 = ../Balder.Silverlight.TestApp
+		SccLocalPath4 = ..\\Balder.Silverlight.TestApp
+		SccProjectUniqueName5 = ..\\Balder.Silverlight.TestApp.Web\\Balder.Silverlight.TestApp.Web.csproj
+		SccProjectName5 = ../Balder.Silverlight.TestApp.Web
+		SccLocalPath5 = ..\\Balder.Silverlight.TestApp.Web
+		SccProjectUniqueName6 = ..\\Balder.Core.Tests\\Balder.Core.Tests.Silverlight.csproj
+		SccProjectName6 = ../Balder.Core.Tests
+		SccLocalPath6 = ..\\Balder.Core.Tests
+		SccProjectUniqueName7 = ..\\Balder.Specifications\\Balder.Specifications.Silverlight.csproj
+		SccProjectName7 = ../Balder.Specifications
+		SccLocalPath7 = ..\\Balder.Specifications
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E39B101E-9447-49EE-B849-BA2A9E4664D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E39B101E-9447-49EE-B849-BA2A9E4664D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E39B101E-9447-49EE-B849-BA2A9E4664D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E39B101E-9447-49EE-B849-BA2A9E4664D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{492069AA-09BC-4B9C-B474-5E71E300755C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492069AA-09BC-4B9C-B474-5E71E300755C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492069AA-09BC-4B9C-B474-5E71E300755C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492069AA-09BC-4B9C-B474-5E71E300755C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3B485C3-BA26-4563-AF64-F739ECE64D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3B485C3-BA26-4563-AF64-F739ECE64D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3B485C3-BA26-4563-AF64-F739ECE64D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3B485C3-BA26-4563-AF64-F739ECE64D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE1475DE-91CC-45BE-9FA3-6B233D3223D8} = {2AC081A1-6E83-40C1-9632-127AF77F0065}
+		{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B} = {2AC081A1-6E83-40C1-9632-127AF77F0065}
+		{E39B101E-9447-49EE-B849-BA2A9E4664D0} = {4076D1C6-DE6E-47F4-85B2-C2B77920B8BA}
+		{492069AA-09BC-4B9C-B474-5E71E300755C} = {4076D1C6-DE6E-47F4-85B2-C2B77920B8BA}
+		{E3B485C3-BA26-4563-AF64-F739ECE64D3D} = {4076D1C6-DE6E-47F4-85B2-C2B77920B8BA}
+	EndGlobalSection
+EndGlobal

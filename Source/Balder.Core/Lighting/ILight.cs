@@ -20,6 +20,8 @@ namespace Balder.Core.Lighting
 {
 	public interface ILight
 	{
-
+		Color Diffuse { get; set; }
+		Color Ambient { get; set; }
+		Color Specular { get; set; }
 	}
 }

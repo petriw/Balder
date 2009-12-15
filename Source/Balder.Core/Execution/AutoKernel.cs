@@ -45,40 +45,32 @@ namespace Balder.Core.Execution
 
 		protected override IBinding ResolveBinding(Type service, IContext context)
 		{
-			try
+			var binding = base.ResolveBinding(service, context);
+			if (null == binding)
 			{
-				var binding = base.ResolveBinding(service, context);
-				if( null != binding )
+				if (_bindingResolvers.ContainsKey(service))
 				{
-					return binding;
+					binding = _bindingResolvers[service](context);
 				}
-			} catch
-			{
-			}
-
-			if (_bindingResolvers.ContainsKey(service))
-			{
-				var binding = _bindingResolvers[service](context);
-				return binding;
-			}
-			else
-			{
-				var serviceName = service.Name;
-				if (serviceName.StartsWith("I"))
+				else
 				{
-					var instanceName = string.Format("{0}.{1}", service.Namespace, serviceName.Substring(1));
-					var serviceInstanceType = service.Assembly.GetType(instanceName);
-					if (null != serviceInstanceType)
+					var serviceName = service.Name;
+					if (serviceName.StartsWith("I"))
 					{
-						var binding = new StandardBinding(this, service);
-						var provider = new StandardProvider(serviceInstanceType);
-						binding.Provider = provider;
-						return binding;
+						var instanceName = string.Format("{0}.{1}", service.Namespace, serviceName.Substring(1));
+						var serviceInstanceType = service.Assembly.GetType(instanceName);
+						if (null != serviceInstanceType)
+						{
+							binding = new StandardBinding(this, service);
+							var provider = new StandardProvider(serviceInstanceType);
+							binding.Provider = provider;
+
+						}
 					}
 				}
 			}
 
-			return null;
+			return binding;
 		}
 	}
 }

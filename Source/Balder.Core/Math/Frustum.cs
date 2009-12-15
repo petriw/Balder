@@ -16,6 +16,10 @@
 // limitations under the License.
 //
 #endregion
+
+using Balder.Core.Display;
+using Balder.Core.View;
+
 namespace Balder.Core.Math
 {
 	public enum FrustumLocation {
@@ -78,11 +82,11 @@ namespace Balder.Core.Math
 		}
 
 
-		public void SetCameraDefinition(Camera camera)
+		public void SetCameraDefinition(Viewport viewport, Camera camera)
 		{
 			Vector dir, nc, fc, X, Y, Z;
 
-			SetCameraInternals(45, camera.AspectRatio, camera.Near, camera.Far);
+			SetCameraInternals(camera.FieldOfView, viewport.AspectRatio, camera.Near, camera.Far);
 
 			Z = camera.Position - camera.Target;
 			Z.Normalize();

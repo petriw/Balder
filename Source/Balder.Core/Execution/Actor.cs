@@ -25,20 +25,16 @@ using Ninject.Core;
 
 namespace Balder.Core.Execution
 {
-	public enum ActorState
-	{
-		Idle=1,
-		Initialize,
-		Load,
-		Run
-	}
-
-	public class Actor : IActor
+	public partial class Actor : IActor
 	{
 		protected Actor()
 		{
 			Actors = new ActorCollection();
+			Constructed();
+			
 		}
+
+		partial void Constructed();
 
 		public ActorCollection Actors { get; private set; }
 		public bool HasInitialized { get; private set; }
@@ -52,16 +48,16 @@ namespace Balder.Core.Execution
 
 		public ActorState State { get; private set; }
 	
-		public virtual void BeforeInitialize() { }
-		public virtual void Initialize() { }
+		public virtual void OnBeforeInitialize() { }
+		public virtual void OnInitialize() { }
 
-		public virtual void LoadContent() { }
-		public virtual void Loaded() { }
-		public virtual void Stopped() { }
+		public virtual void OnLoadContent() { }
+		public virtual void OnLoaded() { }
+		public virtual void OnStopped() { }
 
-		public virtual void BeforeUpdate() { }
-		public virtual void Update() { }
-		public virtual void AfterUpdate() { }
+		public virtual void OnBeforeUpdate() { }
+		public virtual void OnUpdate() { }
+		public virtual void OnAfterUpdate() { }
 
 
 		private void ExecuteActionOnActors(Action<Actor> action)
@@ -76,34 +72,34 @@ namespace Balder.Core.Execution
 		{
 			foreach (var actor in Actors)
 			{
-				actor.Stopped();
+				actor.OnStopped();
 			}
 		}
 
 
-		private void OnInitialize()
+		private void OnInitializeOccured()
 		{
-			BeforeInitialize();
-			Initialize();
-			ExecuteActionOnActors(a => a.Initialize());
+			OnBeforeInitialize();
+			OnInitialize();
+			ExecuteActionOnActors(a => a.OnInitialize());
 			HasInitialized = true;
 		}
 
-		private void OnLoadContent()
+		private void OnLoadContentOccured()
 		{
-			LoadContent();
-			ExecuteActionOnActors(a => a.LoadContent());
+			OnLoadContent();
+			ExecuteActionOnActors(a => a.OnLoadContent());
 			HasLoaded = true;
 		}
 
-		internal void OnUpdate()
+		internal void OnUpdateOccured()
 		{
-			ExecuteActionOnActors(a => a.BeforeUpdate());
-			ExecuteActionOnActors(a => a.Update());
-			BeforeUpdate();
-			Update();
-			AfterUpdate();
-			ExecuteActionOnActors(a => a.AfterUpdate());
+			ExecuteActionOnActors(a => a.OnBeforeUpdate());
+			ExecuteActionOnActors(a => a.OnUpdate());
+			OnBeforeUpdate();
+			OnUpdate();
+			OnAfterUpdate();
+			ExecuteActionOnActors(a => a.OnAfterUpdate());
 			HasUpdated = true;
 		}
 
@@ -114,12 +110,12 @@ namespace Balder.Core.Execution
 			{
 				case ActorState.Initialize:
 					{
-						OnInitialize();
+						OnInitializeOccured();
 					}
 					break;
 				case ActorState.Load:
 					{
-						OnLoadContent();
+						OnLoadContentOccured();
 					}
 					break;
 			}

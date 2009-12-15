@@ -179,9 +179,9 @@ namespace Balder.Core
 		{
 			var nearSource = new Vector((float)x, (float)y, 0f);
 			var farSource = new Vector((float)x, (float)y, 1f);
-			var camera = viewport.Camera;
-			var nearPoint = viewport.Unproject(nearSource, camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
-			var farPoint = viewport.Unproject(farSource, camera.ProjectionMatrix, camera.ViewMatrix, Matrix.Identity);
+			var view = viewport.View;
+			var nearPoint = viewport.Unproject(nearSource, view.ProjectionMatrix, view.ViewMatrix, Matrix.Identity);
+			var farPoint = viewport.Unproject(farSource, view.ProjectionMatrix, view.ViewMatrix, Matrix.Identity);
 
 			var direction = farPoint - nearPoint;
 			direction.Normalize();
@@ -195,7 +195,8 @@ namespace Balder.Core
 			{
 				foreach (var node in _renderableNodes)
 				{
-					var transformedSphere = node.BoundingSphere.Transform(node.World);
+					// Todo: PositionMatrix - BAAAAAAAAAAD  - Need to fix the entire matrix thingy for all nodes.
+					var transformedSphere = node.BoundingSphere.Transform(node.PositionMatrix);
 					var distance = pickRay.Intersects(transformedSphere);
 					if (distance.HasValue)
 					{

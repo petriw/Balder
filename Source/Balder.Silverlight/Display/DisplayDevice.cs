@@ -21,9 +21,11 @@ using Balder.Core.Display;
 using System.Collections.Generic;
 using Balder.Core.Execution;
 using Balder.Silverlight.SoftwareRendering;
+using Ninject.Core;
 
 namespace Balder.Silverlight.Display
 {
+	[Singleton]
 	public class DisplayDevice : IDisplayDevice
 	{
 		public event DisplayEvent Update = (d) => { };
@@ -91,6 +93,15 @@ namespace Balder.Silverlight.Display
 			var display = new Display(_platform);
 			_displays.Add(display);
 			return display;
+		}
+
+
+		public void RemoveDisplay(IDisplay display)
+		{
+			if (display is Display)
+			{
+				_displays.Remove(display as Display);
+			}
 		}
 
 		private void CallMethodOnDisplays(Action<Display> displayAction)

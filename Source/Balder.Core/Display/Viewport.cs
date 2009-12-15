@@ -16,16 +16,29 @@
 // limitations under the License.
 //
 #endregion
+
+using Balder.Core.Debug;
+using Balder.Core.View;
+
 namespace Balder.Core.Display
 {
 	public class Viewport
 	{
+		public Viewport()
+		{
+			DebugLevel = new DebugLevel();
+		}
+
 		public int XPosition { get; set; }
 		public int YPosition { get; set; }
 		public int Width { get; set; }
 		public int Height { get; set; }
 
 		public Scene Scene { get; set; }
-		public Camera Camera { get; set; }
+		public IView View { get; set; }
+
+		public DebugLevel DebugLevel { get; set; }
+
+		public float AspectRatio { get { return ((float)Width) / ((float)Height); } }
 	}
 }

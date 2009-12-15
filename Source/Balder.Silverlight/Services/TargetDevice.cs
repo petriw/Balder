@@ -20,7 +20,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Balder.Silverlight.Controls;
+using Balder.Core.Execution;
 
 
 namespace Balder.Silverlight.Services
@@ -29,19 +29,17 @@ namespace Balder.Silverlight.Services
 	{
 		private static FrameworkElement _root;
 
-		[Obsolete("Balder for Silverlight now has a control called Game in Balder.Silverlight.Controls - use this. This method and class will be removed in future versions.")]
+		[Obsolete("Balder for Silverlight can now use the Game class as a Control directly in Xaml, or one can derive from it and put it directly in Xaml. This method and class will be removed in future versions.")]
 		public static T Initialize<T>()
-			where T:Core.Execution.Game, new()
+			where T:Game, new()
 		{
-			var game = new Game();
-			var gameClass = new T();
-			game.GameClass = gameClass;
+			var game = new T();
 
 			_root = GetRoot();
 			AddGameToRoot(game);
 			AutomaticallyAdjustDimensions(game);
 
-			return gameClass;
+			return game;
 		}
 
 		#region Visual Tree stuff

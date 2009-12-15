@@ -26,5 +26,6 @@ namespace Balder.Core.Display
 		event DisplayEvent Render;
 
 		IDisplay CreateDisplay();
+		void RemoveDisplay(IDisplay display);
 	}
 }

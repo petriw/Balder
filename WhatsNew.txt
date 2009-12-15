@@ -1,0 +1,15 @@
+
+Version 0.8.8.5
+
+* Introduced Silverlight in Core, but still maintaining platform independence
+  - Using core objects directly in Xaml can now be done
+
+* Removed all controls in Balder.Core.Silverlight.Controls - not needed anymore
+
+* Introduced View namespace with IView interface and Camera implementing it
+
+* Viewport has View property insted of Camera
+
+* Moved rendering from a multithread environment to run synchronously on the CompositionTarget.
+  It gives better performance, due to synchronization issues between all threads. Will be 
+  revisited in the future.

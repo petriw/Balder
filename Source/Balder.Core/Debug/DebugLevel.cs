@@ -16,43 +16,16 @@
 // limitations under the License.
 //
 #endregion
-using System;
 
 namespace Balder.Core.Debug
 {
-	[Flags]
-	public enum DebugLevel
+	public class DebugLevel
 	{
-		None = 0,
-		Geometry,
-		FaceNormals,
-		VertexNormals,
-		Lights,
-		BoundingBoxes,
-		BoundingSpheres,
-		All = 0xffff
-	}
-
-	public static class DebugLevelExtensions
-	{
-		public static bool IsGeometrySet(this DebugLevel debugLevel)
-		{
-			return debugLevel.IsFlagSet(DebugLevel.Geometry);
-		}
-
-		public static bool IsFaceNormalsSet(this DebugLevel debugLevel)
-		{
-			return debugLevel.IsFlagSet(DebugLevel.FaceNormals);
-		}
-
-		public static bool IsBoundingSpheresSet(this DebugLevel debugLevel)
-		{
-			return debugLevel.IsFlagSet(DebugLevel.BoundingSpheres);
-		}
-
-		private static bool IsFlagSet(this DebugLevel debugLevel, DebugLevel desiredFlag)
-		{
-			return (debugLevel & desiredFlag) == desiredFlag;
-		}
+		public bool Geometry { get; set; }
+		public bool FaceNormals { get; set; }
+		public bool VertexNormals { get; set; }
+		public bool Lights { get; set; }
+		public bool BoundingBoxes { get; set; }
+		public bool BoundingSpheres { get; set; }
 	}
 }

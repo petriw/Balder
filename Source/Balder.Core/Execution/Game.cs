@@ -16,34 +16,36 @@
 // limitations under the License.
 //
 #endregion
+using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Math;
+using Balder.Core.View;
 
 namespace Balder.Core.Execution
 {
-	public class Game : Actor
+	public partial class Game : Actor
 	{
-		protected Game()
+		public Game()
 		{
+			Scene = new Scene();
+			Viewport = new Viewport { Scene = Scene, Width = 800, Height = 600 };
+			Camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
+			Constructed();
 		}
+
+		partial void Constructed();
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
-		public Camera Camera { get; private set; }
-
-		public override void BeforeInitialize()
+		public DebugLevel DebugLevel
 		{
-			Scene = new Scene();
-			Viewport = new Viewport {Scene = Scene, Width = 800, Height = 600};
-			Camera = new Camera(Viewport) {Target = Vector.Forward, Position = Vector.Zero};
-
-			// Todo: bi-directional referencing..  Not a good idea!
-			Viewport.Camera = Camera;
-
-			base.BeforeInitialize();
+			get { return Viewport.DebugLevel; }
+			set { Viewport.DebugLevel = value; }
 		}
 
-		public override void BeforeUpdate()
+
+
+		public override void OnBeforeUpdate()
 		{
 			if( null != MouseManager)
 			{
@@ -54,7 +56,7 @@ namespace Balder.Core.Execution
 
 		public virtual void OnRender()
 		{
-			Camera.Update();
+			Camera.Update(Viewport);
 			Scene.Render(Viewport, Camera.ViewMatrix, Camera.ProjectionMatrix);
 			Scene.HandleMouseEvents(Viewport, Mouse);
 		}

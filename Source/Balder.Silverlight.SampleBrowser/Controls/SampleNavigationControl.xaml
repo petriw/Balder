@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Controls.SampleNavigationControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:LayoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit"
+	xmlns:ViewModels="clr-namespace:Balder.Silverlight.SampleBrowser.Controls.ViewModels"
+    >
+	<UserControl.DataContext>
+		<ViewModels:SampleNavigationViewModel/>
+	</UserControl.DataContext>
+    <Grid x:Name="LayoutRoot" Background="White">
+		<LayoutToolkit:Accordion ExpandDirection="Down" HorizontalAlignment="Stretch" ItemsSource="{Binding Categories}" DisplayMemberPath="Name">
+			<LayoutToolkit:Accordion.ContentTemplate>
+				<DataTemplate>
+					<ItemsControl ItemsSource="{Binding Pages}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Vertical"/>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<HyperlinkButton Content="{Binding Name}" NavigateUri="{Binding NavigationUrl}" TargetName="ContentFrame"/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</DataTemplate>
+			</LayoutToolkit:Accordion.ContentTemplate>
+		</LayoutToolkit:Accordion>
+    </Grid>
+</UserControl>

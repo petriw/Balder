@@ -14,10 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Core.Tests.Silverlight", "..\Balder.Core.Tests\Balder.Core.Tests.Silverlight.csproj", "{14C4473E-12FB-4D78-A607-A84E3FB09322}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{67FF2401-5E46-474C-A0AE-02D1A6B9ED2C}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Build\Balder.build = ..\..\Build\Balder.build
-		..\..\build.cmd = ..\..\build.cmd
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Silverlight.Tests", "..\Balder.Silverlight.Tests\Balder.Silverlight.Tests.csproj", "{1C1B08C4-56B2-44DC-9E78-A18EBB1D4866}"
 EndProject

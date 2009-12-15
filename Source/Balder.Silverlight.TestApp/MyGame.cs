@@ -2,7 +2,6 @@
 using Balder.Core.Debug;
 using Balder.Core.Execution;
 using Balder.Core.Lighting;
-using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
 
 namespace Balder.Silverlight.TestApp
@@ -11,16 +10,14 @@ namespace Balder.Silverlight.TestApp
 	{
 		private Mesh _teapot;
 
-
-		public override void Initialize()
+		public override void OnInitialize()
 		{
-			Runtime.Instance.DebugLevel |= DebugLevel.BoundingSpheres;
+			Runtime.Instance.DebugLevel.BoundingSpheres = true;
 			Camera.Position.Z = -100;
 		}
 
-		public override void LoadContent()
+		public override void OnLoadContent()
 		{
-			
 			_teapot = ContentManager.Load<Mesh>("teapot.ASE");
 			_teapot.Color = Color.FromArgb(0xff,0,0,0xff);
 			_teapot.Click += teapotClick;
@@ -46,12 +43,15 @@ namespace Balder.Silverlight.TestApp
 
 
 		private double sin = 0;
-		public override void Update()
+		private double sin2 = 0;
+		public override void OnUpdate()
 		{
-			//Camera.Position.X = (float)(System.Math.Sin(sin) * 100.0);
-			//Camera.Position.Z = (float)(System.Math.Cos(sin) * 100.0);
+			Camera.Position.X = (float)(System.Math.Sin(sin) * 200.0);
+			Camera.Position.Y = (float) (System.Math.Sin(sin2)*150.0);
+			Camera.Position.Z = (float)(System.Math.Cos(sin) * 200.0);
 
-			sin += 0.1;
+			sin += 0.05;
+			sin2 += 0.025;
 			
 		}
 	}

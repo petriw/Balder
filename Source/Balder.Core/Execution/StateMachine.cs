@@ -206,7 +206,7 @@ namespace Balder.Core.Execution
 			// Register this statemachine
 			StateMachineManager.Instance.Register(this);
 
-			// Initialize states
+			// OnInitialize states
 			PreviousState = DefaultState;
 			CurrentState = DefaultState;
 			NextState = DefaultState;

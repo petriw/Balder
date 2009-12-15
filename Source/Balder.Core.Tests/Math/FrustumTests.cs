@@ -18,6 +18,8 @@
 #endregion
 using Balder.Core.Display;
 using Balder.Core.Math;
+using Balder.Core.View;
+using CThru.Silverlight;
 using NUnit.Framework;
 
 namespace Balder.Core.Tests.Math
@@ -27,15 +29,15 @@ namespace Balder.Core.Tests.Math
 	{
 		private Frustum _frustum;
 
-		[TestFixtureSetUp]
+		[TestFixtureSetUp, SilverlightSetUp]
 		public void Setup()
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
-			var camera = new Camera(viewport) { Target = Vector.Forward, Position = Vector.Zero };
-			camera.Prepare(viewport);
-			camera.Update();
+			var camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
+			viewport.View = camera;
+			camera.Update(viewport);
 			_frustum = new Frustum();
-			_frustum.SetCameraDefinition(camera);
+			_frustum.SetCameraDefinition(viewport, camera);
 		}
 
 		[Test]

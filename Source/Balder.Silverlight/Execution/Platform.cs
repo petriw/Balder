@@ -18,8 +18,8 @@
 #endregion
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows;
-using Balder.Core;
 using Balder.Core.Assets;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -32,19 +32,11 @@ using Balder.Silverlight.Input;
 
 namespace Balder.Silverlight.Execution
 {
+	[Export(typeof(IPlatform))]
 	public class Platform : IPlatform
 	{
-		public static IRuntime Runtime;
-
 		public event PlatformStateChange BeforeStateChange = (p, s) => { };
 		public event PlatformStateChange StateChanged = (p, s) => { };
-
-		static Platform()
-		{
-			var platform = new Platform();
-			Core.Runtime.Initialize(platform);
-			Runtime = Core.Runtime.Instance;
-		}
 
 		public Platform()
 		{

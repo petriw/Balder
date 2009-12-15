@@ -71,6 +71,10 @@
       <HintPath>..\..\Components\Siilverlight\Ninject.Core.dll</HintPath>
     </Reference>
     <Reference Include="system" />
+    <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows" />
@@ -99,24 +103,45 @@
     <Compile Include="DisplayActivationContext.cs" />
     <Compile Include="Display\IDisplayDevice.cs" />
     <Compile Include="Display\Viewport.cs" />
-    <Compile Include="EngineObject.cs" />
     <Compile Include="Exceptions\AssetNotFoundException.cs" />
     <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
+    <Compile Include="Execution\Actor.Silverlight.cs" />
+    <Compile Include="Execution\ActorState.cs" />
+    <Compile Include="Execution\Game.Silverlight.cs" />
+    <Compile Include="Execution\ICanNotifyChanges.cs" />
+    <Compile Include="Execution\Property.cs" />
+    <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
+    <Compile Include="Extensions\DependencyPropertySubscription.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\ImageFormatExtensions.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
+    <Compile Include="Extensions\StoryboardExtensions.cs" />
     <Compile Include="Extensions\ViewportExtensions.cs" />
+    <Compile Include="Extensions\VisualStateExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
+    <Compile Include="Helpers\DependencyProperty.cs" />
+    <Compile Include="Helpers\DependencyPropertyHelper.cs" />
     <Compile Include="Input\IMouseDevice.cs" />
     <Compile Include="Input\IMouseManager.cs" />
     <Compile Include="Input\Mouse.cs" />
     <Compile Include="Input\MouseButtonState.cs" />
     <Compile Include="Input\MouseManager.cs" />
+    <Compile Include="Lighting\Light.Silverlight.cs" />
     <Compile Include="Math\BoundingBox.cs" />
     <Compile Include="Math\BoundingFrustum.cs" />
     <Compile Include="Math\BoundingSphere.cs" />
     <Compile Include="Math\ContainmentType.cs" />
+    <Compile Include="Math\Coordinate.cs" />
+    <Compile Include="Math\Coordinate.Silverlight.cs" />
     <Compile Include="Math\Gjk.cs" />
     <Compile Include="Math\PlaneIntersectionType.cs" />
     <Compile Include="Math\Ray.cs" />
+    <Compile Include="Node.Silverlight.cs">
+      <DependentUpon>Node.cs</DependentUpon>
+    </Compile>
     <Compile Include="Objects\Flat\ISpriteContext.cs" />
     <Compile Include="ColorSpace.cs" />
     <Compile Include="ColorSpaces.cs" />
@@ -130,11 +155,15 @@
     <Compile Include="Imaging\ImageHelper.cs" />
     <Compile Include="Imaging\ImagePalette.cs" />
     <Compile Include="Objects\Geometries\Line.cs" />
+    <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
     <Compile Include="Execution\IObjectFactory.cs" />
     <Compile Include="Execution\IPlatform.cs" />
     <Compile Include="IRuntime.cs" />
+    <Compile Include="RuntimeImports.cs" />
+    <Compile Include="TypeConverters\ColorConverter.cs" />
+    <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />
     <Compile Include="PixelFormat.cs" />
@@ -166,7 +195,7 @@
     <Compile Include="Assets\IAsset.cs" />
     <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Collections\NodeCollection.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="View\Camera.cs" />
     <Compile Include="Runtime.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Utils\EnumHelper.cs" />
@@ -191,6 +220,7 @@
     <Compile Include="Execution\StateMachine.cs" />
     <Compile Include="Execution\StateMachineManager.cs" />
     <Compile Include="Utils\AssemblyHelper.cs" />
+    <Compile Include="View\IView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadableRex\Notes.txt" />
@@ -206,6 +236,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

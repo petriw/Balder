@@ -59,7 +59,7 @@ namespace Balder.Core.Extensions
 			var a = (((source.X * matrix[0, 3]) + (source.Y * matrix[1, 3])) + (source.Z * matrix[2, 3])) + matrix[3, 3];
 			if (!WithinEpsilon(a, 1f))
 			{
-				vector = (Vector)(vector / (a*2));
+				vector = (Vector)(vector / (a*2f));
 			}
 			return vector;
 		}

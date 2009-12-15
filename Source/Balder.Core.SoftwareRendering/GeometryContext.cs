@@ -178,7 +178,7 @@ namespace Balder.Core.SoftwareRendering
 			vertex.MakeScreenCoordinates();
 			vertex.TransformedVectorNormalized = vertex.TransformedNormal;
 			vertex.TransformedVectorNormalized.Normalize();
-			var z = ((vertex.TransformedVector.Z/viewport.Camera.DepthDivisor) + viewport.Camera.DepthZero);
+			var z = ((vertex.TransformedVector.Z/viewport.View.DepthDivisor) + viewport.View.DepthZero);
 			vertex.DepthBufferAdjustedZ = z;
 			
 		}
@@ -220,7 +220,7 @@ namespace Balder.Core.SoftwareRendering
 				var mixedProduct = (b.TranslatedVector.X - a.TranslatedVector.X) * (c.TranslatedVector.Y - a.TranslatedVector.Y) -
 								   (c.TranslatedVector.X - a.TranslatedVector.X) * (b.TranslatedVector.Y - a.TranslatedVector.Y);
 
-				var visible = (mixedProduct < 0) && viewport.Camera.IsVectorVisible(a.TransformedVector);
+				var visible = (mixedProduct < 0) && viewport.View.IsInView(a.TransformedVector);
 				if (!visible)
 				{
 					continue;
