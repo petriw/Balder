@@ -29,7 +29,7 @@ namespace Balder.Core.SoftwareRendering
 		int AlphaPosition { get; }
 
 		int[] Pixels { get; }
-		//int[] BackBuffer { get; }
+		int[] BackBuffer { get; }
 
 		void Clear();
 		void Swap();

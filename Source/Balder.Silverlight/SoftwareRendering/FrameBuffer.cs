@@ -16,73 +16,56 @@
 // limitations under the License.
 //
 #endregion
-
-using System;
-using System.Threading;
-using System.Windows.Media.Imaging;
 using Balder.Core.SoftwareRendering;
 
 namespace Balder.Silverlight.SoftwareRendering
 {
-	public class FrameBuffer : IFrameBuffer
-	{
+    public class FrameBuffer : IFrameBuffer
+    {
+    	private int[] _renderbuffer;
+		private int[] _clearBuffer;
+		private int[] _showBuffer;
+    	private int[] _emptyBuffer;
+    	private int _length;
 
-		private WriteableBitmap _backBufferBitmap;
-		private WriteableBitmap _frontBufferBitmap;
-		private WriteableBitmap _clearBufferBitmap;
+    	public void Initialize(int width, int height)
+    	{
+    		Stride = width;
+			_length = width * height;
 
-		public void Initialize(int width, int height)
-		{
-			Stride = width;
+			_renderbuffer = new int[_length];
+			_clearBuffer = new int[_length];
+			_showBuffer = new int[_length];
+			_emptyBuffer = new int[_length];
 
-			_backBufferBitmap = new WriteableBitmap(width, height);
-			_frontBufferBitmap = new WriteableBitmap(width, height);
-			_clearBufferBitmap = new WriteableBitmap(width, height);
-
-
-			/*
-			FillBuffer(_backBufferBitmap,0xffffff);
-			FillBuffer(_clearBufferBitmap, 0xffffff);
-			FillBuffer(_frontBufferBitmap, 0xffffff);
-			 * */
-		}
-
-		private void FillBuffer(WriteableBitmap buffer, int color)
-		{
-			for( var index=0; index<buffer.Pixels.Length; index++)
-			{
-				buffer.Pixels[index] = color;
-			}
-			
-		}
+			Swap();
+    	}
 
 
-		public int Stride { get; private set; }
+    	public int Stride { get; private set; }
 		public int RedPosition { get { return 2; } }
 		public int BluePosition { get { return 0; } }
 		public int GreenPosition { get { return 1; } }
 		public int AlphaPosition { get { return 3; } }
-		public WriteableBitmap BackBufferBitmap { get { return _backBufferBitmap; } }
-		public WriteableBitmap FrontBufferBitmap { get { return _frontBufferBitmap; } }
-		public WriteableBitmap ClearBufferBitmap { get { return _clearBufferBitmap; } }
-
-		public int[] Pixels { get { return BackBufferBitmap.Pixels; } }
+		public int[] Pixels { get { return _renderbuffer; } }
+		public int[] BackBuffer { get { return _showBuffer;  } }
 
 		public void Swap()
 		{
-			var frontBufferBitmap = _frontBufferBitmap;
-			var backBufferBitmap = _backBufferBitmap;
-			var clearBufferBitmap = _clearBufferBitmap;
-			
-			_frontBufferBitmap = backBufferBitmap;
-			_clearBufferBitmap = frontBufferBitmap;
-			_backBufferBitmap = clearBufferBitmap;
+			var renderBuffer = _renderbuffer;
+			var clearBuffer = _clearBuffer;
+			var showBuffer = _showBuffer;
+
+			_renderbuffer = clearBuffer;
+			_showBuffer = renderBuffer;
+			_clearBuffer = showBuffer;
 		}
 
 
 		public void Clear()
 		{
-			Array.Clear(_clearBufferBitmap.Pixels, 0, _clearBufferBitmap.Pixels.Length);
+			_emptyBuffer.CopyTo(_clearBuffer, 0);
+			//_clearBuffer = new int[_length];
 		}
 
 

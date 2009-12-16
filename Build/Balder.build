@@ -17,7 +17,7 @@
 
 	<target name="Clean">
 		<delete dir="${Path.Drop}"/>
-		<delete dir="$(Path.Tests}"/>
+		<delete dir="${Path.Tests}"/>
 	</target>
 
 	<target name="Configure">
@@ -52,8 +52,10 @@
 			<call target="Core"/>
 			<call target="SoftwareRendering"/>
 			<call target="Silverlight"/>
+			<call target="SilverlightDependencyDrops"/>
 			<!--<call target="Test"/>-->
 		</if>
+
 		<if test="${not(framework::exists('silverlight-3.0'))}">
 			<echo message="Silverlight v3.0 is not available. Skipping platform."/>
 		</if>
@@ -62,7 +64,9 @@
 
 	<target name="Core" depends="Configure">
 		<mkdir dir="${Current.Path.Drop}"/>
-		<csc keyfile="${GlobalKeyFile}" 
+		
+		<!-- keyfile="${GlobalKeyFile}" -->
+		<csc 
 				 noconfig="true"
 				 warnaserror="false"
 				 target="library"
@@ -83,6 +87,7 @@
 				<include name="System.Net.dll"/>
 				<include name="System.Windows.dll"/>
 				<include name="System.Xml.dll"/>
+				<include name="${Current.Path.Components}/System.ComponentModel.Composition.dll"/>
 				<include name="${Current.Path.Components}/System.Xml.Linq.dll" if="${Build.Platform == 'silverlight-3.0'}"/>
 				<include name="${Current.Path.Components}/Ninject.Core.dll"/>
 			</references>
@@ -105,7 +110,8 @@
 		</copy>
 	<property name="nant.settings.currentframework" value="net-3.5"/>
 		<property name="Build.Platform" value="net-3.5"/>
-		<csc keyfile="${GlobalKeyFile}" 
+		<!-- keyfile="${GlobalKeyFile}" -->
+		<csc 
 				 noconfig="true"
 				 warnaserror="false"
 				 target="library"
@@ -128,6 +134,7 @@
 				<include name="PresentationCore.dll"/>
 				<include name="${Current.Path.Components}/System.Xml.Linq.dll" if="${Build.Platform == 'silverlight-3.0'}"/>
 				<include name="${Current.Path.Components}/Ninject.Core.dll"/>
+				<include name="${Current.Path.Components}/System.ComponentModel.Composition.dll"/>
 				<include name="Balder.Core.dll"/>
 				<include name="nunit.framework.dll"/>
 				<include name="moq.dll"/>
@@ -137,9 +144,10 @@
 
 
 
-	<target name="SoftwareRendering" depents="Core">
+	<target name="SoftwareRendering" depends="Core">
 		<mkdir dir="${Current.Path.Drop}"/>
-		<csc keyfile="${GlobalKeyFile}" 
+		<!-- keyfile="${GlobalKeyFile}" -->
+		<csc 
 				 noconfig="true"
 				 warnaserror="false"
 				 target="library"
@@ -160,14 +168,16 @@
 				<include name="System.Windows.dll"/>
 				<include name="${Current.Path.Components}/System.Windows.Browser.dll" if="${Build.Platform == 'silverlight-3.0'}"/>
 				<include name="${Current.Path.Components}/Ninject.Core.dll"/>
+				<include name="${Current.Path.Components}/System.ComponentModel.Composition.dll"/>
 				<include name="Balder.Core.dll"/>
 			</references>
 		</csc>
 	</target>
 
-	<target name="Silverlight" depents="SoftwareRendering">
+	<target name="Silverlight" depends="SoftwareRendering">
 		<mkdir dir="${Current.Path.Drop}"/>
-		<csc keyfile="${GlobalKeyFile}" 
+		<!-- keyfile="${GlobalKeyFile}" -->
+		<csc 
 				 noconfig="true"
 				 warnaserror="false"
 				 target="library"
@@ -188,10 +198,21 @@
 				<include name="System.Windows.dll"/>
 				<include name="${Current.Path.Components}/System.Windows.Browser.dll" if="${Build.Platform == 'silverlight-3.0'}"/>
 				<include name="${Current.Path.Components}/Ninject.Core.dll"/>
+				<include name="${Current.Path.Components}/System.ComponentModel.Composition.dll"/>
 				<include name="Balder.Core.dll"/>
 				<include name="Balder.Core.SoftwareRendering.dll"/>
 			</references>
 		</csc>
+	</target>
+
+	<target name="SilverlightDependencyDrops" depends="Silverlight">
+		<copy todir="${Current.Path.Drop}">
+			<fileset basedir="${Path.Components}\Siilverlight">
+				<include name="ninject.core.dll"/>
+				<include name="System.ComponentModel.Composition.dll"/>
+			</fileset>
+		</copy>
+
 	</target>
 
 	<target name="Test">

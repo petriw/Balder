@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Balder.Core</RootNamespace>
+    <AssemblyName>Balder.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>ClientBin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>ClientBin\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="Ninject.Core, Version=1.0.0.82, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Ninject.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="system" />
+    <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Common\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Animation\AnimatableCollection.cs" />
+    <Compile Include="Animation\AnimationManager.cs" />
+    <Compile Include="Assets\AssetLoaderService.cs" />
+    <Compile Include="Assets\AssetLoaders\AseLoader.cs" />
+    <Compile Include="Assets\AssetLoaders\Demoniak3DLoader.cs" />
+    <Compile Include="Assets\AssetLoaders\XLoader.cs" />
+    <Compile Include="Assets\IAssetLoader.cs" />
+    <Compile Include="Collections\ActorCollection.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="Content\ContentCreator.cs" />
+    <Compile Include="Debug\BoundingSphereDebugShape.cs" />
+    <Compile Include="Debug\DebugRenderer.cs" />
+    <Compile Include="Debug\DebugShape.cs" />
+    <Compile Include="Debug\IDebugRenderer.cs" />
+    <Compile Include="Dimension.cs" />
+    <Compile Include="DisplayActivationContext.cs" />
+    <Compile Include="Display\IDisplayDevice.cs" />
+    <Compile Include="Display\Viewport.cs" />
+    <Compile Include="Exceptions\AssetNotFoundException.cs" />
+    <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
+    <Compile Include="Execution\Actor.Silverlight.cs" />
+    <Compile Include="Execution\ActorState.cs" />
+    <Compile Include="Execution\Game.Silverlight.cs" />
+    <Compile Include="Execution\ICanNotifyChanges.cs" />
+    <Compile Include="Execution\Property.cs" />
+    <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
+    <Compile Include="Extensions\DependencyPropertySubscription.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
+    <Compile Include="Extensions\ImageFormatExtensions.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
+    <Compile Include="Extensions\StoryboardExtensions.cs" />
+    <Compile Include="Extensions\ViewportExtensions.cs" />
+    <Compile Include="Extensions\VisualStateExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
+    <Compile Include="Extensions\WaitHandleExtensions.cs" />
+    <Compile Include="Helpers\DependencyProperty.cs" />
+    <Compile Include="Helpers\DependencyPropertyHelper.cs" />
+    <Compile Include="Input\IMouseDevice.cs" />
+    <Compile Include="Input\IMouseManager.cs" />
+    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="Input\MouseButtonState.cs" />
+    <Compile Include="Input\MouseManager.cs" />
+    <Compile Include="Lighting\Light.Silverlight.cs" />
+    <Compile Include="Math\BoundingBox.cs" />
+    <Compile Include="Math\BoundingFrustum.cs" />
+    <Compile Include="Math\BoundingSphere.cs" />
+    <Compile Include="Math\ContainmentType.cs" />
+    <Compile Include="Math\Coordinate.cs" />
+    <Compile Include="Math\Coordinate.Silverlight.cs" />
+    <Compile Include="Math\Gjk.cs" />
+    <Compile Include="Math\PlaneIntersectionType.cs" />
+    <Compile Include="Math\Ray.cs" />
+    <Compile Include="Node.Silverlight.cs">
+      <DependentUpon>Node.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Objects\Flat\ISpriteContext.cs" />
+    <Compile Include="ColorSpace.cs" />
+    <Compile Include="ColorSpaces.cs" />
+    <Compile Include="Imaging\IImageContext.cs" />
+    <Compile Include="Objects\Flat\Sprite.cs" />
+    <Compile Include="Imaging\Image.cs" />
+    <Compile Include="Objects\Geometries\Cylinder.cs" />
+    <Compile Include="Objects\Geometries\GeometryHelper.cs" />
+    <Compile Include="Assets\AssetLoader.cs" />
+    <Compile Include="Imaging\ImageFormat.cs" />
+    <Compile Include="Imaging\ImageHelper.cs" />
+    <Compile Include="Imaging\ImagePalette.cs" />
+    <Compile Include="Objects\Geometries\Line.cs" />
+    <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
+    <Compile Include="Rendering\IShapeContext.cs" />
+    <Compile Include="Execution\ConstructorArgument.cs" />
+    <Compile Include="Execution\IObjectFactory.cs" />
+    <Compile Include="Execution\IPlatform.cs" />
+    <Compile Include="IRuntime.cs" />
+    <Compile Include="RuntimeImports.cs" />
+    <Compile Include="TypeConverters\ColorConverter.cs" />
+    <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
+    <Compile Include="Utils\NInjectExtensions.cs" />
+    <Compile Include="Execution\ObjectFactory.cs" />
+    <Compile Include="PixelFormat.cs" />
+    <Compile Include="Content\ContentManager.cs" />
+    <Compile Include="Assets\IAssetPart.cs" />
+    <Compile Include="Content\IFileLoader.cs" />
+    <Compile Include="Lighting\Light.cs" />
+    <Compile Include="Lighting\OmniLight.cs" />
+    <Compile Include="Materials\Material.cs" />
+    <Compile Include="Objects\Geometries\Box.cs" />
+    <Compile Include="ReadableRex\Alternation.cs" />
+    <Compile Include="ReadableRex\LazyQuantifier.cs" />
+    <Compile Include="ReadableRex\LinqToRegex\PatternVisitor.cs" />
+    <Compile Include="ReadableRex\LinqToRegex\RegexQuery.cs" />
+    <Compile Include="ReadableRex\LinqToRegex\RegexUser.cs" />
+    <Compile Include="ReadableRex\Pattern.cs" />
+    <Compile Include="ReadableRex\Quantifier.cs" />
+    <Compile Include="ReadableRex\Range.cs" />
+    <Compile Include="Execution\Actor.cs" />
+    <Compile Include="Execution\AutoKernel.cs" />
+    <Compile Include="Debug\DebugLevel.cs" />
+    <Compile Include="Execution\Game.cs" />
+    <Compile Include="Objects\Geometries\IGeometryContext.cs" />
+    <Compile Include="Objects\Geometries\Mesh.cs" />
+    <Compile Include="Execution\IActor.cs" />
+    <Compile Include="Assets\IAssetLoaderService.cs" />
+    <Compile Include="Content\IContentManager.cs" />
+    <Compile Include="Display\IDisplay.cs" />
+    <Compile Include="Assets\IAsset.cs" />
+    <Compile Include="Math\MathHelper.cs" />
+    <Compile Include="Collections\NodeCollection.cs" />
+    <Compile Include="View\Camera.cs" />
+    <Compile Include="Runtime.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="Utils\EnumHelper.cs" />
+    <Compile Include="EnvironmentalNode.cs" />
+    <Compile Include="Animation\IAnimatable.cs" />
+    <Compile Include="Lighting\ILight.cs" />
+    <Compile Include="Math\Core.cs" />
+    <Compile Include="Math\Frustum.cs" />
+    <Compile Include="Math\Matrix.cs" />
+    <Compile Include="Math\Plane.cs" />
+    <Compile Include="Math\Quaternion.cs" />
+    <Compile Include="Math\Vector.cs" />
+    <Compile Include="Objects\Geometries\Vertex.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="Objects\Geometries\Face.cs" />
+    <Compile Include="Objects\Geometries\Geometry.cs" />
+    <Compile Include="Objects\Geometries\TextureCoordinate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderableNode.cs" />
+    <Compile Include="Execution\ICloneable.cs" />
+    <Compile Include="Execution\IStateMachine.cs" />
+    <Compile Include="Execution\StateMachine.cs" />
+    <Compile Include="Execution\StateMachineManager.cs" />
+    <Compile Include="Utils\AssemblyHelper.cs" />
+    <Compile Include="View\IView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadableRex\Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
