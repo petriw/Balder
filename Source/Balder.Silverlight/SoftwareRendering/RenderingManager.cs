@@ -65,7 +65,6 @@ namespace Balder.Silverlight.SoftwareRendering
 			_renderThread.Start();
 			_clearThread.Start();
 
-
 			_hasCleared = false;
 			_hasRendered = false;
 
@@ -123,6 +122,7 @@ namespace Balder.Silverlight.SoftwareRendering
 				
 				_hasCleared = false;
 				_hasRendered = false;
+                
 			}
 			startEvents.SetAll();
 			
