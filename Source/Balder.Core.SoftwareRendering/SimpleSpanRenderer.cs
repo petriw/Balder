@@ -68,9 +68,9 @@ namespace Balder.Core.SoftwareRendering
 				if (xOffset >= 0 && xOffset < buffer.Width)
 				{
 					var z = DepthInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) ((1.0f-z)*(float) UInt32.MaxValue);
+					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
 					
-					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
 					    z < 1f
 						)
@@ -112,9 +112,9 @@ namespace Balder.Core.SoftwareRendering
 				{
 
 					var z = GouraudInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) ((1.0f-z)*(float) UInt32.MaxValue);
+					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
 
-					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
 					    z < 1f
 						)
@@ -160,7 +160,7 @@ namespace Balder.Core.SoftwareRendering
 				if (xOffset >= 0 && xOffset < buffer.Width)
 				{
 					var z = TextureInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) ((1.0f - z)*(float) UInt32.MaxValue);
+					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
 
 
 					var u = TextureInterpolator.Points[1].InterpolatedValues[index];
@@ -171,7 +171,7 @@ namespace Balder.Core.SoftwareRendering
 
 					var texel = ((intv*image.Width) + intu);
 					
-					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
 					    z >= 0f &&
 					    z < 1f
 						)

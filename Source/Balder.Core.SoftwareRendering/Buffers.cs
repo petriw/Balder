@@ -27,8 +27,8 @@ namespace Balder.Core.SoftwareRendering
 		private static readonly object ClearingDepthBufferLock = new object();
 		private static readonly object DepthBufferLock = new object();
 
-		//public const UInt32 DepthBufferMax = UInt32.MaxValue;
-		//public const UInt32 DepthBufferMin = UInt32.MinValue;
+		public const UInt32 DepthBufferMax = UInt32.MaxValue;
+		public const UInt32 DepthBufferMin = UInt32.MinValue;
 		public static Color BlackBackground = Color.FromArgb(0xff, 0, 0, 0);
 
 		private UInt32[] _clearingDepthBuffer;
@@ -55,14 +55,11 @@ namespace Balder.Core.SoftwareRendering
 			lock (ClearingDepthBufferLock)
 			{
 				_clearingDepthBuffer = new UInt32[zBufferSize];
-				Array.Clear(_clearingDepthBuffer,0,_clearingDepthBuffer.Length);
 
-				/*
 				for (var index = 0; index < DepthBuffer.Length; index++)
 				{
 					_clearingDepthBuffer[index] = DepthBufferMax;
 				}
-				 */
 			}
 
 			ClearZBuffer();
@@ -91,8 +88,7 @@ namespace Balder.Core.SoftwareRendering
 			{
 				lock (ClearingDepthBufferLock)
 				{
-					Array.Clear(FrontDepthBuffer,0,FrontDepthBuffer.Length);
-					//_clearingDepthBuffer.CopyTo(FrontDepthBuffer, 0);
+					_clearingDepthBuffer.CopyTo(FrontDepthBuffer, 0);
 				}
 			}
 		}

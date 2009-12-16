@@ -19,7 +19,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -27,7 +26,7 @@ using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.SoftwareRendering;
 using Balder.Silverlight.SoftwareRendering;
-using Color = Balder.Core.Color;
+using Color=Balder.Core.Color;
 
 namespace Balder.Silverlight.Display
 {
@@ -47,33 +46,32 @@ namespace Balder.Silverlight.Display
 		public void Initialize(int width, int height)
 		{
 			_buffers = BufferManager.Instance.Create<FrameBuffer>(width, height);
-			//FramebufferBitmap = new WriteableBitmap(width, height);
+			FramebufferBitmap = new WriteableBitmap(width, height);
 			_initialized = true;
 			BackgroundColor = Color.FromArgb(0xff, 0, 0, 0);
 		}
 
-		private Image _image;
 		public void InitializeContainer(object container)
 		{
-			if (container is Grid)
+			if( container is Grid )
 			{
-				_image = new Image
+				var image = new Image
 				{
-					//Source = FramebufferBitmap,
+					Source = FramebufferBitmap,
 					Stretch = Stretch.None
 				};
-				((Grid)container).Children.Add(_image);
+				((Grid)container).Children.Add(image);	
 			}
 		}
 
 		public Color BackgroundColor { get; set; }
-		//public WriteableBitmap FramebufferBitmap { get; private set; }
+		public WriteableBitmap FramebufferBitmap { get; private set; }
 
 		public void PrepareRender()
 		{
 			BufferManager.Instance.Current = _buffers;
 		}
-
+		
 
 		public void Swap()
 		{
@@ -96,38 +94,15 @@ namespace Balder.Silverlight.Display
 			if (_initialized)
 			{
 				_buffers.Show();
-				if (null != _image)
-				{
-					//_image.Dispatcher.BeginInvoke(() =>
-					{
-						var bitmap = ((FrameBuffer)_buffers.FrameBuffer).FrontBufferBitmap;
-						if (null != bitmap)
-						{
-							if (bitmap.CheckAccess())
-							{
-								_image.Source = bitmap;
-								bitmap.Invalidate();
-
-							}
-							else
-							{
-								int i = 0;
-								i++;
-							}
-						}
-					}
-					//);
-
-				}
-				//_buffers.FrameBuffer.BackBuffer.CopyTo(FramebufferBitmap.Pixels, 0);
+				_buffers.FrameBuffer.BackBuffer.CopyTo(FramebufferBitmap.Pixels, 0);
 			}
 		}
 
 		public void Update()
 		{
-			if (_initialized)
+			if( _initialized)
 			{
-				//FramebufferBitmap.Invalidate();
+				FramebufferBitmap.Invalidate();
 			}
 		}
 	}
