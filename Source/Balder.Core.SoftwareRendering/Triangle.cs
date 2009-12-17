@@ -210,6 +210,7 @@ namespace Balder.Core.SoftwareRendering
 
 		public static void Draw(IBuffers buffers, ISpanRenderer renderer, TriangleShade shade, Face face, Vertex[] vertices, TextureCoordinate[] textureCoordinates)
 		{
+			
 			var vertexA = vertices[face.A];
 			var vertexB = vertices[face.B];
 			var vertexC = vertices[face.C];
@@ -240,6 +241,7 @@ namespace Balder.Core.SoftwareRendering
 			GetSortedPoints(ref vertexA, ref vertexB, ref vertexC, ref textureA, ref textureB, ref textureC);
 
 			var interpolator = GetInterpolatorForFace(face, shade);
+			
 
 			var secondaryStartY = (int)(vertexB.TranslatedScreenCoordinates.Y - vertexA.TranslatedScreenCoordinates.Y);
 			var spreadCount = ((int)(vertexC.TranslatedScreenCoordinates.Y - vertexA.TranslatedScreenCoordinates.Y)) + 1;

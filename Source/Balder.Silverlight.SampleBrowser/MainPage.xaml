@@ -52,6 +52,35 @@
 						
 					</controls:TabItem>
 				</controls:TabControl>
+				
+				<Grid Grid.Column="1" x:Name="RenderingNumbersGrid" Margin="8,40,0,0">
+					<Grid.Resources>
+						<Style x:Key="DebugText" TargetType="TextBlock">
+							<Setter Property="FontSize" Value="24"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</Grid.Resources>
+					
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="200"/>
+						<ColumnDefinition Width="200"/>
+					</Grid.ColumnDefinitions>
+					
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+					</Grid.RowDefinitions>
+
+					<TextBlock Style="{StaticResource DebugText}" Text="RenderTime" Grid.Column="0" Grid.Row="0"/> 
+					<TextBlock Style="{StaticResource DebugText}" Text="ClearTime" Grid.Column="0" Grid.Row="1"/> 
+					<TextBlock Style="{StaticResource DebugText}" Text="ShowTime" Grid.Column="0" Grid.Row="2"/> 
+
+					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Render}" Grid.Column="1" Grid.Row="0"/> 
+					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Clear}" Grid.Column="1" Grid.Row="1"/> 
+					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Show}" Grid.Column="1" Grid.Row="2"/> 
+
+				</Grid>
 			</Grid>
 		</StackPanel>
 	</Grid>

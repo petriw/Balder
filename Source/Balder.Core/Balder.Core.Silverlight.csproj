@@ -99,6 +99,7 @@
     <Compile Include="Debug\DebugRenderer.cs" />
     <Compile Include="Debug\DebugShape.cs" />
     <Compile Include="Debug\IDebugRenderer.cs" />
+    <Compile Include="Diagnostics\Stopwatch.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="DisplayActivationContext.cs" />
     <Compile Include="Display\IDisplayDevice.cs" />

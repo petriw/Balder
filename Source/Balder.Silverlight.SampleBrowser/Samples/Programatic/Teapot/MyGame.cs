@@ -38,9 +38,9 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 
 		public override void OnUpdate()
 		{
-			Camera.Position.X = Math.Sin(_sin)*80.0;
+			Camera.Position.X = Math.Sin(_sin)*120.0;
 			Camera.Position.Y = 0;
-			Camera.Position.Z = Math.Cos(_sin)*80.0;
+			Camera.Position.Z = Math.Cos(_sin)*120.0;
 
 			_sin += 0.05;
 			base.OnUpdate();

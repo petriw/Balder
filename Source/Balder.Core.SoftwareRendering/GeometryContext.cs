@@ -165,14 +165,15 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Render(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
+			
 			TransformAndTranslateVertices(viewport, node,view,projection,world);
+			
 			RenderFaces(viewport, view, projection, world);
 			RenderLines(viewport, view, projection, world);
 		}
 
-		private void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix matrix, Matrix view, Matrix projection, Matrix world)
 		{
-			var matrix = (world*view)*projection;
 			vertex.Transform(world, matrix);
 			vertex.Translate(projection, viewport.Width, viewport.Height);
 			vertex.MakeScreenCoordinates();
@@ -185,10 +186,11 @@ namespace Balder.Core.SoftwareRendering
 
 		private void TransformAndTranslateVertices(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
+			var matrix = (world * view) * projection;
 			for (var vertexIndex = 0; vertexIndex < Vertices.Length; vertexIndex++)
 			{
 				var vertex = Vertices[vertexIndex];
-				TransformAndTranslateVertex(ref vertex, viewport, view, projection, world);
+				TransformAndTranslateVertex(ref vertex, viewport, matrix, view, projection, world);
 				CalculateColorForVertex(ref vertex, viewport, node);
 				Vertices[vertexIndex] = vertex;
 			}

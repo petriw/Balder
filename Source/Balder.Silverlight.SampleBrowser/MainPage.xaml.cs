@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Balder.Core;
 using Balder.Core.Execution;
+using Balder.Silverlight.SoftwareRendering;
 
 namespace Balder.Silverlight.SampleBrowser
 {
@@ -12,9 +13,9 @@ namespace Balder.Silverlight.SampleBrowser
 		{
 			InitializeComponent();
 
-			
 
 
+			RenderingNumbersGrid.DataContext = RenderingManager.RenderingNumbers;
 		}
 
 		private void RemoveGameInVisualTree(UIElement element)

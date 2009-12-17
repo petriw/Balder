@@ -51,34 +51,38 @@ namespace Balder.Core.SoftwareRendering
 		{
 			var spreadCount = span.Length; //span.XEnd - span.XStart;
 			DepthInterpolator.SetPoint(0, span.ZStart, span.ZEnd);
-			var yOffset = span.Y*buffer.FrameBuffer.Stride;
+			var yOffset = span.Y * buffer.FrameBuffer.Stride;
 			var rOffset = buffer.FrameBuffer.RedPosition;
 			var gOffset = buffer.FrameBuffer.GreenPosition;
 			var bOffset = buffer.FrameBuffer.BluePosition;
 			var aOffset = buffer.FrameBuffer.AlphaPosition;
 			var bufferOffset = yOffset + span.XStart;
-			var depthBufferOffset = (buffer.Width*span.Y) + span.XStart;
+			var depthBufferOffset = (buffer.Width * span.Y) + span.XStart;
+
 			DepthInterpolator.Interpolate(spreadCount);
+
 
 			var colorAsInt = (int)color.ToUInt32();
 
 			var xOffset = span.XStart;
-			for( var index=0; index<spreadCount; index++ )
+			for (var index = 0; index < spreadCount; index++)
 			{
+
 				if (xOffset >= 0 && xOffset < buffer.Width)
 				{
 					var z = DepthInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
-					
-					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
-					    z >= 0f &&
-					    z < 1f
+					var bufferZ = (UInt32)((1.0f - z) * (float)UInt32.MaxValue);
+
+					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+						z >= 0f &&
+						z < 1f
 						)
 					{
 						buffer.FrameBuffer.Pixels[bufferOffset] = colorAsInt;
 						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
 					}
 				}
+
 
 				xOffset++;
 				bufferOffset++;
@@ -88,6 +92,7 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Gouraud(IBuffers buffer, Span span)
 		{
+
 			var spreadCount = span.XEnd - span.XStart;
 			GouraudInterpolator.SetPoint(0, span.ZStart, span.ZEnd);
 			GouraudInterpolator.SetPoint(1, span.ColorStart.RedAsFloat, span.ColorEnd.RedAsFloat);
@@ -101,22 +106,24 @@ namespace Balder.Core.SoftwareRendering
 			var bOffset = buffer.FrameBuffer.BluePosition;
 			var aOffset = buffer.FrameBuffer.AlphaPosition;
 			var bufferOffset = yOffset + span.XStart;
-			var depthBufferOffset = (buffer.Width*span.Y)+span.XStart;
+			var depthBufferOffset = (buffer.Width * span.Y) + span.XStart;
 			GouraudInterpolator.Interpolate(spreadCount);
 
 			var xOffset = span.XStart;
 
+			
 			for (var index = 0; index < spreadCount; index++)
 			{
 				if (xOffset >= 0 && xOffset < buffer.Width)
 				{
 
-					var z = GouraudInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
 
-					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
-					    z >= 0f &&
-					    z < 1f
+					var z = GouraudInterpolator.Points[0].InterpolatedValues[index];
+					var bufferZ = (UInt32)((1.0f - z) * (float)UInt32.MaxValue);
+
+					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+						z >= 0f &&
+						z < 1f
 						)
 					{
 						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
@@ -132,7 +139,7 @@ namespace Balder.Core.SoftwareRendering
 				}
 
 				xOffset++;
-				bufferOffset ++;
+				bufferOffset++;
 
 				depthBufferOffset++;
 			}
@@ -160,20 +167,20 @@ namespace Balder.Core.SoftwareRendering
 				if (xOffset >= 0 && xOffset < buffer.Width)
 				{
 					var z = TextureInterpolator.Points[0].InterpolatedValues[index];
-					var bufferZ = (UInt32) (z*(float) UInt32.MaxValue);
+					var bufferZ = (UInt32)((1.0f - z) * (float)UInt32.MaxValue);
 
 
 					var u = TextureInterpolator.Points[1].InterpolatedValues[index];
 					var v = TextureInterpolator.Points[2].InterpolatedValues[index];
 
-					var intu = (int) (u*image.Width) & (image.Width - 1);
-					var intv = (int) (v*image.Height) & (image.Height - 1);
+					var intu = (int)(u * image.Width) & (image.Width - 1);
+					var intv = (int)(v * image.Height) & (image.Height - 1);
 
-					var texel = ((intv*image.Width) + intu);
-					
-					if (bufferZ < buffer.DepthBuffer[depthBufferOffset] &&
-					    z >= 0f &&
-					    z < 1f
+					var texel = ((intv * image.Width) + intu);
+
+					if (bufferZ > buffer.DepthBuffer[depthBufferOffset] &&
+						z >= 0f &&
+						z < 1f
 						)
 					{
 						buffer.FrameBuffer.Pixels[bufferOffset] = texture.Pixels[texel];
@@ -182,7 +189,7 @@ namespace Balder.Core.SoftwareRendering
 					}
 				}
 
-				bufferOffset ++;
+				bufferOffset++;
 				depthBufferOffset++;
 				xOffset++;
 			}
