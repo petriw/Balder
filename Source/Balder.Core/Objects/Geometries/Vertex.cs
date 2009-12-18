@@ -17,7 +17,6 @@
 //
 #endregion
 using Balder.Core.Math;
-using Matrix = Balder.Core.Math.Matrix;
 
 namespace Balder.Core.Objects.Geometries
 {
@@ -44,14 +43,10 @@ namespace Balder.Core.Objects.Geometries
 		public float DepthBufferAdjustedZ;
 		public Color Color;
 
-		public void Transform(Matrix world, Matrix view)
+		public void Transform(Matrix matrix)
 		{
-			//var matrix = world*view;
-			var matrix = view;
 			TransformedVector = Vector.Transform(Vector, matrix);
-			//TransformedVector = Vector.Transform(TransformedVector, view);
 			TransformedNormal = Vector.TransformNormal(Normal, matrix);
-			//TransformedNormal = Vector.TransformNormal(TransformedNormal, view);
 		}
 
 

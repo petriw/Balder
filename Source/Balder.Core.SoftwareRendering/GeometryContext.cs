@@ -165,16 +165,15 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Render(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
-			
 			TransformAndTranslateVertices(viewport, node,view,projection,world);
 			
 			RenderFaces(viewport, view, projection, world);
 			RenderLines(viewport, view, projection, world);
 		}
 
-		private void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix matrix, Matrix view, Matrix projection, Matrix world)
+		private static void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix matrix, Matrix projection)
 		{
-			vertex.Transform(world, matrix);
+			vertex.Transform(matrix);
 			vertex.Translate(projection, viewport.Width, viewport.Height);
 			vertex.MakeScreenCoordinates();
 			vertex.TransformedVectorNormalized = vertex.TransformedNormal;
@@ -184,20 +183,20 @@ namespace Balder.Core.SoftwareRendering
 			
 		}
 
-		private void TransformAndTranslateVertices(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
+		private void TransformAndTranslateVertices(Viewport viewport, Node node, Matrix view, Matrix projection, Matrix world)
 		{
 			var matrix = (world * view) * projection;
 			for (var vertexIndex = 0; vertexIndex < Vertices.Length; vertexIndex++)
 			{
 				var vertex = Vertices[vertexIndex];
-				TransformAndTranslateVertex(ref vertex, viewport, matrix, view, projection, world);
+				TransformAndTranslateVertex(ref vertex, viewport, matrix, projection);
 				CalculateColorForVertex(ref vertex, viewport, node);
 				Vertices[vertexIndex] = vertex;
 			}
 		}
 
 
-		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, RenderableNode node)
+		private static void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
 			vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.TransformedVector, vertex.Normal, node.Color, node.Color, node.Color);
 		}
