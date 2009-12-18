@@ -19,7 +19,7 @@
 
 namespace Balder.Core.SoftwareRendering
 {
-	public struct Span
+	public class Span
 	{
 		public int Y;
 		public int XStart;
