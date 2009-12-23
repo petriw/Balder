@@ -87,7 +87,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnularRing.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -113,33 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\teapot.ASE" />
-    <Resource Include="Assets\teapot_bricks.ASE" />
-    <Resource Include="Assets\torus.ASE" />
-    <Resource Include="Assets\CheckerSphere.ase" />
-    <Resource Include="Assets\DisplacedSphere.ASE" />
-    <Resource Include="Assets\SpikyBox.ASE" />
-    <Resource Include="Assets\SpikySphere.ASE" />
-    <Resource Include="Assets\audi.ASE" />
-    <Resource Include="Assets\evolve.ASE" />
-    <Resource Include="Assets\pumpkin.ASE" />
-    <Resource Include="Assets\box.ASE" />
-    <Resource Include="Assets\CoordinateSystem.ASE" />
     <None Include="Properties\AppManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\sun.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\recycle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Bricks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\BlueEnvMap.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\phong.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -168,14 +141,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\audi.XML" />
-    <Resource Include="Assets\audiskin.jpg" />
+    <Resource Include="Assets\christmas-tree-inside-the-house.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\audi_shaded.XML" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\pumpkin.jpg" />
+    <Resource Include="Assets\ReflectionMap.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

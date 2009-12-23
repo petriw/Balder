@@ -97,7 +97,7 @@ namespace Balder.Core.Math
         // [ ][ ][ ][ ]   [ ][ ][ ][ ]
         public static Matrix operator *(Matrix matrix1, Matrix matrix2)
         {
-        	Matrix matrix = Matrix.Identity;
+        	var matrix = Identity;
 			matrix[0,0] = (((matrix1[0,0] * matrix2[0,0]) + (matrix1[0,1] * matrix2[1,0])) + (matrix1[0,2] * matrix2[2,0])) + (matrix1[0,3] * matrix2[3,0]);
 			matrix[0,1] = (((matrix1[0,0] * matrix2[0,1]) + (matrix1[0,1] * matrix2[1,1])) + (matrix1[0,2] * matrix2[2,1])) + (matrix1[0,3] * matrix2[3,1]);
 			matrix[0,2] = (((matrix1[0,0] * matrix2[0,2]) + (matrix1[0,1] * matrix2[1,2])) + (matrix1[0,2] * matrix2[2,2])) + (matrix1[0,3] * matrix2[3,2]);
@@ -168,8 +168,8 @@ namespace Balder.Core.Math
 		public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
 		{
 			Matrix matrix = new Matrix();// Matrix.Identity; 
-			float num = 1f / (float)System.Math.Tan((double)(fieldOfView * 0.5f));
-			float num9 = num / aspectRatio;
+			var num = 1f / (float)System.Math.Tan(fieldOfView * 0.5f);
+			var num9 = num / aspectRatio;
 			matrix[0, 0] = num9;
 			matrix[0, 1] = matrix[0, 2] = matrix[0, 3] = 0f;
 			matrix[1, 1] = num;
@@ -186,8 +186,8 @@ namespace Balder.Core.Math
 		{
 			Matrix matrix = new Matrix();
 
-			float num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
-			float num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
+			var num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
+			var num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
 			matrix[0, 0] = 1f;
 			matrix[0, 1] = 0f;
 			matrix[0, 2] = 0f;
@@ -210,8 +210,8 @@ namespace Balder.Core.Math
 		public static Matrix CreateRotationY(float degrees)
 		{
 			Matrix matrix = new Matrix();
-			float num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
-			float num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
+			var num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
+			var num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
 			matrix[0, 0] = num2;
 			matrix[0, 1] = 0f;
 			matrix[0, 2] = -num;
@@ -233,9 +233,9 @@ namespace Balder.Core.Math
 
 		public static Matrix CreateRotationZ(float degrees)
 		{
-			Matrix matrix = new Matrix();
-			float num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
-			float num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
+			var matrix = new Matrix();
+			var num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
+			var num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
 
 			matrix[0, 0] = num2;
 			matrix[0, 1] = num;
@@ -259,7 +259,7 @@ namespace Balder.Core.Math
 
 		public static Matrix CreateTranslation(Vector position)
 		{
-			Matrix matrix = new Matrix();
+			var matrix = new Matrix();
 			matrix[0, 0] = 1f;
 			matrix[0, 1] = 0f;
 			matrix[0, 2] = 0f;
@@ -286,10 +286,10 @@ namespace Balder.Core.Math
 
 		public static Matrix CreateScale(Vector scales)
 		{
-			Matrix matrix = Matrix.Identity;
-			float x = scales.X;
-			float y = scales.Y;
-			float z = scales.Z;
+			var matrix = Matrix.Identity;
+			var x = scales.X;
+			var y = scales.Y;
+			var z = scales.Z;
 			matrix[0,0] = x;
 			matrix[0,1] = 0f;
 			matrix[0,2] = 0f;
@@ -311,7 +311,7 @@ namespace Balder.Core.Math
 
 		public static Matrix Invert(Matrix matrix)
 		{
-			Matrix matrix2 = new Matrix();
+			var matrix2 = new Matrix();
 			var num5 = matrix[0,0];
 			var num4 = matrix[0,1];
 			var num3 = matrix[0,2];

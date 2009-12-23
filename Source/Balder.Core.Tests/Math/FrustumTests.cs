@@ -43,7 +43,7 @@ namespace Balder.Core.Tests.Math
 		[Test]
 		public void VectorInsideShouldNotBeClipped()
 		{
-			var vectorToTest = new Vector(0f, 0f, 0.5f);
+			var vectorToTest = new Vector(0f, 0f, 1.5f);
 			var result = _frustum.IsPointInFrustum(vectorToTest);
 			Assert.That(result, Is.EqualTo(FrustumIntersection.Inside));
 		}

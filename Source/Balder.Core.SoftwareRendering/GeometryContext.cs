@@ -221,7 +221,7 @@ namespace Balder.Core.SoftwareRendering
 				var mixedProduct = (b.TranslatedVector.X - a.TranslatedVector.X) * (c.TranslatedVector.Y - a.TranslatedVector.Y) -
 								   (c.TranslatedVector.X - a.TranslatedVector.X) * (b.TranslatedVector.Y - a.TranslatedVector.Y);
 
-				var visible = (mixedProduct < 0) && viewport.View.IsInView(a.TransformedVector);
+				var visible = (mixedProduct > 0) && viewport.View.IsInView(a.TransformedVector);
 				if (!visible)
 				{
 					continue;

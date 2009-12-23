@@ -6,223 +6,77 @@ namespace Balder.Core.SoftwareRendering.Tests.Rendering
 	[TestFixture]
 	public class ScanlineTests
 	{
-		private const int ViewportWidth = 640;
-
 		[Test]
-		public void AddingFirstSpanShouldHaveOneInCount()
+		public void AddingFirstSpanShouldSetRootToThatSpanDefinition()
 		{
-			var scanline = new Scanline(ViewportWidth);
+			var scanline = new Scanline(640);
+			var xstart = 0;
+			var xend = 10;
+			var renderedSpans = scanline.Add(xstart, xend,0,0);
 
-			var span = new Span();
+			Assert.That(renderedSpans[0],Is.EqualTo(scanline.Root));
 
-			scanline.AddSpan(span);
-
-			var count = scanline.GetRenderedSpanCount();
-			Assert.That(count,Is.EqualTo(1));
-		}
-
-		[Test]
-		public void ScanlineWithSpansShouldBeEmptyAfterReset()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var span = new Span();
-
-			scanline.AddSpan(span);
-
-			scanline.Reset();
-
-			var count = scanline.GetRenderedSpanCount();
-			Assert.That(count, Is.EqualTo(0));
-		}
-
-		[Test]
-		public void SingleSpanOnLineShouldBeAddedToList()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var span = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(span);
-
-			var renderedSpan = scanline.RenderedSpans[0];
-			Assert.That(renderedSpan.XStart, Is.EqualTo(span.XStart));
-			Assert.That(renderedSpan.XEnd, Is.EqualTo(span.XEnd));
-		}
-
-		[Test]
-		public void AddingSecondSpanThatDoesNotClipShouldHaveTwoInCount()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var span = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(span);
-
-			span = new Span { XStart = 140, XEnd = 140 };
-			scanline.AddSpan(span);
-
-			var count = scanline.GetRenderedSpanCount();
-			Assert.That(count, Is.EqualTo(2));
-		}
-
-		[Test]
-		public void AddingSecondSpanThatDoesNotClipShouldBeAddedToList()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var span = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(span);
-
-			span = new Span { XStart = 140, XEnd = 240 };
-			scanline.AddSpan(span);
-
-			var renderedSpan = scanline.RenderedSpans[1];
-			Assert.That(renderedSpan.XStart, Is.EqualTo(span.XStart));
-			Assert.That(renderedSpan.XEnd, Is.EqualTo(span.XEnd));
-		}
-
-		[Test]
-		public void AddingSpanThatLinksWithExistingToTheRightShouldHaveOneInCount()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var firstSpan = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(firstSpan);
-
-			var secondSpan = new Span { XStart = 100, XEnd = 140 };
-			scanline.AddSpan(secondSpan);
-
-			var count = scanline.GetRenderedSpanCount();
-			Assert.That(count, Is.EqualTo(1));
-		}
-
-		[Test]
-		public void AddingSpanThatLinksWithExistingToTheRightShouldExpandExistingSpan()
-		{
-			var scanline = new Scanline(ViewportWidth);
-
-			var firstSpan = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(firstSpan);
-
-			var secondSpan = new Span { XStart = 100, XEnd = 140 };
-			scanline.AddSpan(secondSpan);
-
-			var renderedSpan = scanline.RenderedSpans[0];
-			Assert.That(renderedSpan.XStart, Is.EqualTo(firstSpan.XStart));
-			Assert.That(renderedSpan.XEnd, Is.EqualTo(secondSpan.XEnd));
+			Assert.That(renderedSpans[0].XStart, Is.EqualTo(xstart));
+			Assert.That(renderedSpans[0].XEnd, Is.EqualTo(xend));
 		}
 
 
 		[Test]
-		public void AddingSpanThatLinksWithExistingToTheLeftShouldHaveOneInCount()
+		public void AddingSpanThatClipsWithStartOfScanlineShouldReturnARenderedSpanThatIsClipped()
 		{
-			var scanline = new Scanline(ViewportWidth);
+			var scanline = new Scanline(640);
+			var xstart = -10;
+			var xend = 10;
+			var renderedSpans = scanline.Add(xstart, xend,0,0);
 
-			var firstSpan = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(firstSpan);
-
-			var secondSpan = new Span { XStart = 0, XEnd = 40 };
-			scanline.AddSpan(secondSpan);
-
-			var count = scanline.GetRenderedSpanCount();
-			Assert.That(count, Is.EqualTo(1));
+			Assert.That(renderedSpans.Length, Is.EqualTo(1));
+			Assert.That(renderedSpans[0].XStart,Is.EqualTo(0));
+			Assert.That(renderedSpans[0].XClip,Is.EqualTo(10));
+			Assert.That(renderedSpans[0].XEnd, Is.EqualTo(10));
+			Assert.That(renderedSpans[0].Length, Is.EqualTo(10));
 		}
 
 		[Test]
-		public void AddingSpanThatLinksWithExistingToTheLeftShouldExpandExistingSpan()
+		public void AddingSpanThatClipsWithEndOfScanlingShouldReturnARenderedSpanThatIsClipped()
 		{
-			var scanline = new Scanline(ViewportWidth);
+			var scanline = new Scanline(640);
+			var xstart = 630;
+			var xend = 650;
+			var renderedSpans = scanline.Add(xstart, xend, 0, 0);
 
-			var firstSpan = new Span { XStart = 40, XEnd = 100 };
-			scanline.AddSpan(firstSpan);
-
-			var secondSpan = new Span { XStart = 0, XEnd = 40 };
-			scanline.AddSpan(secondSpan);
-
-			var renderedSpan = scanline.RenderedSpans[0];
-			Assert.That(renderedSpan.XStart, Is.EqualTo(secondSpan.XStart));
-			Assert.That(renderedSpan.XEnd, Is.EqualTo(firstSpan.XEnd));
-		}
-
-
-		/*
-		[Test]
-		public void AddingSpanThatClipsToRightWithExitingShouldReturnClippedSpan()
-		{
-			Assert.Fail();
+			Assert.That(renderedSpans.Length, Is.EqualTo(1));
+			Assert.That(renderedSpans[0].XStart, Is.EqualTo(630));
+			Assert.That(renderedSpans[0].XClip, Is.EqualTo(10));
+			Assert.That(renderedSpans[0].XEnd, Is.EqualTo(640));
+			Assert.That(renderedSpans[0].Length, Is.EqualTo(10));
 		}
 
 		[Test]
-		public void AddingSpanThatClipsToLeftWithExistingShouldReturnClippedSpan()
+		public void AddingSecondSpanAfterExistingShouldNotSetRootToTheSecond()
 		{
-			Assert.Fail();
+			var scanline = new Scanline(640);
+			var firstRenderedSpans = scanline.Add(0, 50, 0, 0);
+			var secondRenderedSpans = scanline.Add(100, 150, 0, 0);
+
+			Assert.That(scanline.Root, Is.Not.EqualTo(secondRenderedSpans[0]));
+			Assert.That(scanline.Root, Is.EqualTo(firstRenderedSpans[0]));
 		}
 
 		[Test]
-		public void AddingSpanThatClipsToLeftAndRightWithExistingShouldReturnClippedSpans()
+		public void AddingSecondSpanThatShouldBeBeforeExistingShouldSetItToRootAndUpdateLinkInformation()
 		{
-			Assert.Fail();
-		}
+			var scanline = new Scanline(640);
+			var firstRenderedSpans = scanline.Add(100, 150, 0, 0);
+			var secondRenderedSpans = scanline.Add(0, 50, 0, 0);
 
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheLeftShouldReturnClippedSpan()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheRightShouldReturnClippedSpan()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheLeftAndClipsWithExistingSpanToTheRightShouldReturnClippedSpan()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheLeftAndClipsWithExistingSpanToTheRightShouldExpandExistingSpan()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheLeftAndClipsWithExistingSpanToTLeftAndRightShouldReturnClippedSpans()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheLeftAndClipsWithExistingSpanToTLeftAndRightShouldExpandExistingSpan()
-		{
-			Assert.Fail();
+			Assert.That(scanline.Root,Is.EqualTo(secondRenderedSpans[0]));
+			Assert.That(secondRenderedSpans[0].Next, Is.Not.Null);
+			Assert.That(secondRenderedSpans[0].Next, Is.EqualTo(firstRenderedSpans[0]));
+			Assert.That(secondRenderedSpans[0].Previous,Is.Null);
+			Assert.That(firstRenderedSpans[0].Previous,Is.EqualTo(secondRenderedSpans[0]));
 		}
 
 
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheRightAndClipsWithExistingSpanToTheLeftShouldReturnClippedSpan()
-		{
-			Assert.Fail();
-		}
 
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheRightAndClipsWithExistingSpanToTheLeftShouldExpandExistingSpan()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheRightAndClipsWithExistingSpanToTLeftAndRightShouldReturnClippedSpans()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void AddingSpanThatClipsWithScreenToTheRightAndClipsWithExistingSpanToTLeftAndRightShouldExpandExistingSpan()
-		{
-			Assert.Fail();
-		}
-		*/
 	}
 }

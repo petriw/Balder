@@ -53,10 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rendering\ScanlineTests.cs" />
-    <Compile Include="Rendering\SpanManagerTests.cs" />
-    <Compile Include="Rendering\SpanRendererTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\ScanlineTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Balder.Core.SoftwareRendering\Balder.Core.SoftwareRendering.Silverlight.csproj">

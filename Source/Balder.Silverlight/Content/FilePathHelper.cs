@@ -39,7 +39,7 @@ namespace Balder.Silverlight.Content
 			var assemblyName = AssemblyHelper.GetAssemblyShortName(fullAssemblyName);
 			var filename = string.Empty;
 
-			if( assetName.Contains(";component/"))
+			if( assetName.Contains(";component"))
 			{
 				filename = assetName;
 			} else
@@ -47,6 +47,8 @@ namespace Balder.Silverlight.Content
 				filename = string.Format("/{0};component/{1}/{2}", assemblyName, _contentManager.AssetsRoot, assetName);	
 			}
 
+			filename = filename.Replace("\\", "/");
+			filename = filename.Replace("//", "/");
 			
 			return filename;
 		}

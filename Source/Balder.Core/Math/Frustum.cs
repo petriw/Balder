@@ -77,8 +77,6 @@ namespace Balder.Core.Math
 			_nw = _nh * ratio;
 			_fh = far * _tang;
 			_fw = _fh * ratio;
-
-			
 		}
 
 
