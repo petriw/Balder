@@ -17,6 +17,7 @@
 //
 #endregion
 
+using System.ComponentModel;
 using System.Windows;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -35,30 +36,27 @@ namespace Balder.Core
 		public event EventHandler Hover = (s, e) => { };
 		public event EventHandler Click = (s, e) => { };
 
-		#region Constructor(s)
+		private bool _isInitializingTransform;
+
 		protected Node()
 		{
-			World = Matrix.Identity;
-
-			PositionMatrix = Matrix.Identity;
-			ScaleMatrix = Matrix.Identity;
-			Scale = new Vector(1f, 1f, 1f);
-			Position = Vector.Zero;
-
 			Initialize();
+			InitializeTransform();
 		}
-		#endregion
 
 		partial void Initialize();
 
-		#region Public Properties
-		public static readonly Property<Node, Coordinate> PositionProp = Property<Node, Coordinate>.Register(n => n.Position);
-		public Coordinate Position
+		private void InitializeTransform()
 		{
-			get { return PositionProp.GetValue(this); }
-			set { PositionProp.SetValue(this, value); }
+			_isInitializingTransform = true;
+			Position = new Coordinate();
+			Scale = new Coordinate(1f, 1f, 1f);
+			Rotation = new Coordinate();
+			_isInitializingTransform = false;
+			PrepareWorld();
 		}
 
+		#region Public Properties
 		public static readonly Property<Node, bool> IsVisibleProp = Property<Node, bool>.Register(n => n.IsVisible);
 		public bool IsVisible
 		{
@@ -66,17 +64,91 @@ namespace Balder.Core
 			set { IsVisibleProp.SetValue(this, value); }
 		}
 
-
-		public Vector Scale { get; set; }
-		public Matrix World { get; set; }
-
 		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
 
 		#endregion
 
-		public Matrix PositionMatrix { get; private set; }
-		protected Matrix ScaleMatrix { get; private set; }
+		#region Transform
+		public static readonly Property<Node, Coordinate> PositionProp =
+			Property<Node, Coordinate>.Register(t => t.Position);
+
+		private Coordinate _position;
+		public Coordinate Position
+		{
+			get { return PositionProp.GetValue(this); }
+			set
+			{
+				if (null != _position)
+				{
+					_position.PropertyChanged -= TransformChanged;
+				}
+				PositionProp.SetValue(this, value);
+				_position = value;
+				_position.PropertyChanged += TransformChanged;
+				PrepareWorld();
+			}
+		}
+
+		public static readonly Property<Node, Coordinate> ScaleProp =
+			Property<Node, Coordinate>.Register(t => t.Scale);
+
+		private Coordinate _scale;
+		public Coordinate Scale
+		{
+			get { return ScaleProp.GetValue(this); }
+			set
+			{
+				if (null != _scale)
+				{
+					_scale.PropertyChanged -= TransformChanged;
+				}
+				ScaleProp.SetValue(this, value);
+				_scale = value;
+				_scale.PropertyChanged += TransformChanged;
+				PrepareWorld();
+			}
+		}
+
+		public static readonly Property<Node, Coordinate> RotationProp =
+			Property<Node, Coordinate>.Register(t => t.Rotation);
+
+		private Coordinate _rotation;
+		public Coordinate Rotation
+		{
+			get { return RotationProp.GetValue(this); }
+			set
+			{
+				if (null != _rotation)
+				{
+					_rotation.PropertyChanged -= TransformChanged;
+				}
+				RotationProp.SetValue(this, value);
+				_rotation = value;
+				_rotation.PropertyChanged += TransformChanged;
+				PrepareWorld();
+			}
+		}
+
+		public Matrix World { get; set; }
+
+		private void PrepareWorld()
+		{
+			if( _isInitializingTransform )
+			{
+				return;
+			}
+			var scaleMatrix = Matrix.CreateScale(Scale);
+			var translationMatrix = Matrix.CreateTranslation(Position);
+			var rotation = Matrix.CreateRotation((float)Rotation.X, (float)Rotation.Y, (float)Rotation.Z);
+			World = translationMatrix * scaleMatrix * rotation;
+		}
+
+		private void TransformChanged(object sender, PropertyChangedEventArgs e)
+		{
+			PrepareWorld();
+		}
+		#endregion
 
 		public virtual void Prepare(Viewport viewport) { }
 		public virtual void Update() { }

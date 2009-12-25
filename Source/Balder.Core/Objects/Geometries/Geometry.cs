@@ -76,18 +76,9 @@ namespace Balder.Core.Objects.Geometries
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection)
 		{
-			/*
-			var xRotation = Matrix.CreateRotationX(XRotation);
-			var yRotation = Matrix.CreateRotationY(YRotation);
-			var zRotation = Matrix.CreateRotationZ(ZRotation);
-			var translation = Matrix.CreateTranslation(Position);
-			var scale = Matrix.CreateScale(Scale);
-
-			var localToWorld = World * xRotation * yRotation * zRotation * translation * scale;
-			*/
-
-			DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, World);
-			GeometryContext.Render(viewport, this, view, projection, World);
+			var world = World;
+			DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
+			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 
 		public string Name { get; set; }

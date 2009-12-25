@@ -195,8 +195,7 @@ namespace Balder.Core
 			{
 				foreach (var node in _renderableNodes)
 				{
-					// Todo: PositionMatrix - BAAAAAAAAAAD  - Need to fix the entire matrix thingy for all nodes.
-					var transformedSphere = node.BoundingSphere.Transform(node.PositionMatrix);
+					var transformedSphere = node.BoundingSphere.Transform(node.World);
 					var distance = pickRay.Intersects(transformedSphere);
 					if (distance.HasValue)
 					{

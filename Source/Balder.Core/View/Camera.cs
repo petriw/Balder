@@ -16,7 +16,6 @@
 // limitations under the License.
 //
 #endregion
-
 using System.Windows;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -24,7 +23,7 @@ using Balder.Core.Math;
 
 namespace Balder.Core.View
 {
-	public class Camera : Node, IView
+	public class Camera : FrameworkElement, IView
 	{
 		public const float DefaultFieldOfView = 45f;
 		public const float DefaultFar = 4000f;
@@ -50,6 +49,17 @@ namespace Balder.Core.View
 
 		public Matrix ViewMatrix { get; private set; }
 		public Matrix ProjectionMatrix { get; private set; }
+
+		public static readonly Property<Camera, Coordinate> PositionProp = Property<Camera, Coordinate>.Register(c => c.Position);
+		/// <summary>
+		/// Get and set the position for the Camera
+		/// </summary>
+		public Coordinate Position
+		{
+			get { return PositionProp.GetValue(this); }
+			set { PositionProp.SetValue(this, value); }
+		}
+
 
 		public static readonly Property<Camera, Coordinate> TargetProp = Property<Camera, Coordinate>.Register(c => c.Target);
 		/// <summary>

@@ -9,7 +9,7 @@ namespace Balder.Core.Math
 			
 		}
 
-		public Coordinate(float x, float y, float z)
+		public Coordinate(double x, double y, double z)
 		{
 			X = x;
 			Y = y;

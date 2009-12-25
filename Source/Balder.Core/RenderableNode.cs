@@ -25,9 +25,6 @@ namespace Balder.Core
 	{
 		public void PrepareRender()
 		{
-			PositionMatrix[3, 0] = (float)Position.X;
-			PositionMatrix[3, 1] = (float)Position.Y;
-			PositionMatrix[3, 2] = (float)Position.Z;
 		}
 
 		public virtual void BeforeRender() {}

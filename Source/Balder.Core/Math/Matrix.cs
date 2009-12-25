@@ -209,7 +209,7 @@ namespace Balder.Core.Math
  
 		public static Matrix CreateRotationY(float degrees)
 		{
-			Matrix matrix = new Matrix();
+			var matrix = new Matrix();
 			var num2 = (float)System.Math.Cos(MathHelper.ToRadians(degrees));
 			var num = (float)System.Math.Sin(MathHelper.ToRadians(degrees));
 			matrix[0, 0] = num2;
@@ -254,6 +254,18 @@ namespace Balder.Core.Math
 			matrix[3, 2] = 0f;
 			matrix[3, 3] = 1f;
 			return matrix;
+		}
+
+		public static Matrix CreateRotation(float xDegrees, float yDegrees, float zDegrees)
+		{
+			var xRotation = CreateRotationX(xDegrees);
+			var yRotation = CreateRotationY(yDegrees);
+			var zRotation = CreateRotationZ(zDegrees);
+
+			var matrix = xRotation*yRotation*zRotation;
+
+			return matrix;
+			
 		}
 
 

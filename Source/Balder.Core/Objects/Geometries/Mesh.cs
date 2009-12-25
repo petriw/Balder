@@ -58,14 +58,12 @@ namespace Balder.Core.Objects.Geometries
 			{
 				var geometry = _geometries[geometryIndex];
 
-				var localWorld = World * geometry.World * PositionMatrix;
-
 				if (viewport.DebugLevel.BoundingSpheres)
 				{
-					DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, localWorld);
+					DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, World);
 				}
-				
-				geometry.GeometryContext.Render(viewport,this,view,projection,localWorld);
+
+				geometry.GeometryContext.Render(viewport, this, view, projection, World);
 			}
 		}
 
