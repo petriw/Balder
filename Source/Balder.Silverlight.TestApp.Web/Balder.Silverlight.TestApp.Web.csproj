@@ -11,10 +11,14 @@
     <RootNamespace>Balder.Silverlight.TestApp.Web</RootNamespace>
     <AssemblyName>Balder.Silverlight.TestApp.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <SilverlightApplicationList>{BCCA5043-E7BD-4487-AC0C-24C418855645}|..\Balder.Silverlight.TestApp\Balder.Silverlight.TestApp.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

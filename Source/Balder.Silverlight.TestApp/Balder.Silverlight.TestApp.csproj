@@ -26,10 +26,14 @@
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <FileUpgradeFlags>
@@ -127,10 +131,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Balder.Core.SoftwareRendering\Balder.Core.SoftwareRendering.Silverlight.csproj">
-      <Project>{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}</Project>
-      <Name>Balder.Core.SoftwareRendering.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Balder.Core\Balder.Core.Silverlight.csproj">
       <Project>{9F4164D8-6C61-4C4D-B3FF-7AEEE16D9D6B}</Project>
       <Name>Balder.Core.Silverlight</Name>
