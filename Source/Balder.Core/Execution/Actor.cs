@@ -25,6 +25,9 @@ using Ninject.Core;
 
 namespace Balder.Core.Execution
 {
+	/// <summary>
+	/// Base class for all actors.
+	/// </summary>
 	public partial class Actor : IActor
 	{
 		protected Actor()
@@ -36,9 +39,25 @@ namespace Balder.Core.Execution
 
 		partial void Constructed();
 
+		/// <summary>
+		/// Gets a collection of all actors contained in the actor - Sub Actors
+		/// </summary>
 		public ActorCollection Actors { get; private set; }
+
+		/// <summary>
+		/// Gets a boolean indicating wether or not the Actor has initialized
+		/// </summary>
 		public bool HasInitialized { get; private set; }
+
+
+		/// <summary>
+		/// Gets a boolean indicating wether or not the Actor has loaded
+		/// </summary>
 		public bool HasLoaded { get; private set; }
+
+		/// <summary>
+		/// Gets a boolean indicating wether or not the Actor has been updated
+		/// </summary>
 		public bool HasUpdated { get; private set; }
 
 		protected void AddActor(Actor actor)
@@ -46,6 +65,9 @@ namespace Balder.Core.Execution
 			Actors.Add(actor);
 		}
 
+		/// <summary>
+		/// Gets the current state of the actor
+		/// </summary>
 		public ActorState State { get; private set; }
 	
 		public virtual void OnBeforeInitialize() { }
@@ -59,13 +81,22 @@ namespace Balder.Core.Execution
 		public virtual void OnUpdate() { }
 		public virtual void OnAfterUpdate() { }
 
-
-		private void ExecuteActionOnActors(Action<Actor> action)
+		public void ChangeState(ActorState state)
 		{
-			foreach (var actor in Actors)
+			switch (state)
 			{
-				action(actor);
+				case ActorState.Initialize:
+					{
+						OnInitializeOccured();
+					}
+					break;
+				case ActorState.Load:
+					{
+						OnLoadContentOccured();
+					}
+					break;
 			}
+			State = state;
 		}
 
 		public void Stop()
@@ -75,6 +106,16 @@ namespace Balder.Core.Execution
 				actor.OnStopped();
 			}
 		}
+
+
+		private void ExecuteActionOnActors(Action<Actor> action)
+		{
+			foreach (var actor in Actors)
+			{
+				action(actor);
+			}
+		}
+
 
 
 		private void OnInitializeOccured()
@@ -104,25 +145,6 @@ namespace Balder.Core.Execution
 		}
 
 
-		public void ChangeState(ActorState state)
-		{
-			switch( state )
-			{
-				case ActorState.Initialize:
-					{
-						OnInitializeOccured();
-					}
-					break;
-				case ActorState.Load:
-					{
-						OnLoadContentOccured();
-					}
-					break;
-			}
-			State = state;
-		}
-		
-
 		#region Services
 		[Inject]
 		public IContentManager ContentManager { get; set; }
@@ -138,8 +160,6 @@ namespace Balder.Core.Execution
 
 		[Inject]
 		public IPlatform Platform { get; set; }
-
-
 		#endregion
 	}
 }

@@ -18,7 +18,6 @@
 #endregion
 
 using System.ComponentModel;
-using System.Windows;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Math;
@@ -56,7 +55,7 @@ namespace Balder.Core
 			PrepareWorld();
 		}
 
-		#region Public Properties
+		
 		public static readonly Property<Node, bool> IsVisibleProp = Property<Node, bool>.Register(n => n.IsVisible);
 		public bool IsVisible
 		{
@@ -67,13 +66,17 @@ namespace Balder.Core
 		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
 
-		#endregion
+		
 
 		#region Transform
 		public static readonly Property<Node, Coordinate> PositionProp =
 			Property<Node, Coordinate>.Register(t => t.Position);
 
 		private Coordinate _position;
+
+		/// <summary>
+		/// Gets or sets the position of the node in 3D space
+		/// </summary>
 		public Coordinate Position
 		{
 			get { return PositionProp.GetValue(this); }
@@ -94,6 +97,13 @@ namespace Balder.Core
 			Property<Node, Coordinate>.Register(t => t.Scale);
 
 		private Coordinate _scale;
+
+		/// <summary>
+		/// Gets or sets the scale of the node
+		/// </summary>
+		/// <remarks>
+		/// Default is X:1 Y:1 Z:1, which represents the node in a non-scaled form
+		/// </remarks>
 		public Coordinate Scale
 		{
 			get { return ScaleProp.GetValue(this); }
@@ -114,6 +124,10 @@ namespace Balder.Core
 			Property<Node, Coordinate>.Register(t => t.Rotation);
 
 		private Coordinate _rotation;
+
+		/// <summary>
+		/// Gets or sets the rotation of the node in angles, 0-360 degrees
+		/// </summary>
 		public Coordinate Rotation
 		{
 			get { return RotationProp.GetValue(this); }

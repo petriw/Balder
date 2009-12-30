@@ -73,6 +73,9 @@ namespace Balder.Core
 			}
 		}
 
+		/// <summary>
+		/// Gets all the renderable nodes in the scene
+		/// </summary>
 		public NodeCollection RenderableNodes { get { return _renderableNodes; } }
 
 		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal)
@@ -114,52 +117,6 @@ namespace Balder.Core
 			}
 		}
 
-		public int TotalVertexCount
-		{
-			get
-			{
-				var count = 0;
-				foreach (var node in _renderableNodes)
-				{
-					if (node is Geometry)
-					{
-						var geometry = node as Geometry;
-						count += geometry.GeometryContext.VertexCount;
-					}
-				}
-				return count;
-			}
-		}
-
-		public int TotalFaceCount
-		{
-			get
-			{
-				var count = 0;
-				foreach (var node in _renderableNodes)
-				{
-					if (node is Geometry)
-					{
-						var geometry = node as Geometry;
-						count += geometry.GeometryContext.FaceCount;
-					}
-					if (node is Mesh)
-					{
-						var mesh = node as Mesh;
-						count += mesh.TotalFaceCount;
-					}
-				}
-				return count;
-			}
-		}
-
-		public int TotalFlatNodes
-		{
-			get
-			{
-				return _flatNodes.Count;
-			}
-		}
 
 		public void HandleMouseEvents(Viewport viewport, Mouse mouse)
 		{
@@ -175,6 +132,13 @@ namespace Balder.Core
 		}
 
 
+		/// <summary>
+		/// Get a node at a specified screen coordinate relative to a specific viewport
+		/// </summary>
+		/// <param name="viewport">Viewport to find node in</param>
+		/// <param name="x">X position</param>
+		/// <param name="y">Y position</param>
+		/// <returns>A RenderableNode - null if it didn't find any node at the position</returns>
 		public RenderableNode GetNodeAtScreenCoordinate(Viewport viewport, int x, int y)
 		{
 			var nearSource = new Vector((float)x, (float)y, 0f);

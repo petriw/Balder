@@ -69,6 +69,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>default</LangVersion>
+    <DocumentationFile>Bin\Release\Balder.Silverlight.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject.Core, Version=1.0.0.82, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -126,6 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Balder.Silverlight.dxc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />

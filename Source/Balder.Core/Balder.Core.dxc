@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DocumentXComments Version="5.0" Moniker="Bin\Release\Balder.Core.dll" DocType="dx.Net" Template="Visual Studio 2008 Style" ShowInherited="False" SpellLastCheckDateTime="30/12/1899 00:00:00" TreePath="Balder.Core|Balder.Core~Balder.Core_namespace|Balder.Core~Balder.Core_namespace_DX.NET:Class|Balder.Core~Balder.Core.RenderableNode" RelatedProject="Balder.Documentation.Silverlight.dxp" RelatedHSProject="" LoadIncludeFilter="" LoadExcludeFilter="" LoadPrivate="False" LoadOnDemand="False" LoadSourceComments="True">
+    <IgnoreWordList/>
+<UserData>
+    <InPlaceEditor>
+        <inheritedMembers>on</inheritedMembers>
+        <protectedMembers>on</protectedMembers>
+        <lang_VB>off</lang_VB>
+        <lang_VBUsage>off</lang_VBUsage>
+        <lang_CS>on</lang_CS>
+        <lang_CPP>off</lang_CPP>
+        <lang_CPP2005>off</lang_CPP2005>
+        <dtscrollpos>0</dtscrollpos>
+    </InPlaceEditor>
+</UserData>
+<c eid="Balder.Core~Balder.Core.Node" tid="##SUMMARY" q="" cd="40173.3820949074">Node represents the root of any element that can be added to a scene.</c>
+    </DocumentXComments>

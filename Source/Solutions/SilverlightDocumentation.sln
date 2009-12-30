@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Silverlight", "..\Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Balder.Core.SoftwareRendering.Silverlight", "..\Balder.Core.SoftwareRendering\Balder.Core.SoftwareRendering.Silverlight.csproj", "{CE1475DE-91CC-45BE-9FA3-6B233D3223D8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B0F1CE21-9714-4585-87B2-CC2DE5261AB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
