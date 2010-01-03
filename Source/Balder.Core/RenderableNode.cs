@@ -32,7 +32,7 @@ namespace Balder.Core
 
 		#region Public Abstract Methods
 
-		public abstract void Render(Viewport viewport, Matrix view, Matrix projection);
+		public abstract void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world);
 
 		public virtual void PostRender(Viewport viewport, Matrix renderMatrix, Matrix projectionMatrix)
 		{

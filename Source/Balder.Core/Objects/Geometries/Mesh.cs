@@ -52,7 +52,7 @@ namespace Balder.Core.Objects.Geometries
 			BoundingSphere = boundingSphere;
 		}
 
-		public override void Render(Viewport viewport, Matrix view, Matrix projection)
+		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			for( var geometryIndex=0; geometryIndex<_geometries.Length; geometryIndex++ )
 			{

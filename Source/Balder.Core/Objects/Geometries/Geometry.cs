@@ -74,13 +74,14 @@ namespace Balder.Core.Objects.Geometries
 			BoundingSphere = new BoundingSphere(center, length.Length/2);
 		}
 
-		public override void Render(Viewport viewport, Matrix view, Matrix projection)
+		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			var world = World;
 			DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 
+#if(!SILVERLIGHT)
 		public string Name { get; set; }
+#endif
 	}
 }

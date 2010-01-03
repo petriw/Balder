@@ -53,13 +53,13 @@ namespace Balder.Core.Debug
 			var rotateXMatrix = Matrix.CreateRotationX(90);
 
 			_boundingSphereDebugShape.World = scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection);
+			_boundingSphereDebugShape.Render(viewport, view, projection, world);
 
 			_boundingSphereDebugShape.World = rotateYMatrix * scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection);
+			_boundingSphereDebugShape.Render(viewport, view, projection, world);
 
 			_boundingSphereDebugShape.World = rotateXMatrix * scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection);
+			_boundingSphereDebugShape.Render(viewport, view, projection, world);
 		}
 	}
 }

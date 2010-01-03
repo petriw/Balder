@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
 using Balder.Core.Display;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
@@ -28,6 +30,40 @@ namespace Balder.Core.Tests
 	[TestFixture]
 	public class SceneTests
 	{
+		public class MyRenderableNode : RenderableNode
+		{
+			public bool RenderCalled = false;
+			public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+			{
+				RenderCalled = true;
+			}
+		}
+
+		public class RenderableNodeMock : RenderableNode
+		{
+			private readonly Action _actionToCall;
+			public RenderableNodeMock()
+			{
+				
+			}
+
+			public RenderableNodeMock(Action actionToCall)
+			{
+				_actionToCall = actionToCall;
+			}
+
+			public Matrix WorldResult;
+			public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+			{
+				WorldResult = world;
+				if (null != _actionToCall)
+				{
+					_actionToCall();
+				}
+			}
+		}
+
+	
 		[Test, SilverlightUnitTest]
 		public void GettingObjectAtCenterOfScreenWithSingleObjectAtCenterOfSceneShouldReturnTheObject()
 		{
@@ -69,5 +105,68 @@ namespace Balder.Core.Tests
 			Assert.That(nodeAtCoordinate, Is.Null);
 		}
 
+
+		[Test, SilverlightUnitTest]
+		public void AddedNodeShouldGetRendered()
+		{
+			var viewport = new Viewport { Width = 640, Height = 480 };
+			var camera = new Camera();
+			viewport.View = camera;
+			camera.Position.Z = -100;
+			camera.Update(viewport);
+			var scene = new Scene();
+
+			var renderableNode = new MyRenderableNode();
+
+			scene.AddNode(renderableNode);
+
+			scene.Render(viewport,camera.ViewMatrix,camera.ProjectionMatrix);
+
+			Assert.That(renderableNode.RenderCalled,Is.True);
+		}
+
+		[Test, SilverlightUnitTest]
+		public void AddingNodeWithChildShouldCallRenderOnChild()
+		{
+			var viewport = new Viewport { Width = 640, Height = 480 };
+			var camera = new Camera();
+			viewport.View = camera;
+			camera.Position.Z = -100;
+			camera.Update(viewport);
+			var scene = new Scene();
+
+			var topLevelNode = new MyRenderableNode();
+			var childNode = new MyRenderableNode();
+			topLevelNode.Children.Add(childNode);
+
+			scene.AddNode(topLevelNode);
+			scene.Render(viewport, camera.ViewMatrix, camera.ProjectionMatrix);
+			Assert.That(childNode.RenderCalled,Is.True);
+		}
+
+		[Test, SilverlightUnitTest]
+		public void ChildNodeShouldHaveParentNodesWorldAppliedToWorldMatrix()
+		{
+			var viewport = new Viewport { Width = 640, Height = 480 };
+			var camera = new Camera();
+			viewport.View = camera;
+			camera.Position.Z = -100;
+			camera.Update(viewport);
+			var scene = new Scene();
+
+			var topLevelNode = new MyRenderableNode();
+			topLevelNode.Position.X = 50;
+			var childNode = new RenderableNodeMock();
+			topLevelNode.Children.Add(childNode);
+
+			scene.AddNode(topLevelNode);
+			scene.Render(viewport, camera.ViewMatrix, camera.ProjectionMatrix);
+
+			var actualPosition = new Coordinate();
+			actualPosition.X = childNode.WorldResult[3, 0];
+			actualPosition.Y = childNode.WorldResult[3, 1];
+			actualPosition.Z = childNode.WorldResult[3, 2];
+			Assert.That(actualPosition.X, Is.EqualTo(topLevelNode.Position.X));
+		}
 	}
 }

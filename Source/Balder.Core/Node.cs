@@ -18,6 +18,7 @@
 #endregion
 
 using System.ComponentModel;
+using Balder.Core.Collections;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Math;
@@ -52,6 +53,7 @@ namespace Balder.Core
 			Scale = new Coordinate(1f, 1f, 1f);
 			Rotation = new Coordinate();
 			_isInitializingTransform = false;
+			Children = new NodeCollection();
 			PrepareWorld();
 		}
 
@@ -65,8 +67,7 @@ namespace Balder.Core
 
 		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
-
-		
+		public NodeCollection Children { get; private set; }
 
 		#region Transform
 		public static readonly Property<Node, Coordinate> PositionProp =
@@ -154,8 +155,8 @@ namespace Balder.Core
 			}
 			var scaleMatrix = Matrix.CreateScale(Scale);
 			var translationMatrix = Matrix.CreateTranslation(Position);
-			var rotation = Matrix.CreateRotation((float)Rotation.X, (float)Rotation.Y, (float)Rotation.Z);
-			World = translationMatrix * scaleMatrix * rotation;
+			var rotationMatrix = Matrix.CreateRotation((float)Rotation.X, (float)Rotation.Y, (float)Rotation.Z);
+			World = rotationMatrix * scaleMatrix * translationMatrix;
 		}
 
 		private void TransformChanged(object sender, PropertyChangedEventArgs e)

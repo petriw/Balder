@@ -42,7 +42,7 @@ namespace Balder.Core.Objects.Flat
 		public Image CurrentFrame { get { return _frames[0]; } }
 
 
-		public override void Render(Viewport viewport, Matrix view, Matrix projection)
+		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			/* From DirectX sample
 				w = width passed to D3DXMatrixPerspectiveLH
@@ -61,7 +61,6 @@ namespace Balder.Core.Objects.Flat
 			 */
 
 			var position = new Vector(0, 0, 0);
-			var world = World;
 			var actualPosition = new Vector(world.data[12], world.data[13], world.data[14]);
 			var transformedPosition = Vector.Transform(position, world, view);
 			var translatedPosition = Vector.Translate(transformedPosition, projection, viewport.Width, viewport.Height);

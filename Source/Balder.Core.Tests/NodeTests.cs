@@ -1,4 +1,5 @@
-﻿#region License
+#region License
+
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2009, DoLittle Studios
@@ -15,28 +16,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
-using Balder.Core.Display;
-using Balder.Core.Math;
-using Balder.Core.Objects.Geometries;
-using Ninject.Core;
+using NUnit.Framework;
 
-namespace Balder.Core.Debug
+namespace Balder.Core.Tests
 {
-	public class DebugShape : RenderableNode
+	[TestFixture]
+	public class NodeTests
 	{
-		[Inject]
-		public IGeometryContext GeometryContext { get; set; }
-
-
-		public virtual void Initialize()
-		{
-			
-		}
-
-		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
-		{
-			GeometryContext.Render(viewport, this, view, projection, World);
-		}
+		
 	}
 }
+
