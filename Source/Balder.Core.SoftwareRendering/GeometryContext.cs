@@ -22,12 +22,21 @@ using Balder.Core.Display;
 using Balder.Core.Materials;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
+using Ninject.Core;
 using Matrix=Balder.Core.Math.Matrix;
 
 namespace Balder.Core.SoftwareRendering
 {
 	public class GeometryContext : IGeometryContext
 	{
+		private readonly IColorCalculator _colorCalculator;
+
+		public GeometryContext(IColorCalculator colorCalculator)
+		{
+			_colorCalculator = colorCalculator;
+		}
+
+
 		public Vertex[] Vertices { get; private set; }
 		public Face[] Faces { get; private set; }
 		public TextureCoordinate[] TextureCoordinates { get; private set; }
@@ -167,8 +176,8 @@ namespace Balder.Core.SoftwareRendering
 		{
 			TransformAndTranslateVertices(viewport, node,view,projection,world);
 			
-			RenderFaces(viewport, view, projection, world);
-			RenderLines(viewport, view, projection, world);
+			RenderFaces(node, viewport, view, projection, world);
+			RenderLines(node, viewport, view, projection, world);
 		}
 
 		private static void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix matrix, Matrix projection)
@@ -196,12 +205,13 @@ namespace Balder.Core.SoftwareRendering
 		}
 
 
-		private static void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
+		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
-			vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.TransformedVector, vertex.Normal, node.Color, node.Color, node.Color);
+			vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
+			//vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.TransformedVector, vertex.Normal, node.Color, node.Color, node.Color);
 		}
 
-		private void RenderFaces(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( null == Faces )
 			{
@@ -227,13 +237,13 @@ namespace Balder.Core.SoftwareRendering
 					continue;
 				}
 
-				face.Color = viewport.Scene.CalculateColorForVector(viewport, face.TransformedPosition, face.TransformedNormal);
+				face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
 				Triangle.Draw(BufferManager.Instance.Current, SpanRenderer, TriangleShade.Gouraud, face, Vertices,
 							  TextureCoordinates);
 			}
 		}
 
-		private void RenderLines(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private void RenderLines(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( null == Lines )
 			{

@@ -99,6 +99,7 @@
     <Compile Include="Assets\IAssetLoader.cs" />
     <Compile Include="Collections\ActorCollection.cs" />
     <Compile Include="Color.cs" />
+    <Compile Include="ColorCalculator.cs" />
     <Compile Include="Content\ContentCreator.cs" />
     <Compile Include="Debug\BoundingSphereDebugShape.cs" />
     <Compile Include="Debug\DebugRenderer.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Extensions\WaitHandleExtensions.cs" />
     <Compile Include="Helpers\DependencyProperty.cs" />
     <Compile Include="Helpers\DependencyPropertyHelper.cs" />
+    <Compile Include="IColorCalculator.cs" />
     <Compile Include="Input\IMouseDevice.cs" />
     <Compile Include="Input\IMouseManager.cs" />
     <Compile Include="Input\Mouse.cs" />

@@ -105,13 +105,13 @@ namespace Balder.Core.Tests
 
 
 		[Test]
-		public void AddingShouldNotClampToMaximumValue()
+		public void AddingShouldClampToMaximumValue()
 		{
 			var firstColor = new Color { RedAsFloat = 1f };
 			var secondColor = new Color { RedAsFloat = 1f };
 
 			var result = firstColor + secondColor;
-			Assert.That(result.RedAsFloat, Is.EqualTo(2f));
+			Assert.That(result.RedAsFloat, Is.EqualTo(1f));
 		}
 
 		[Test]
@@ -206,14 +206,34 @@ namespace Balder.Core.Tests
 		}
 
 		[Test]
-		public void AdditiveColoringShouldBeAnAverageOfTwoColors()
+		public void AddingTwoColorsShouldClampAtMaxValue()
 		{
-			var firstColor = new Color {RedAsFloat = 0.2f };
-			var secondColor = new Color {RedAsFloat = 0.4f };
+			var firstColor = new Color {Red = 0x81, Green = 0x81, Blue = 0x81, Alpha = 0x81};
+			var secondColor = new Color { Red = 0x81, Green = 0x81, Blue = 0x81, Alpha = 0x81 };
 
 			var result = firstColor.Additive(secondColor);
 
-			Assert.That(result.RedAsFloat,Is.EqualTo(0.3f));
+			Assert.That(result.Red, Is.EqualTo(0xff));
+			Assert.That(result.Green, Is.EqualTo(0xff));
+			Assert.That(result.Blue, Is.EqualTo(0xff));
+			Assert.That(result.Alpha, Is.EqualTo(0xff));
 		}
+
+		[Test]
+		public void AddingThreeColorsShouldClampAtMaxValue()
+		{
+			var firstColor = new Color { Red = 0x81, Green = 0x81, Blue = 0x81, Alpha = 0x81 };
+			var secondColor = new Color { Red = 0x81, Green = 0x81, Blue = 0x81, Alpha = 0x81 };
+			var thirdColor = new Color { Red = 0x81, Green = 0x81, Blue = 0x81, Alpha = 0x81 };
+
+			var result = firstColor.Additive(secondColor);
+			result = result.Additive(thirdColor);
+
+			Assert.That(result.Red, Is.EqualTo(0xff));
+			Assert.That(result.Green, Is.EqualTo(0xff));
+			Assert.That(result.Blue, Is.EqualTo(0xff));
+			Assert.That(result.Alpha, Is.EqualTo(0xff));
+		}
+
 	}
 }

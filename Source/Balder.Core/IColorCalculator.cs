@@ -1,4 +1,5 @@
-﻿#region License
+#region License
+
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2009, DoLittle Studios
@@ -15,19 +16,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
+#endregion
 using Balder.Core.Display;
+using Balder.Core.Materials;
 using Balder.Core.Math;
 
-namespace Balder.Core.Lighting
+namespace Balder.Core
 {
-	public interface ILight
+	public interface IColorCalculator
 	{
-		Color Diffuse { get; set; }
-		Color Ambient { get; set; }
-		Color Specular { get; set; }
-
-		Color Calculate(Viewport viewport, Vector point, Vector normal);
+		Color Calculate(Viewport viewport, Vector vector, Vector normal, Material material);
+		Color Calculate(Viewport viewport, Vector vector, Vector normal, Color diffuseColor);
 	}
 }

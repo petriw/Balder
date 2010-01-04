@@ -32,6 +32,7 @@ namespace Balder.Core
 		private readonly NodeCollection _renderableNodes;
 		private readonly NodeCollection _flatNodes;
 		private readonly NodeCollection _environmentalNodes;
+		private readonly NodeCollection _lights;
 
 		public Color AmbientColor;
 
@@ -40,6 +41,7 @@ namespace Balder.Core
 			_renderableNodes = new NodeCollection();
 			_flatNodes = new NodeCollection();
 			_environmentalNodes = new NodeCollection();
+			_lights = new NodeCollection();
 
 			AmbientColor = Color.FromArgb(0xff, 0x3f, 0x3f, 0x3f);
 		}
@@ -68,6 +70,13 @@ namespace Balder.Core
 				{
 					_environmentalNodes.Add(node);
 				}
+				if( node is ILight )
+				{
+					lock( _lights )
+					{
+						_lights.Add(node);
+					}
+				}
 			}
 		}
 
@@ -76,6 +85,12 @@ namespace Balder.Core
 		/// </summary>
 		public NodeCollection RenderableNodes { get { return _renderableNodes; } }
 
+		/// <summary>
+		/// Gets all the lights in the scene
+		/// </summary>
+		public NodeCollection Lights { get { return _lights; } }
+
+		/*
 		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal)
 		{
 			return CalculateColorForVector(viewport, vector, normal, Color.Black, Color.Black, Color.Black);
@@ -102,6 +117,7 @@ namespace Balder.Core
 				return color;
 			}
 		}
+		 * */
 
 		public void Render(Viewport viewport, Matrix view, Matrix projection)
 		{
@@ -120,15 +136,15 @@ namespace Balder.Core
 			world = node.World * world;
 			node.PrepareRender();
 			node.Render(viewport, view, projection, world);
-			foreach( var child in node.Children )
+			foreach (var child in node.Children)
 			{
-				if( child is RenderableNode )
+				if (child is RenderableNode)
 				{
-					RenderNode((RenderableNode)child, viewport, view, projection, world);	
+					RenderNode((RenderableNode)child, viewport, view, projection, world);
 				}
 			}
 		}
-		
+
 
 
 		public void HandleMouseEvents(Viewport viewport, Mouse mouse)
@@ -137,7 +153,7 @@ namespace Balder.Core
 			if (null != objectHit)
 			{
 				objectHit.OnHover();
-				if( mouse.LeftButton.IsEdge )
+				if (mouse.LeftButton.IsEdge)
 				{
 					objectHit.OnClick();
 				}

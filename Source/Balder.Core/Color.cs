@@ -148,14 +148,8 @@ namespace Balder.Core
 
 		public static Color operator +(Color firstColor, Color secondColor)
 		{
-			var newColor = new Color
-			{
-				RedAsFloat = firstColor.RedAsFloat + secondColor.RedAsFloat,
-				GreenAsFloat = firstColor.GreenAsFloat + secondColor.GreenAsFloat,
-				BlueAsFloat = firstColor.BlueAsFloat + secondColor.BlueAsFloat,
-				AlphaAsFloat = firstColor.AlphaAsFloat + secondColor.AlphaAsFloat,
-			};
-			return newColor;
+			var result = firstColor.Additive(secondColor);
+			return result;
 		}
 
 		public static Color operator -(Color firstColor, Color secondColor)
@@ -226,12 +220,17 @@ namespace Balder.Core
 
 		public Color Additive(Color secondColor)
 		{
+			var red = (int) Red + (int) secondColor.Red;
+			var green = (int) Green + (int) secondColor.Green;
+			var blue = (int) Blue + (int) secondColor.Blue;
+			var alpha = (int) Alpha + (int) secondColor.Alpha;
+
 			var result = new Color
-							{
-								RedAsFloat = (RedAsFloat + secondColor.RedAsFloat) / 2,
-								GreenAsFloat = (GreenAsFloat + secondColor.GreenAsFloat) / 2,
-								BlueAsFloat = (BlueAsFloat + secondColor.BlueAsFloat) / 2,
-								AlphaAsFloat = (AlphaAsFloat + secondColor.AlphaAsFloat) / 2,
+			             	{
+			             		Red = (byte)(red > 255 ? 255 : red),
+								Green = (byte)(green > 255 ? 255 : green),
+								Blue = (byte)(blue > 255 ? 255 : blue),
+								Alpha = (byte)(alpha > 255 ? 255 : alpha),
 							};
 			return result;
 		}

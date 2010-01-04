@@ -232,11 +232,11 @@ namespace Balder.Core.SoftwareRendering
 			}
 
 			
-			
+			/*
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexA, ref textureA);
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexB, ref textureB);
 			SetSphericalEnvironmentMapTextureCoordinate(ref vertexC, ref textureC);
-			
+			*/
 
 			GetSortedPoints(ref vertexA, ref vertexB, ref vertexC, ref textureA, ref textureB, ref textureC);
 

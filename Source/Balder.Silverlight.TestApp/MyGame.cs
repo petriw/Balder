@@ -29,9 +29,9 @@ namespace Balder.Silverlight.TestApp
 		private double sin2 = 0;
 		public override void OnUpdate()
 		{
-			Camera.Position.X = (float)(System.Math.Sin(sin) * 400.0);
-			Camera.Position.Y = (float) (System.Math.Sin(sin2)*150.0)+150;
-			Camera.Position.Z = (float)(System.Math.Cos(sin) * 400.0);
+			Camera.Position.X = (float)(System.Math.Sin(sin) * 100.0);
+			//Camera.Position.Y = (float) (System.Math.Sin(sin2)*150.0)+150;
+			Camera.Position.Z = (float)(System.Math.Cos(sin) * 100.0);
 
 			sin += 0.05;
 			sin2 += 0.025;

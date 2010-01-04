@@ -52,11 +52,6 @@ namespace Balder.Core
 			set { CommandParameterProperty.SetValue(this, value); }
 		}
 
-		/*
-		public static readonly DependencyProperty PositionProperty = PositionProp.ActualDependencyProperty;
-		public static readonly DependencyProperty IsVisibleProperty = IsVisibleProp.ActualDependencyProperty;
-		public static readonly DependencyProperty ColorProperty = ColorProp.ActualDependencyProperty;
-		*/
 
 		protected void OnCommand()
 		{

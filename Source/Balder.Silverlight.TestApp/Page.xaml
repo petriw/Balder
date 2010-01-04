@@ -9,11 +9,12 @@
 	xmlns:view="clr-namespace:Balder.Core.View;assembly=Balder.Core"
 	x:Class="Balder.Silverlight.TestApp.Page"
     >
-	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Width="640" Height="480">
-		<Image Source="Assets/christmas-tree-inside-the-house.jpg" Stretch="None"/>
+	<Grid x:Name="LayoutRoot" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Width="640" Height="480">
+		<!--<Image Source="Assets/christmas-tree-inside-the-house.jpg" Stretch="None"/>-->
 
 		<local:MyGame x:Name="_game" Width="640" Height="480">
-			<geometries:Mesh AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot.ASE" Position="0,0,0"/>
+			<geometries:Mesh AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot_singlecolor.ASE" Position="0,0,0" Color="Red"/>
+			<lighting:OmniLight Ambient="Black" Diffuse="Green" Specular="Blue"/>
 		</local:MyGame>
 		
 	</Grid>

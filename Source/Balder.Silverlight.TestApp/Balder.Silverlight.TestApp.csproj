@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\teapot.ASE" />
+    <Resource Include="Assets\teapot_singlecolor.ASE" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
