@@ -1,4 +1,5 @@
-﻿#region License
+#region License
+
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2009, DoLittle Studios
@@ -15,13 +16,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
-namespace Balder.Core.Objects.Geometries
+
+namespace Balder.Core.Execution
 {
-	public class Cylinder : Geometry
+	public interface IDeviceContext
 	{
-		public Cylinder(float radius, float height, int segments, int heightSegments)
-		{
-		}
+		object GetContext();
 	}
 }

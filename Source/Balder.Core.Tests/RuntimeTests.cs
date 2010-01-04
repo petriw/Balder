@@ -65,7 +65,7 @@ namespace Balder.Core.Tests
 				});
 
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 
 			if (changeStateFirst)
 			{
@@ -113,7 +113,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onRenderCalled = false;
@@ -130,7 +130,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onRenderCalled = false;
@@ -149,7 +149,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onUpdateCalled = false;
@@ -166,7 +166,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onUpdateCalled = false;
@@ -185,7 +185,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onUpdateCalled = false;
@@ -208,7 +208,7 @@ namespace Balder.Core.Tests
 			var platform = new FakePlatform();
 			var objectFactoryMock = new Mock<IObjectFactory>();
 			var assetLoaderServiceMock = new Mock<IAssetLoaderService>();
-			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object);
+			var runtime = new Core.Runtime(platform, objectFactoryMock.Object, assetLoaderServiceMock.Object, null);
 			var displayMock = new Mock<IDisplay>();
 			var gameMock = new Mock<Game>();
 			var onRenderCalled = false;

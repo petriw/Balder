@@ -38,28 +38,19 @@ namespace Balder.Core.Content
 		}
 
 
-		public Box CreateBox()
+		public T Clone<T>(T node)
+			where T : Node
 		{
-			throw new NotImplementedException();
+			var clone = Clone(node, true);
+			return clone;
 		}
 
-		public Geometry CreateSphere()
+		public T Clone<T>(T node, bool keepContentAsReference)
+			where T:Node
 		{
-			throw new NotImplementedException();
-		}
+			var clone = _objectFactory.Get<T>();
 
-		public Cylinder CreateCylinder(float radius, float height, int segments, int heightSegments)
-		{
-			var cylinder = _objectFactory.Get<Cylinder>(
-					new[]
-						{
-							new ConstructorArgument { Name="radius", Value=radius},
-							new ConstructorArgument { Name="height", Value=height},
-							new ConstructorArgument { Name="segments", Value=segments},
-							new ConstructorArgument { Name="heightSegments", Value=heightSegments},
-						}
-				);
-			return cylinder;
+			return clone;
 		}
 	}
 }

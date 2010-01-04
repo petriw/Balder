@@ -46,6 +46,7 @@ namespace Balder.Core
 
 		private readonly IObjectFactory _objectFactory;
 		private readonly IAssetLoaderService _assetLoaderService;
+		
 		private readonly Dictionary<IDisplay, ActorCollection> _gamesPerDisplay;
 		private readonly IPlatform _platform;
 
@@ -53,12 +54,13 @@ namespace Balder.Core
 		private bool _hasPlatformLoaded;
 		private bool _hasPlatformRun;
 
-		public Runtime(IPlatform platform, IObjectFactory objectFactory, IAssetLoaderService assetLoaderService)
+		public Runtime(IPlatform platform, IObjectFactory objectFactory, IAssetLoaderService assetLoaderService, IContentManager contentManager)
 		{
 			_platform = platform;
 			_gamesPerDisplay = new Dictionary<IDisplay, ActorCollection>();
 			_objectFactory = objectFactory;
 			_assetLoaderService = assetLoaderService;
+			ContentManager = contentManager;
 			InitializePlatformEventHandlers();
 			_assetLoaderService.RegisterAssembly(GetType().Assembly);
 			platform.RegisterAssetLoaders(_assetLoaderService);
@@ -83,6 +85,7 @@ namespace Balder.Core
 		}
 
 		public IPlatform Platform { get { return _platform; } }
+		public IContentManager ContentManager { get; private set; }
 
 		public static void Initialize(IPlatform platform)
 		{

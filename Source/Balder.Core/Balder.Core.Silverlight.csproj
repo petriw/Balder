@@ -116,6 +116,7 @@
     <Compile Include="Execution\ActorState.cs" />
     <Compile Include="Execution\Game.Silverlight.cs" />
     <Compile Include="Execution\ICanNotifyChanges.cs" />
+    <Compile Include="Execution\IDeviceContext.cs" />
     <Compile Include="Execution\Property.cs" />
     <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
     <Compile Include="Extensions\DependencyPropertySubscription.cs" />
@@ -156,7 +157,6 @@
     <Compile Include="Imaging\IImageContext.cs" />
     <Compile Include="Objects\Flat\Sprite.cs" />
     <Compile Include="Imaging\Image.cs" />
-    <Compile Include="Objects\Geometries\Cylinder.cs" />
     <Compile Include="Objects\Geometries\GeometryHelper.cs" />
     <Compile Include="Assets\AssetLoader.cs" />
     <Compile Include="Imaging\ImageFormat.cs" />
@@ -181,7 +181,6 @@
     <Compile Include="Lighting\Light.cs" />
     <Compile Include="Lighting\OmniLight.cs" />
     <Compile Include="Materials\Material.cs" />
-    <Compile Include="Objects\Geometries\Box.cs" />
     <Compile Include="ReadableRex\Alternation.cs" />
     <Compile Include="ReadableRex\LazyQuantifier.cs" />
     <Compile Include="ReadableRex\LinqToRegex\PatternVisitor.cs" />
