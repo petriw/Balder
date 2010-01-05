@@ -24,23 +24,13 @@ using Balder.Core.Content;
 using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Execution;
-using Balder.Core.Imaging;
-using Balder.Core.Input;
-using Balder.Core.Objects.Flat;
-using Balder.Core.Objects.Geometries;
-using Balder.Core.Rendering;
 using Ninject.Core;
-using Ninject.Core.Activation;
-using Ninject.Core.Behavior;
-using Ninject.Core.Binding;
-using Ninject.Core.Binding.Syntax;
 
 namespace Balder.Core
 {
 	[Singleton]
 	public class Runtime : IRuntime
 	{
-		private static AutoKernel _kernel;
 		private static Runtime _instance;
 		private static readonly object InstanceLockObject = new object();
 
@@ -75,9 +65,8 @@ namespace Balder.Core
 					if (null == _instance)
 					{
 						var runtimeImports = new RuntimeImports();
-						Initialize(runtimeImports.Platform);
-
-						_instance = _kernel.Get<IRuntime>() as Runtime;
+						KernelContainer.Initialize(runtimeImports.Platform);
+						_instance = KernelContainer.Kernel.Get<IRuntime>() as Runtime;
 					}
 					return _instance;
 				}
@@ -87,29 +76,8 @@ namespace Balder.Core
 		public IPlatform Platform { get { return _platform; } }
 		public IContentManager ContentManager { get; private set; }
 
-		public static void Initialize(IPlatform platform)
-		{
-			var runtimeModule = GetRuntimeModule(platform);
-			_kernel = new AutoKernel(runtimeModule);
-			_kernel.AddBindingResolver<IDisplay>(DisplayBindingResolver);
-		}
-
 		public DebugLevel DebugLevel { get; set; }
 
-		private static IBinding DisplayBindingResolver(IContext context)
-		{
-			var binding = new StandardBinding(_kernel, typeof(IDisplay));
-			IBindingTargetSyntax binder = new StandardBindingBuilder(binding);
-
-			if (null != context.ParentContext &&
-				context.ParentContext is DisplayActivationContext)
-			{
-				var display = ((DisplayActivationContext)context.ParentContext).Display;
-				binder.ToConstant(display);
-			}
-
-			return binding;
-		}
 
 		public T CreateGame<T>() where T : Game
 		{
@@ -172,11 +140,11 @@ namespace Balder.Core
 
 		private void WireUpGame(IDisplay display, Game objectToWire)
 		{
-			if (null != _kernel)
+			if (null != KernelContainer.Kernel)
 			{
-				var displayActivationContext = new DisplayActivationContext(display, _kernel, objectToWire.GetType(),
-																			_kernel.CreateScope());
-				_kernel.Inject(objectToWire, displayActivationContext);
+				var scope = KernelContainer.Kernel.CreateScope();
+				var displayActivationContext = new DisplayActivationContext(display, objectToWire.GetType(), scope);
+				KernelContainer.Kernel.Inject(objectToWire, displayActivationContext);
 			}
 			else
 			{
@@ -200,20 +168,6 @@ namespace Balder.Core
 		}
 
 
-		private static InlineModule GetRuntimeModule(IPlatform platform)
-		{
-			var module = new InlineModule(
-				m => m.Bind<IPlatform>().ToConstant(platform),
-				m => m.Bind<IDisplayDevice>().ToConstant(platform.DisplayDevice),
-				m => m.Bind<IMouseDevice>().ToConstant(platform.MouseDevice),
-				m => m.Bind<IFileLoader>().To(platform.FileLoaderType).Using<SingletonBehavior>(),
-				m => m.Bind<IGeometryContext>().To(platform.GeometryContextType),
-				m => m.Bind<ISpriteContext>().To(platform.SpriteContextType),
-				m => m.Bind<IImageContext>().To(platform.ImageContextType),
-				m => m.Bind<IShapeContext>().To(platform.ShapeContextType)
-			);
-			return module;
-		}
 
 
 		private void InitializePlatformEventHandlers()

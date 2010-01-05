@@ -29,7 +29,7 @@ namespace Balder.Core.Execution
 
 	public class AutoKernel : StandardKernel
 	{
-		private Dictionary<Type, BindingResolver> _bindingResolvers;
+		private readonly Dictionary<Type, BindingResolver> _bindingResolvers;
 
 		public AutoKernel(params IModule[] modules)
 			: base(modules)

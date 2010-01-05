@@ -30,7 +30,7 @@ namespace Balder.Core
 	/// <summary>
 	/// Abstract class representing a node in a scene
 	/// </summary>
-	public abstract partial class Node
+	public abstract partial class Node : ICopyable<Node>
 	{
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
@@ -177,6 +177,18 @@ namespace Balder.Core
 		internal void OnClick()
 		{
 			Click(this, DefaultEventArgs);
+		}
+
+		public virtual void CopyFrom(Node source)
+		{
+			BoundingSphere = source.BoundingSphere;
+			Position = source.Position;
+			Scale = source.Scale;
+			Rotation = source.Rotation;
+			Color = source.Color;
+			Command = source.Command;
+			CommandParameter = source.CommandParameter;
+			PrepareWorld();
 		}
 	}
 }

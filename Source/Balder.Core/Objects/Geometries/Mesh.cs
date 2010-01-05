@@ -30,12 +30,10 @@ namespace Balder.Core.Objects.Geometries
 
 		[Inject]
 		public IAssetLoaderService AssetLoaderService { get; set; }
+
 		[Inject]
 		public IDebugRenderer DebugRenderer { get; set; }
 
-		public Mesh()
-		{
-		}
 
 		public void Load(string assetName)
 		{
@@ -64,20 +62,6 @@ namespace Balder.Core.Objects.Geometries
 				}
 
 				geometry.GeometryContext.Render(viewport, this, view, projection, World);
-			}
-		}
-
-		public int TotalFaceCount
-		{
-			get
-			{
-				var faceCount = 0;
-				for (var geometryIndex = 0; geometryIndex < _geometries.Length; geometryIndex++)
-				{
-					var geometry = _geometries[geometryIndex];
-					faceCount += geometry.GeometryContext.FaceCount;
-				}
-				return faceCount;
 			}
 		}
 	}

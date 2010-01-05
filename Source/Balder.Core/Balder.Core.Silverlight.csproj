@@ -116,7 +116,10 @@
     <Compile Include="Execution\ActorState.cs" />
     <Compile Include="Execution\Game.Silverlight.cs" />
     <Compile Include="Execution\ICanNotifyChanges.cs" />
+    <Compile Include="Execution\ICopyable.cs" />
     <Compile Include="Execution\IDeviceContext.cs" />
+    <Compile Include="Execution\KernelContainer.cs" />
+    <Compile Include="Execution\PlatformKernel.cs" />
     <Compile Include="Execution\Property.cs" />
     <Compile Include="Extensions\DependencyPropertyExtensions.cs" />
     <Compile Include="Extensions\DependencyPropertySubscription.cs" />
@@ -172,6 +175,7 @@
     <Compile Include="RuntimeImports.cs" />
     <Compile Include="TypeConverters\ColorConverter.cs" />
     <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
+    <Compile Include="Utils\Cloner.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />
     <Compile Include="PixelFormat.cs" />

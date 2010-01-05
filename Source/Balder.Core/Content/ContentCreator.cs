@@ -19,6 +19,7 @@
 using System;
 using Balder.Core.Execution;
 using Balder.Core.Objects.Geometries;
+using Balder.Core.Utils;
 
 namespace Balder.Core.Content
 {
@@ -37,20 +38,11 @@ namespace Balder.Core.Content
 			return geometry;
 		}
 
-
-		public T Clone<T>(T node)
+		public T ReferenceCopy<T>(T node)
 			where T : Node
 		{
-			var clone = Clone(node, true);
-			return clone;
-		}
-
-		public T Clone<T>(T node, bool keepContentAsReference)
-			where T:Node
-		{
-			var clone = _objectFactory.Get<T>();
-
-			return clone;
+			throw new NotImplementedException();
+			
 		}
 	}
 }

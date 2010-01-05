@@ -31,19 +31,16 @@ namespace Balder.Core.Tests.Content
 	[TestFixture]
 	public class ContentCreatorTests
 	{
-		public class DeviceContextedNode : Node, IDeviceContext
+		public class DeviceContextedNode : Node
 		{
-			private Guid _context;
+			
 
 			public DeviceContextedNode()
 			{
-				_context = Guid.NewGuid();
+				Context = Guid.NewGuid();
 			}
 
-			public object GetContext()
-			{
-				return _context.ToString();
-			}
+			public Guid Context { get; set; }
 
 			public int SomeProperty { get; set; }
 		}
@@ -56,13 +53,13 @@ namespace Balder.Core.Tests.Content
 
 
 		[Test, SilverlightUnitTest]
-		public void CloningShouldReturnNewObject()
+		public void ReferenceCopyingShouldReturnNewObject()
 		{
 			var objectFactory = GetObjectFactory();
 			var node = new DeviceContextedNode();
 			var contentCreator = new ContentCreator(objectFactory);
 
-			var clone = contentCreator.Clone(node);
+			var clone = contentCreator.ReferenceCopy(node);
 			Assert.That(clone,Is.Not.Null);
 			Assert.That(clone,Is.Not.EqualTo(node));
 		}
@@ -72,11 +69,11 @@ namespace Balder.Core.Tests.Content
 		{
 			var objectFactory = GetObjectFactory();
 			var node = new DeviceContextedNode();
-			var nodeContext = node.GetContext();
+			var nodeContext = node.Context;
 			var contentCreator = new ContentCreator(objectFactory);
 
-			var clone = contentCreator.Clone(node);
-			var cloneContext = clone.GetContext();
+			var clone = contentCreator.ReferenceCopy(node);
+			var cloneContext = clone.Context;
 
 			Assert.That(cloneContext, Is.EqualTo(nodeContext));
 		}
@@ -89,7 +86,7 @@ namespace Balder.Core.Tests.Content
 			node.SomeProperty = 42;
 			var contentCreator = new ContentCreator(objectFactory);
 
-			var clone = contentCreator.Clone(node);
+			var clone = contentCreator.ReferenceCopy(node);
 			Assert.That(clone.SomeProperty, Is.EqualTo(node.SomeProperty));
 		}
 	}

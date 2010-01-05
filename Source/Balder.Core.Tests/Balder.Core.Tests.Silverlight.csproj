@@ -162,6 +162,7 @@
     <Compile Include="RuntimeTests.cs" />
     <Compile Include="SceneTests.cs" />
     <Compile Include="Stubs\ObjectFactoryStub.cs" />
+    <Compile Include="Utils\ClonerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Models.resx">
