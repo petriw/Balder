@@ -182,9 +182,9 @@ namespace Balder.Core
 		public virtual void CopyFrom(Node source)
 		{
 			BoundingSphere = source.BoundingSphere;
-			Position = source.Position;
-			Scale = source.Scale;
-			Rotation = source.Rotation;
+			Position.Set(source.Position);
+			Scale.Set(source.Scale);
+			Rotation.Set(source.Rotation);
 			Color = source.Color;
 			Command = source.Command;
 			CommandParameter = source.CommandParameter;

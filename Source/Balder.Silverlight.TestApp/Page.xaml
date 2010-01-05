@@ -14,7 +14,8 @@
 
 		<local:MyGame x:Name="_game" Width="640" Height="480">
 			
-			<geometries:Mesh AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot_singlecolor.ASE" Position="0,0,0" Color="Red"/>
+			<!--
+			<geometries:Mesh AssetName="/Balder.Silverlight.TestApp;component/Assets/teapot_singlecolor.ASE" Position="0,0,0" Color="Red"/>-->
 			
 			
 			<lighting:OmniLight Ambient="Black" Diffuse="Green" Specular="Blue"/>

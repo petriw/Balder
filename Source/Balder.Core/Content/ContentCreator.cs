@@ -16,10 +16,8 @@
 // limitations under the License.
 //
 #endregion
-using System;
 using Balder.Core.Execution;
 using Balder.Core.Objects.Geometries;
-using Balder.Core.Utils;
 
 namespace Balder.Core.Content
 {
@@ -41,8 +39,21 @@ namespace Balder.Core.Content
 		public T ReferenceCopy<T>(T node)
 			where T : Node
 		{
-			throw new NotImplementedException();
-			
+			var type = node.GetType();
+			var clone = _objectFactory.Get(type) as T;
+			clone.CopyFrom(node);
+			ReferenceCopyHierarchical(node, clone);
+			return clone;
+		}
+
+		private void ReferenceCopyHierarchical<T>(T parent, T clonedParent)
+			where T : Node
+		{
+			foreach( var child in parent.Children )
+			{
+				var clone = ReferenceCopy(child);
+				clonedParent.Children.Add(clone);
+			}
 		}
 	}
 }

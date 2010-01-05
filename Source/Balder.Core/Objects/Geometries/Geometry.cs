@@ -33,7 +33,6 @@ namespace Balder.Core.Objects.Geometries
 		public IDebugRenderer DebugRenderer { get; set; }
 
 
-
 		public void InitializeBoundingSphere()
 		{
 			var lowestVector = Vector.Zero;
@@ -76,9 +75,19 @@ namespace Balder.Core.Objects.Geometries
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
+			if (viewport.DebugLevel.BoundingSpheres)
+			{
+				DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
+			}
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
+
+		public override void CopyFrom(Node source)
+		{
+			GeometryContext = ((Geometry) source).GeometryContext;
+			base.CopyFrom(source);
+		}
+
 
 #if(!SILVERLIGHT)
 		public string Name { get; set; }

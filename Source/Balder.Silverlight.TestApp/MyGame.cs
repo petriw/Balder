@@ -1,5 +1,6 @@
 ﻿using Balder.Core.Execution;
 using Balder.Core.Math;
+using Balder.Core.Objects.Geometries;
 
 namespace Balder.Silverlight.TestApp
 {
@@ -23,6 +24,18 @@ namespace Balder.Silverlight.TestApp
 				Vector.Up);
 	
 			base.OnInitialize();
+		}
+
+		public override void OnLoadContent()
+		{
+			var teapot = ContentManager.Load<Mesh>("teapot_singlecolor.ase");
+			Scene.AddNode(teapot);
+
+			var clonedTeapot = ContentManager.Creator.ReferenceCopy(teapot);
+			clonedTeapot.Position.X = 20;
+			Scene.AddNode(clonedTeapot);
+
+			base.OnLoadContent();
 		}
 
 		private double sin = 0;

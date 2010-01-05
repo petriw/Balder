@@ -29,7 +29,7 @@ namespace Balder.Core.Tests.Stubs
 		public T Get<T>()
 		{
 			var type = typeof (T);
-			var objectToCreate = Activator.CreateInstance(type);
+			var objectToCreate = Get(type);
 			return (T)objectToCreate;
 		}
 
@@ -50,7 +50,8 @@ namespace Balder.Core.Tests.Stubs
 
 		public object Get(Type type)
 		{
-			throw new NotImplementedException();
+			var objectToCreate = Activator.CreateInstance(type);
+			return objectToCreate;
 		}
 	}
 }

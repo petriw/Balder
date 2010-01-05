@@ -6,7 +6,11 @@ namespace Balder.Core.Math
 	{
 		public Coordinate()
 		{
-			
+		}
+
+		public Coordinate(Coordinate coordinate)
+		{
+			Set(coordinate);
 		}
 
 		public Coordinate(double x, double y, double z)
@@ -14,6 +18,13 @@ namespace Balder.Core.Math
 			X = x;
 			Y = y;
 			Z = z;
+		}
+
+		public void Set(Coordinate coordinate)
+		{
+			X = coordinate.X;
+			Y = coordinate.Y;
+			Z = coordinate.Z;
 		}
 
 		public Vector ToVector()

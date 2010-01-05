@@ -26,43 +26,30 @@ namespace Balder.Core.Objects.Geometries
 {
 	public partial class Mesh : RenderableNode, IAsset
 	{
-		private Geometry[] _geometries;
-
 		[Inject]
 		public IAssetLoaderService AssetLoaderService { get; set; }
 
 		[Inject]
 		public IDebugRenderer DebugRenderer { get; set; }
 
-
 		public void Load(string assetName)
 		{
 			var loader = AssetLoaderService.GetLoader<Geometry>(assetName);
-			_geometries = loader.Load(assetName);
+			var geometries = loader.Load(assetName);
 
 			var boundingSphere = new BoundingSphere(Vector.Zero,0);
-			for( var geometryIndex=0; geometryIndex<_geometries.Length; geometryIndex++ )
+			foreach( var geometry in geometries )
 			{
-				var geometry = _geometries[geometryIndex];
 				geometry.InitializeBoundingSphere();
 				boundingSphere = BoundingSphere.CreateMerged(boundingSphere, geometry.BoundingSphere);
+				Children.Add(geometry);
 			}
 			BoundingSphere = boundingSphere;
 		}
 
+		
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			for( var geometryIndex=0; geometryIndex<_geometries.Length; geometryIndex++ )
-			{
-				var geometry = _geometries[geometryIndex];
-
-				if (viewport.DebugLevel.BoundingSpheres)
-				{
-					DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, World);
-				}
-
-				geometry.GeometryContext.Render(viewport, this, view, projection, World);
-			}
 		}
 	}
 }
