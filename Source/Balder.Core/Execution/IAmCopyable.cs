@@ -21,7 +21,7 @@
 
 namespace Balder.Core.Execution
 {
-	public interface ICopyable<T>
+	public interface IAmCopyable<T>
 	{
 		void CopyFrom(T source);
 	}
