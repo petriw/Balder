@@ -173,8 +173,9 @@ namespace Balder.Core
 			var nearSource = new Vector((float)x, (float)y, 0f);
 			var farSource = new Vector((float)x, (float)y, 1f);
 			var view = viewport.View;
-			var nearPoint = viewport.Unproject(nearSource, view.ProjectionMatrix, view.ViewMatrix, Matrix.Identity);
-			var farPoint = viewport.Unproject(farSource, view.ProjectionMatrix, view.ViewMatrix, Matrix.Identity);
+			var world = Matrix.CreateTranslation(0, 0, 0);
+			var nearPoint = viewport.Unproject(nearSource, view.ProjectionMatrix, view.ViewMatrix, world);
+			var farPoint = viewport.Unproject(farSource, view.ProjectionMatrix, view.ViewMatrix, world);
 
 			var direction = farPoint - nearPoint;
 			direction.Normalize();

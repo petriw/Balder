@@ -10,6 +10,7 @@ namespace Balder.Core
 {
 	public partial class Node : Control
 	{
+		public new event MouseEventHandler MouseMove = (s, e) => { };
 		public new event MouseEventHandler MouseEnter = (s, e) => { };
 		public new event MouseEventHandler MouseLeave = (s, e) => { };
 		public new event MouseButtonEventHandler MouseLeftButtonDown = (s, e) => { };
@@ -72,6 +73,11 @@ namespace Balder.Core
 		{
 			OnCommand();
 			MouseLeftButtonUp(this, e);
+		}
+
+		internal virtual void RaiseMouseMove(MouseEventArgs e)
+		{
+			MouseMove(this, e);
 		}
 
 		internal virtual void RaiseMouseLeftButtonDown(MouseButtonEventArgs e)

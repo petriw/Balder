@@ -56,5 +56,18 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Events.Mouse
 			_xpos.Text = translation.X.ToString();
 			_ypos.Text = translation.Y.ToString();
 		}
+
+		private void Mesh_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			_mouseEnter.Text = "true";
+			var node = sender as Node;
+			if (null != node)
+			{
+				if (!string.IsNullOrEmpty(node.Name))
+				{
+					_object.Text = node.Name;
+				}
+			}
+		}
 	}
 }

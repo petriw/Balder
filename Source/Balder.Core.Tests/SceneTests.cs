@@ -69,7 +69,7 @@ namespace Balder.Core.Tests
 		{
 			var viewport = new Viewport {Width = 640, Height = 480};
 			var scene = new Scene();
-			var camera = new Camera() {Position = {Z = -10}};
+			var camera = new Camera() {Position = {Z = -20}};
 			viewport.View = camera;
 			camera.Update(viewport);
 

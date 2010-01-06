@@ -298,8 +298,13 @@ namespace Balder.Core.Math
 
 		}
 
-
 		public static Matrix CreateTranslation(Vector position)
+		{
+			var matrix = CreateTranslation(position.X, position.Y, position.Z);
+			return matrix;
+		}
+
+		public static Matrix CreateTranslation(float x, float y, float z)
 		{
 			var matrix = new Matrix();
 			matrix[0, 0] = 1f;
@@ -314,9 +319,9 @@ namespace Balder.Core.Math
 			matrix[2, 1] = 0f;
 			matrix[2, 2] = 1f;
 			matrix[2, 3] = 0f;
-			matrix[3, 0] = position.X;
-			matrix[3, 1] = position.Y;
-			matrix[3, 2] = position.Z;
+			matrix[3, 0] = x;
+			matrix[3, 1] = y;
+			matrix[3, 2] = z;
 			matrix[3, 3] = 1f;
 			return matrix;
 		}

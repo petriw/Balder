@@ -29,9 +29,9 @@ namespace Balder.Core.Execution
 			set
 			{
 				var previousCamera = Camera;
-				if( null != previousCamera )
+				if (null != previousCamera)
 				{
-					if( Children.Contains(previousCamera) )
+					if (Children.Contains(previousCamera))
 					{
 						Children.Remove(previousCamera);
 					}
@@ -55,8 +55,8 @@ namespace Balder.Core.Execution
 		private void RegisterGame()
 		{
 			_display = Runtime.Instance.Platform.DisplayDevice.CreateDisplay();
-			_display.Initialize((int)Width,(int)Height);
-			Runtime.Instance.RegisterGame(_display,this);
+			_display.Initialize((int)Width, (int)Height);
+			Runtime.Instance.RegisterGame(_display, this);
 			_display.InitializeContainer(this);
 		}
 
@@ -73,9 +73,9 @@ namespace Balder.Core.Execution
 		{
 			foreach (var element in Children)
 			{
-				if( element is Node )
+				if (element is Node)
 				{
-					Scene.AddNode(element as Node);	
+					Scene.AddNode(element as Node);
 				}
 			}
 		}
@@ -95,6 +95,7 @@ namespace Balder.Core.Execution
 			var hitNode = Scene.GetNodeAtScreenCoordinate(Viewport, (int)position.X, (int)position.Y);
 			if (null != hitNode)
 			{
+				CallActionOnSilverlightNode(hitNode, n => n.RaiseMouseMove(e));
 				if (null == _previousNode ||
 					!hitNode.Equals(_previousNode))
 				{
@@ -128,7 +129,7 @@ namespace Balder.Core.Execution
 		{
 			if (null != _previousNode)
 			{
-				CallActionOnSilverlightNode(_previousNode, n => n.RaiseMouseLeave(e));
+				//CallActionOnSilverlightNode(_previousNode, n => n.RaiseMouseLeave(e));
 			}
 		}
 

@@ -49,7 +49,7 @@ namespace Balder.Core.Extensions
 			var combinedMatrix = (world * view) * projection;
 			var matrix = Matrix.Invert(combinedMatrix);
 			source.X = (((source.X - viewport.XPosition) / ((float)viewport.Width)) * 2f) - 1f;
-			source.Y = 1f-((((source.Y - viewport.YPosition) / ((float)viewport.Height)) * 2f));
+			source.Y = -((((source.Y - viewport.YPosition) / ((float)viewport.Height)) * 2f) - 1f);
 			source.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);
 			source.W = 1f;
 			//var vector = Vector.Transform(source, matrix);
