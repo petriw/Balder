@@ -28,22 +28,24 @@ namespace Balder.Core.Tests.Math
 	public class FrustumTests
 	{
 		private Frustum _frustum;
+		private Camera _camera;
 
 		[TestFixtureSetUp, SilverlightSetUp]
 		public void Setup()
 		{
 			var viewport = new Viewport { Width = 640, Height = 480 };
-			var camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
-			viewport.View = camera;
-			camera.Update(viewport);
+			_camera = new Camera() { Target = Vector.Forward, Position = Vector.Zero };
+			viewport.View = _camera;
+			
+			_camera.Update(viewport);
 			_frustum = new Frustum();
-			_frustum.SetCameraDefinition(viewport, camera);
+			_frustum.SetCameraDefinition(viewport, _camera);
 		}
 
 		[Test]
 		public void VectorInsideShouldNotBeClipped()
 		{
-			var vectorToTest = new Vector(0f, 0f, 1.5f);
+			var vectorToTest = new Vector(0f, 0f, (_camera.Far - _camera.Near)/2);
 			var result = _frustum.IsPointInFrustum(vectorToTest);
 			Assert.That(result, Is.EqualTo(FrustumIntersection.Inside));
 		}
@@ -83,7 +85,7 @@ namespace Balder.Core.Tests.Math
 		[Test]
 		public void VectorBehindNearShouldBeClipped()
 		{
-			var vectorToTest = new Vector(0f, 0f, -1000f);
+			var vectorToTest = new Vector(0f, 0f, _camera.Near-10f);
 			var result = _frustum.IsPointInFrustum(vectorToTest);
 			Assert.That(result, Is.EqualTo(FrustumIntersection.Outside));
 		}
@@ -91,7 +93,7 @@ namespace Balder.Core.Tests.Math
 		[Test]
 		public void VectorBeyondFarShouldBeClipped()
 		{
-			var vectorToTest = new Vector(0f, 0f, 1000f);
+			var vectorToTest = new Vector(0f, 0f, _camera.Far+1f);
 			var result = _frustum.IsPointInFrustum(vectorToTest);
 			Assert.That(result, Is.EqualTo(FrustumIntersection.Outside));
 		}

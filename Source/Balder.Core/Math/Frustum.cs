@@ -86,7 +86,7 @@ namespace Balder.Core.Math
 
 			SetCameraInternals(camera.FieldOfView, viewport.AspectRatio, camera.Near, camera.Far);
 
-			Z = camera.Position - camera.Target;
+			Z = camera.Target-camera.Position;
 			Z.Normalize();
 
 			X = camera.Up * Z;
