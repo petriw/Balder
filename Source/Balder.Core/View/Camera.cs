@@ -116,11 +116,13 @@ namespace Balder.Core.View
 		/// </summary>
 		private void SetupProjection(Viewport viewport)
 		{
-			ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+			var projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
 				MathHelper.ToRadians(FieldOfView),
 				viewport.AspectRatio,
 				Near,
 				Far);
+			var screenTranslationMatrix = Matrix.CreateScreenTranslation(viewport.Width, viewport.Height);
+			ProjectionMatrix = projectionMatrix; // *screenTranslationMatrix;
 		}
 
 		private void UpdateDepthDivisor()

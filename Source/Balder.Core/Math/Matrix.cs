@@ -143,8 +143,12 @@ namespace Balder.Core.Math
 		public static Matrix CreateLookAt(Vector cameraPosition, Vector cameraTarget, Vector cameraUpVector)
 		{
 			var matrix = Matrix.Identity;
-			var zaxis = Vector.Normalize(cameraTarget - cameraPosition);
-			var xaxis = Vector.Normalize(Vector.Cross(cameraUpVector, zaxis));
+			var direction = cameraTarget - cameraPosition;
+			var zaxis = Vector.Normalize(direction);
+
+			var zCross = Vector.Cross(cameraUpVector, zaxis);
+			var xaxis = Vector.Normalize(zCross);
+			
 			var yaxis = Vector.Cross(zaxis, xaxis);
 			matrix[0, 0] = xaxis.X;
 			matrix[0, 1] = yaxis.X;
@@ -168,8 +172,10 @@ namespace Balder.Core.Math
 		public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
 		{
 			var matrix = new Matrix();
-			var yscale = 1f / (float)System.Math.Tan(fieldOfView * 0.5f);
-			var xscale = yscale / aspectRatio;
+			var viewAngle = (float)System.Math.Tan(fieldOfView/2f);
+			var yscale = 1f/viewAngle;
+			var xscale = 1f/aspectRatio*yscale;
+				
 			matrix[0, 0] = xscale;
 			matrix[0, 1] = matrix[0, 2] = matrix[0, 3] = 0f;
 
@@ -182,6 +188,27 @@ namespace Balder.Core.Math
 
 			matrix[3, 0] = matrix[3, 1] = matrix[3, 3] = 0f;
 			matrix[3, 2] = -nearPlaneDistance * farPlaneDistance / (farPlaneDistance - nearPlaneDistance);
+			return matrix;
+		}
+
+		public static Matrix CreateScreenTranslation(int width, int height)
+		{
+			var centerX = ((float) width)/2f;
+			var centerY = ((float) height)/2f;
+			var matrix = new Matrix();
+			matrix[0, 0] = centerX;
+			matrix[0, 1] = matrix[0, 2] = matrix[0, 3] = 0f;
+
+			matrix[1, 1] = centerY;
+			matrix[1, 0] = matrix[1, 2] = matrix[1, 3] = 0f;
+
+			matrix[2, 0] = matrix[2, 1] = matrix[2, 2] = 0f;
+			matrix[2, 3] = 1f;
+
+			matrix[3, 0] = centerX;
+			matrix[3, 1] = centerY;
+			matrix[3, 2] = 0;
+			matrix[3, 3] = 1f;
 			return matrix;
 		}
 

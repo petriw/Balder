@@ -180,9 +180,9 @@ namespace Balder.Core.SoftwareRendering
 			RenderLines(node, viewport, view, projection, world);
 		}
 
-		private static void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix matrix, Matrix projection)
+		private static void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix view, Matrix projection)
 		{
-			vertex.Transform(matrix);
+			vertex.Transform(view);
 			vertex.Translate(projection, viewport.Width, viewport.Height);
 			vertex.MakeScreenCoordinates();
 			vertex.TransformedVectorNormalized = vertex.TransformedNormal;
@@ -194,11 +194,11 @@ namespace Balder.Core.SoftwareRendering
 
 		private void TransformAndTranslateVertices(Viewport viewport, Node node, Matrix view, Matrix projection, Matrix world)
 		{
-			var matrix = (world * view) * projection;
+			var localView = (world * view);
 			for (var vertexIndex = 0; vertexIndex < Vertices.Length; vertexIndex++)
 			{
 				var vertex = Vertices[vertexIndex];
-				TransformAndTranslateVertex(ref vertex, viewport, matrix, projection);
+				TransformAndTranslateVertex(ref vertex, viewport, localView, projection);
 				CalculateColorForVertex(ref vertex, viewport, node);
 				Vertices[vertexIndex] = vertex;
 			}
@@ -208,7 +208,6 @@ namespace Balder.Core.SoftwareRendering
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
 			vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
-			//vertex.Color = viewport.Scene.CalculateColorForVector(viewport, vertex.TransformedVector, vertex.Normal, node.Color, node.Color, node.Color);
 		}
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -231,7 +230,7 @@ namespace Balder.Core.SoftwareRendering
 				var mixedProduct = (b.TranslatedVector.X - a.TranslatedVector.X) * (c.TranslatedVector.Y - a.TranslatedVector.Y) -
 								   (c.TranslatedVector.X - a.TranslatedVector.X) * (b.TranslatedVector.Y - a.TranslatedVector.Y);
 
-				var visible = (mixedProduct < 0) && viewport.View.IsInView(a.TransformedVector);
+				var visible = (mixedProduct < 0); // && viewport.View.IsInView(a.TransformedVector);
 				if (!visible)
 				{
 					continue;
