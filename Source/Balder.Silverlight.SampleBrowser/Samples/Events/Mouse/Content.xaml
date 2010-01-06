@@ -10,11 +10,12 @@
 	<Grid x:Name="LayoutRoot" MouseMove="LayoutRoot_MouseMove">
 		<Execution:Game Width="800" Height="600">
 			<Execution:Game.DebugLevel>
-				<Debug:DebugLevel BoundingSpheres="true"/>
+				<Debug:DebugLevel BoundingSpheres="false"/>
 			</Execution:Game.DebugLevel>
 			
 			<Geometries:Mesh 
 				x:Name="Box1"
+				Color="Red"
 				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
 				MouseEnter="Mesh_MouseEnter"
 				MouseLeave="Mesh_MouseLeave"
@@ -25,6 +26,7 @@
 
 			<Geometries:Mesh 
 				x:Name="Box2"
+				Color="Green"
 				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
 				MouseEnter="Mesh_MouseEnter"
 				MouseLeave="Mesh_MouseLeave"
@@ -35,6 +37,7 @@
 
 			<Geometries:Mesh
 				x:Name="Box3"
+				Color="Blue"
 				AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Events/Mouse/Assets/box.ase"
 				MouseEnter="Mesh_MouseEnter"
 				MouseLeave="Mesh_MouseLeave"
@@ -43,7 +46,7 @@
 				Position="80,0,50"
 				/>
 
-			<Lighting:OmniLight Position="0,0,-80" Ambient="DarkGreen" Diffuse="Green" Specular="LightGreen"/>
+			<Lighting:OmniLight Position="0,0,-80" Ambient="Green" Diffuse="Green" Specular="White"/>
 			<Execution:Game.Camera>
 				<View:Camera Position="-250,240,-280"/>
 			</Execution:Game.Camera>

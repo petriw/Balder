@@ -44,8 +44,6 @@ namespace Balder.Core.Extensions
 			return vector;
 		}
 
-
-
 		public static Vector Unproject(this Viewport viewport, Vector source, Matrix projection, Matrix view, Matrix world)
 		{
 			var combinedMatrix = (world * view) * projection;

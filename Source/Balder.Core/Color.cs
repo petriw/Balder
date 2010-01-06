@@ -261,5 +261,11 @@ namespace Balder.Core
 			var convertedValue = (byte)(value * 255f);
 			return convertedValue;
 		}
+
+		public override string ToString()
+		{
+			var colorAsString = string.Format("R: {0}, G: {1}, B: {2}", Red, Green, Blue);
+			return colorAsString;
+		}
 	}
 }

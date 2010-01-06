@@ -45,6 +45,9 @@ namespace Balder.Core.Objects.Geometries
 				Children.Add(geometry);
 			}
 			BoundingSphere = boundingSphere;
+
+			// Todo: This has to be done since Loading of the node is done after Xaml has been bound - but we will get color from the File loaded
+			SetColorForChildren();
 		}
 
 		

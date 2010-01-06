@@ -18,14 +18,44 @@
 //
 
 #endregion
+
+using System.Windows.Media;
+using CThru.Silverlight;
 using NUnit.Framework;
+using Geometry=Balder.Core.Objects.Geometries.Geometry;
 
 namespace Balder.Core.Tests
 {
 	[TestFixture]
 	public class NodeTests
 	{
-		
+		[Test, SilverlightUnitTest]
+		public void SettingColorOnNodeShouldSetColorOnChildren()
+		{
+			var parent = new Geometry();
+			var child = new Geometry();
+			parent.Children.Add(child);
+
+			parent.Color = Color.FromSystemColor(Colors.Green);
+
+			Assert.That(child.Color, Is.EqualTo(parent.Color));
+		}
+
+		[Test, SilverlightUnitTest]
+		public void SettingColorOnNodeShouldSetColorOnEntireHierarchy()
+		{
+			var parent = new Geometry();
+			var child = new Geometry();
+			parent.Children.Add(child);
+			var childOfChild = new Geometry();
+			child.Children.Add(childOfChild);
+
+			parent.Color = Color.FromSystemColor(Colors.Green);
+
+			Assert.That(child.Color, Is.EqualTo(parent.Color));
+			Assert.That(childOfChild.Color, Is.EqualTo(parent.Color));
+		}
+
 	}
 }
 

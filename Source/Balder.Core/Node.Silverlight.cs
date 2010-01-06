@@ -33,7 +33,11 @@ namespace Balder.Core
 		public Color Color
 		{
 			get { return ColorProp.GetValue(this); }
-			set { ColorProp.SetValue(this, value); }
+			set
+			{
+				ColorProp.SetValue(this, value);
+				SetColorForChildren();
+			}
 		}
 
 		public static readonly DependencyProperty<Node, ICommand> CommandProperty =

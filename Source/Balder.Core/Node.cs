@@ -179,6 +179,15 @@ namespace Balder.Core
 			Click(this, DefaultEventArgs);
 		}
 
+		protected void SetColorForChildren()
+		{
+			foreach( var node in Children )
+			{
+				node.Color = Color;
+			}
+		}
+
+
 		public virtual void CopyFrom(Node source)
 		{
 			BoundingSphere = source.BoundingSphere;
