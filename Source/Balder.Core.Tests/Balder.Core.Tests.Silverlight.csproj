@@ -144,6 +144,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Fakes\FakeDisplayDevice.cs" />
+    <Compile Include="Helpers\DependencyPropertyTests.cs" />
     <Compile Include="Input\MouseButtonStateTests.cs" />
     <Compile Include="Input\MouseManagerTests.cs" />
     <Compile Include="Math\BoundingSphereTests.cs" />

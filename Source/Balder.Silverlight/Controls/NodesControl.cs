@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using Balder.Core;
@@ -68,39 +69,91 @@ namespace Balder.Silverlight.Controls
 
 		private void HandleNewItemsSource()
 		{
-
-			
-			
+			var itemsSource = _itemsSource as INotifyCollectionChanged;
+			if( null != itemsSource )
+			{
+				itemsSource.CollectionChanged += ItemsSourceCollectionChanged;
+			}
 		}
 
 		private void HandlePreviousItemsSource()
 		{
-			if (null != _itemsSource && _itemsSource is INotifyCollectionChanged )
+			var itemsSource = _itemsSource as INotifyCollectionChanged;
+			if (null != itemsSource)
 			{
-				var notifyCollectionChanged = _itemsSource as INotifyCollectionChanged;
+				itemsSource.CollectionChanged -= ItemsSourceCollectionChanged;
+			}
+		}
+
+		private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch( e.Action )
+			{
+				case NotifyCollectionChangedAction.Add:
+					{
+						foreach( var item in e.NewItems )
+						{
+							LoadAndAddChild(item);
+						}
+					}
+					break;
+
+				case NotifyCollectionChangedAction.Remove:
+					{
+						foreach( var item in e.OldItems )
+						{
+							RemoveChildBasedOnItem(item);
+						}
+					}
+					break;
+
+				case NotifyCollectionChangedAction.Reset:
+					{
+						Children.Clear();
+					}
+					break;
 
 			}
 		}
 
 
-
 		private void PopulateFromItemsSource()
 		{
-			
-			if( null != NodeTemplate )
+			foreach (var item in _itemsSource)
 			{
-				
-				foreach (var item in _itemsSource)
-				{
-					var content = NodeTemplate.LoadContent() as Node;
-					if (null == content)
-					{
-						throw new ArgumentException("Content of the template for NodeTemplate must be a derivative of Node");
-					}
+				LoadAndAddChild(item);
+			}
+		}
 
-					content.DataContext = item;
-					Children.Add(content);
+		private void LoadAndAddChild(object item)
+		{
+			if (null != NodeTemplate)
+			{
+				var content = NodeTemplate.LoadContent() as Node;
+				if (null == content)
+				{
+					throw new ArgumentException("Content of the template for NodeTemplate must be a derivative of Node");
 				}
+
+				content.DataContext = item;
+				Children.Add(content);
+			}
+		}
+
+		private void RemoveChildBasedOnItem(object item)
+		{
+			var nodesToRemove = new List<Node>();
+			foreach( var node in Children )
+			{
+				if( node.DataContext.Equals(item))
+				{
+					nodesToRemove.Add(node);
+				}
+			}
+
+			foreach( var node in nodesToRemove )
+			{
+				Children.Remove(node);
 			}
 		}
 	}
