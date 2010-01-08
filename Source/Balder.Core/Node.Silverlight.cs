@@ -36,6 +36,20 @@ namespace Balder.Core
 						}
 					}
 					break;
+				case NotifyCollectionChangedAction.Remove:
+					{
+						foreach( var item in e.OldItems )
+						{
+							Items.Remove(item);
+						}
+					}
+					break;
+				case NotifyCollectionChangedAction.Reset:
+					{
+						Items.Clear();
+					}
+					break;
+
 			}
 		}
 

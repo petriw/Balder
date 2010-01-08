@@ -21,6 +21,7 @@
 
 using System.Windows.Media;
 using CThru.Silverlight;
+using Moq;
 using NUnit.Framework;
 using Geometry=Balder.Core.Objects.Geometries.Geometry;
 
@@ -29,11 +30,22 @@ namespace Balder.Core.Tests
 	[TestFixture]
 	public class NodeTests
 	{
+		public class SomeNode : Node
+		{
+			
+		}
+
+		private Node CreateNode()
+		{
+			var node = new SomeNode();
+			return node;
+		}
+
 		[Test, SilverlightUnitTest]
 		public void SettingColorOnNodeShouldSetColorOnChildren()
 		{
-			var parent = new Geometry();
-			var child = new Geometry();
+			var parent = CreateNode();
+			var child = CreateNode();
 			parent.Children.Add(child);
 
 			parent.Color = Color.FromSystemColor(Colors.Green);
@@ -44,10 +56,10 @@ namespace Balder.Core.Tests
 		[Test, SilverlightUnitTest]
 		public void SettingColorOnNodeShouldSetColorOnEntireHierarchy()
 		{
-			var parent = new Geometry();
-			var child = new Geometry();
+			var parent = CreateNode();
+			var child = CreateNode();
 			parent.Children.Add(child);
-			var childOfChild = new Geometry();
+			var childOfChild = CreateNode();
 			child.Children.Add(childOfChild);
 
 			parent.Color = Color.FromSystemColor(Colors.Green);
@@ -56,6 +68,42 @@ namespace Balder.Core.Tests
 			Assert.That(childOfChild.Color, Is.EqualTo(parent.Color));
 		}
 
+		[Test, SilverlightUnitTest]
+		public void AddingAChildShouldAddToItems()
+		{
+			var parent = CreateNode();
+			var child = CreateNode();
+
+			parent.Children.Add(child);
+
+			var contains = parent.Items.Contains(child);
+			Assert.That(contains, Is.True);
+		}
+
+		[Test, SilverlightUnitTest]
+		public void RemovingAChildShouldRemoveItFromItems()
+		{
+			var parent = CreateNode();
+			var child = CreateNode();
+			parent.Children.Add(child);
+
+			parent.Children.Remove(child);
+
+			var contains = parent.Items.Contains(child);
+			Assert.That(contains, Is.False);
+		}
+
+		[Test, SilverlightUnitTest]
+		public void ClearingChildrenShouldClearItems()
+		{
+			var parent = CreateNode();
+			var child = CreateNode();
+			parent.Children.Add(child);
+
+			parent.Children.Clear();
+
+			Assert.That(parent.Items.Count, Is.EqualTo(0));
+		}
 	}
 }
 
