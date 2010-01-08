@@ -29,6 +29,9 @@ namespace Balder.Core.Helpers
 		public static readonly DependencyProperty IsInternalSetProperty =
 			DependencyProperty.RegisterAttached("IsInternalSet", typeof(bool), typeof(DependencyPropertyHelper), null);
 
+		public static readonly DependencyProperty IsExternalSetProperty =
+			DependencyProperty.RegisterAttached("IsExternalSet", typeof(bool), typeof(DependencyPropertyHelper), null);
+
 		public static readonly DependencyProperty IsNotFirstSetProperty =
 			DependencyProperty.RegisterAttached("IsNotFirstSet", typeof (bool), typeof (DependencyPropertyHelper), null);
 
@@ -42,6 +45,16 @@ namespace Balder.Core.Helpers
 			return (bool)obj.GetValue(IsInternalSetProperty);
 		}
 
+		public static void SetIsExternalSet(DependencyObject obj, bool value)
+		{
+			obj.SetValue(IsExternalSetProperty, value);
+		}
+
+		public static bool GetIsExternalSet(DependencyObject obj)
+		{
+			return (bool)obj.GetValue(IsExternalSetProperty);
+		}
+
 		public static void SetIsNotFirstSet(DependencyObject obj, bool value)
 		{
 			obj.SetValue(IsNotFirstSetProperty,value);
@@ -53,12 +66,14 @@ namespace Balder.Core.Helpers
 		}
 
 
+
 		private static PropertyMetadata GetPropertyMetaData(PropertyInfo propertyInfo, object defaultValue)
 		{
 			var propertyMetadata = new PropertyMetadata(defaultValue,
 			                                            (o, e) =>
 			                                            	{
-			                                            		if (GetIsInternalSet(o))
+			                                            		var isInternal = GetIsInternalSet(o);
+			                                            		if (isInternal)
 			                                            		{
 			                                            			return;
 			                                            		}
@@ -66,6 +81,8 @@ namespace Balder.Core.Helpers
 			                                            		{
 			                                            			SetIsNotFirstSet(o,true);
 			                                            			Action a = () => propertyInfo.SetValue(o, e.NewValue, null);
+
+																	SetIsExternalSet(o, true);
 			                                            			if (o.Dispatcher.CheckAccess())
 			                                            			{
 			                                            				a();
@@ -74,6 +91,7 @@ namespace Balder.Core.Helpers
 			                                            			{
 			                                            				o.Dispatcher.BeginInvoke(a);
 			                                            			}
+																	SetIsExternalSet(o, false);
 			                                            		}
 			                                            	});
 			return propertyMetadata;

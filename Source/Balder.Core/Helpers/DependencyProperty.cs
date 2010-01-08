@@ -49,9 +49,13 @@ namespace Balder.Core.Helpers
 
 		public void SetValue(DependencyObject obj, T value)
 		{
-			DependencyPropertyHelper.SetIsInternalSet(obj,true);
-			obj.SetValue<T>(this.ActualDependencyProperty,value);
-			DependencyPropertyHelper.SetIsInternalSet(obj, false);
+			var isExternal = DependencyPropertyHelper.GetIsExternalSet(obj);
+			if (!isExternal)
+			{
+				DependencyPropertyHelper.SetIsInternalSet(obj, true);
+				obj.SetValue<T>(this.ActualDependencyProperty, value);
+				DependencyPropertyHelper.SetIsInternalSet(obj, false);
+			}
 		}
 
 		public static DependencyProperty<T1,T> Register(Expression<Func<T1, T>> expression)
@@ -69,32 +73,5 @@ namespace Balder.Core.Helpers
 
 			return typeSafeProperty;
 		}
-
-
-		/*
-		public System.Windows.Data.Binding SetBinding(T1 obj, string path)
-		{
-			var binding = new System.Windows.Data.Binding(path);
-			obj.SetBinding(this.ActualDependencyProperty, binding);
-			return binding;
-		}
-
-		public System.Windows.Data.Binding SetBinding(T1 obj, string path, object source)
-		{
-			var binding = new System.Windows.Data.Binding(path) { Source = source };
-			obj.SetBinding(this.ActualDependencyProperty, binding);
-			return binding;
-		}
-		public System.Windows.Data.Binding SetBinding(T1 obj, string path, object source, BindingMode mode)
-		{
-			var binding = new System.Windows.Data.Binding(path)
-			              	{
-			              		Source = source,
-			              		Mode = mode
-			              	};
-			obj.SetBinding(this.ActualDependencyProperty, binding);
-			return binding;
-		}
-		 * */
 	}
 }

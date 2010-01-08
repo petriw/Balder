@@ -17,17 +17,20 @@
 //
 #endregion
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
-using Ninject.Core;
 
 namespace Balder.Core.Debug
 {
 	public class DebugShape : RenderableNode
 	{
-		[Inject]
-		public IGeometryContext GeometryContext { get; set; }
+		protected IGeometryContext GeometryContext { get; private set; }
 
+		public DebugShape()
+		{
+			GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
+		}
 
 		public virtual void Initialize()
 		{

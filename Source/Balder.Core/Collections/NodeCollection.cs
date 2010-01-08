@@ -16,11 +16,20 @@
 // limitations under the License.
 //
 #endregion
+
+#if(SILVERLIGHT)
+using System.Collections.ObjectModel;
+#else
 using System.Collections.Generic;
+#endif
 
 namespace Balder.Core.Collections
 {
+#if(SILVERLIGHT)
+	public class NodeCollection : ObservableCollection<Node>
+#else
 	public class NodeCollection : List<Node>
+#endif
 	{
 
 	}

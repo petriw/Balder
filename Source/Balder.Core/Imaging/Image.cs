@@ -24,6 +24,9 @@ namespace Balder.Core.Imaging
 	public class Image : IAsset, IAssetPart
 	{
 		[Inject]
+		public IAssetLoaderService AssetLoaderService { get; set; }
+
+		[Inject]
 		public IImageContext ImageContext { get; set; }
 
 		public int Width { get; set; }

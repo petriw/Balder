@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Windows;
 using Balder.Core.Helpers;
 using Balder.Core.Extensions;
+using Expression=System.Linq.Expressions.Expression;
 
 namespace Balder.Core.Execution
 {
@@ -17,9 +18,9 @@ namespace Balder.Core.Execution
 		private readonly bool _canNotiify;
 		
 
-		private Property(Expression<Func<T, TP>> expression)
+		private Property(Expression<Func<T, TP>> expression, TP defaultValue)
 		{
-			_internalDependencyProperty = DependencyProperty<T, TP>.Register(expression);
+			_internalDependencyProperty = DependencyProperty<T, TP>.Register(expression, defaultValue);
 			_expression = expression;
 			_valueHash = new Dictionary<object, TP>();
 
@@ -40,8 +41,15 @@ namespace Balder.Core.Execution
 
 		public static Property<T, TP> Register(Expression<Func<T,TP>> expression)
 		{
-			var property = new Property<T, TP>(expression);
+			var property = Register(expression, default(TP));
 			return property;
+		}
+
+		public static Property<T, TP> Register(Expression<Func<T,TP>> expression, TP defaultValue)
+		{
+			var property = new Property<T, TP>(expression, defaultValue);
+			return property;
+			
 		}
 
 		public void SetValue(T obj, TP value)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,7 +9,7 @@ using Balder.Core.Helpers;
 
 namespace Balder.Core
 {
-	public partial class Node : Control
+	public partial class Node : ItemsControl
 	{
 		public new event MouseEventHandler MouseMove = (s, e) => { };
 		public new event MouseEventHandler MouseEnter = (s, e) => { };
@@ -20,6 +21,22 @@ namespace Balder.Core
 		partial void Initialize()
 		{
 			Loaded += NodeLoaded;
+			Children.CollectionChanged += ChildrenChanged;
+		}
+
+		private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch( e.Action )
+			{
+				case NotifyCollectionChangedAction.Add:
+					{
+						foreach( var item in e.NewItems )
+						{
+							Items.Add(item);
+						}
+					}
+					break;
+			}
 		}
 
 		private void NodeLoaded(object sender, RoutedEventArgs e)

@@ -17,21 +17,20 @@
 //
 #endregion
 using Balder.Core.Assets;
-using Balder.Core.Debug;
 using Balder.Core.Display;
+using Balder.Core.Execution;
 using Balder.Core.Math;
-using Ninject.Core;
 
 namespace Balder.Core.Objects.Geometries
 {
 	public class Geometry : RenderableNode, IAssetPart
 	{
-		[Inject]
-		public IGeometryContext GeometryContext { get; set; }
+		public IGeometryContext GeometryContext { get; private set; }
 
-		[Inject]
-		public IDebugRenderer DebugRenderer { get; set; }
-
+		public Geometry()
+		{
+			GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
+		}
 
 		public void InitializeBoundingSphere()
 		{
@@ -75,10 +74,12 @@ namespace Balder.Core.Objects.Geometries
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
+			/*
 			if (viewport.DebugLevel.BoundingSpheres)
 			{
 				DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
 			}
+			 * */
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 

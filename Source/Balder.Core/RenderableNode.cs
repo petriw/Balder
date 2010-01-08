@@ -23,21 +23,6 @@ namespace Balder.Core
 {
 	public abstract class RenderableNode : Node
 	{
-		public void PrepareRender()
-		{
-		}
-
-		public virtual void BeforeRender() {}
-		public virtual void AfterRender() {}
-
-		#region Public Abstract Methods
-
-		public abstract void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world);
-
-		public virtual void PostRender(Viewport viewport, Matrix renderMatrix, Matrix projectionMatrix)
-		{
-		}
-
-		#endregion
+		public virtual void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world) {}
 	}
 }

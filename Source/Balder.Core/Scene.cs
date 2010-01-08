@@ -134,7 +134,6 @@ namespace Balder.Core
 		private static void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			world = node.World * world;
-			node.PrepareRender();
 			node.Render(viewport, view, projection, world);
 			foreach (var child in node.Children)
 			{
@@ -184,7 +183,7 @@ namespace Balder.Core
 
 			var closestObjectDistance = float.MaxValue;
 			RenderableNode closestObject = null;
-
+			return null;
 			lock (_renderableNodes)
 			{
 				foreach (var node in _renderableNodes)

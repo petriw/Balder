@@ -17,8 +17,6 @@
 //
 #endregion
 using Balder.Core.Assets;
-using Balder.Core.Debug;
-using Balder.Core.Display;
 using Balder.Core.Math;
 using Ninject.Core;
 
@@ -28,9 +26,6 @@ namespace Balder.Core.Objects.Geometries
 	{
 		[Inject]
 		public IAssetLoaderService AssetLoaderService { get; set; }
-
-		[Inject]
-		public IDebugRenderer DebugRenderer { get; set; }
 
 		public void Load(string assetName)
 		{
@@ -50,9 +45,10 @@ namespace Balder.Core.Objects.Geometries
 			SetColorForChildren();
 		}
 
-		
-		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		public override void CopyFrom(Node source)
 		{
+			AssetName = ((Mesh) source).AssetName;
+			base.CopyFrom(source);
 		}
 	}
 }

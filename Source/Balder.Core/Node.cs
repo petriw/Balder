@@ -16,13 +16,12 @@
 // limitations under the License.
 //
 #endregion
-
+using System;
 using System.ComponentModel;
 using Balder.Core.Collections;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Math;
-using System;
 using Matrix = Balder.Core.Math.Matrix;
 
 namespace Balder.Core
@@ -40,8 +39,8 @@ namespace Balder.Core
 
 		protected Node()
 		{
-			Initialize();
 			InitializeTransform();
+			Initialize();
 		}
 
 		partial void Initialize();
@@ -72,9 +71,7 @@ namespace Balder.Core
 		#region Transform
 		public static readonly Property<Node, Coordinate> PositionProp =
 			Property<Node, Coordinate>.Register(t => t.Position);
-
 		private Coordinate _position;
-
 		/// <summary>
 		/// Gets or sets the position of the node in 3D space
 		/// </summary>
@@ -89,11 +86,15 @@ namespace Balder.Core
 				}
 				PositionProp.SetValue(this, value);
 				_position = value;
-				_position.PropertyChanged += TransformChanged;
-				PrepareWorld();
+				if (null != _position)
+				{
+					_position.PropertyChanged += TransformChanged;
+					PrepareWorld();
+				}
 			}
 		}
 
+		
 		public static readonly Property<Node, Coordinate> ScaleProp =
 			Property<Node, Coordinate>.Register(t => t.Scale);
 
@@ -116,8 +117,11 @@ namespace Balder.Core
 				}
 				ScaleProp.SetValue(this, value);
 				_scale = value;
-				_scale.PropertyChanged += TransformChanged;
-				PrepareWorld();
+				if (null != _scale)
+				{
+					_scale.PropertyChanged += TransformChanged;
+					PrepareWorld();
+				}
 			}
 		}
 
@@ -140,8 +144,11 @@ namespace Balder.Core
 				}
 				RotationProp.SetValue(this, value);
 				_rotation = value;
-				_rotation.PropertyChanged += TransformChanged;
-				PrepareWorld();
+				if (null != _rotation)
+				{
+					_rotation.PropertyChanged += TransformChanged;
+					PrepareWorld();
+				}
 			}
 		}
 

@@ -22,9 +22,12 @@ namespace Balder.Core.Math
 
 		public void Set(Coordinate coordinate)
 		{
-			X = coordinate.X;
-			Y = coordinate.Y;
-			Z = coordinate.Z;
+			if (null != coordinate)
+			{
+				X = coordinate.X;
+				Y = coordinate.Y;
+				Z = coordinate.Z;
+			}
 		}
 
 		public Vector ToVector()

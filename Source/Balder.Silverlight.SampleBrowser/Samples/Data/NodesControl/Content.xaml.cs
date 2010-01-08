@@ -2,10 +2,10 @@
 using Balder.Silverlight.SampleBrowser.Constants;
 using Balder.Silverlight.SampleBrowser.Content;
 
-namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
+namespace Balder.Silverlight.SampleBrowser.Samples.Data.NodesControl
 {
-	[Category(Categories.Programatic)]
-	[SamplePage("Simple Teapot")]
+	[Category(Categories.Data)]
+	[SamplePage("Nodes Control")]
 	[Description("")]
 	public partial class Content
 	{
