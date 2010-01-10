@@ -84,7 +84,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void CreatedTypeShouldInheritFromTypeGiven()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			Assert.That(type.BaseType, Is.EqualTo(typeof (MyViewModel)));
 		}
 
@@ -92,7 +92,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void CreatedTypeShouldImplementINotifyPropertyChanged()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var interfaceType = type.GetInterface(typeof (INotifyPropertyChanged).Name, true);
 			Assert.That(interfaceType,Is.Not.Null);
 		}
@@ -101,7 +101,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void CallingGeneratedOnPropertyChangedMethodShouldFirePropertyChangedEvent()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var fired = false;
 			instance.PropertyChanged += (s, e) => fired = true;
@@ -114,7 +114,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void SettingIntegerPropertyShouldReturnSameValueWhenGetting()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var expected = 5;
@@ -127,7 +127,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void SettingIntegerPropertyShouldFirePropertyChangedEvent()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
@@ -147,7 +147,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void SettingStringPropertyShouldReturnSameValueWhenGetting()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var expected = "Hello world";
@@ -160,7 +160,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void SettingStringPropertyShouldFirePropertyChangedEvent()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
@@ -180,7 +180,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void SettingPropertyShouldCallBaseClassSetter()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			myViewModel.SomeStringWithImplementation = "Something";
@@ -191,7 +191,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void GettingPropertyShouldCallBaseClassGetter()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			myViewModel.SomeStringWithImplementation = "Something";
@@ -203,7 +203,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void PropertyDecoratedWithIgnoreChangesShouldNotFirePropertyChangedEvent()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
@@ -222,7 +222,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void PropertyDecoratedWithNotificationForMorePropertiesShouldFirePropertyChangedEventForAllProperties()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var someStringFired = false;
@@ -247,7 +247,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void PropertyWithPrivateSetterShouldBeIgnored()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModel>();
+			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
@@ -266,8 +266,8 @@ namespace Balder.Silverlight.Tests.Notification
 		public void GettingProxyForSameTypeTwiceShouldYieldSameProxyType()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var firstType = weaver.Get<MyViewModel>();
-			var secondType = weaver.Get<MyViewModel>();
+			var firstType = weaver.GetProxyType<MyViewModel>();
+			var secondType = weaver.GetProxyType<MyViewModel>();
 			Assert.That(firstType,Is.EqualTo(secondType));
 		}
 
@@ -275,7 +275,7 @@ namespace Balder.Silverlight.Tests.Notification
 		public void ObjectWithNonDefaultConstructorShouldHaveItsArgumentsForwardedFromProxy()
 		{
 			var weaver = new NotifyingObjectWeaver();
-			var type = weaver.Get<MyViewModelWithConstructorDependencies>();
+			var type = weaver.GetProxyType<MyViewModelWithConstructorDependencies>();
 
 			var argument1 = new MyViewModel();
 			var argument2 = new MyViewModel();

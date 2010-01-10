@@ -151,6 +151,7 @@
     <Compile Include="Content\FilePathHelperTests.cs" />
     <Compile Include="Controls\NodesControlTests.cs" />
     <Compile Include="Converters\StringToTypeConverterTests.cs" />
+    <Compile Include="Display\WriteableBitmapQueue.cs" />
     <Compile Include="Execution\PlatformTests.cs" />
     <Compile Include="Notification\NotifyingObjectWeaverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
