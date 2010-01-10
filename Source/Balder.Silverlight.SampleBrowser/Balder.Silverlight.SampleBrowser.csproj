@@ -121,6 +121,11 @@
     <Compile Include="Samples\Data\NodesControl\BusinessObject.cs" />
     <Compile Include="Samples\Data\NodesControl\MyGame.cs" />
     <Compile Include="Samples\Data\NodesControl\ViewModel.cs" />
+    <Compile Include="Samples\Data\NodesStack\BusinessObject.cs" />
+    <Compile Include="Samples\Data\NodesStack\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Data\NodesStack\ViewModel.cs" />
     <Compile Include="Samples\Events\Mouse\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -163,6 +168,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
+    <Page Include="Samples\Data\NodesStack\Content.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Samples\Events\Mouse\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
@@ -190,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+    <Resource Include="Samples\Data\NodesStack\Assets\box.ASE" />
     <Resource Include="Samples\Data\NodesControl\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\teapot.ASE" />

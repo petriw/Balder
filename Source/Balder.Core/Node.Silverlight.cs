@@ -3,12 +3,14 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using Balder.Core.Execution;
 using Balder.Core.TypeConverters;
 using Balder.Core.Helpers;
 
 namespace Balder.Core
 {
+	[ContentProperty("Children")]
 	public partial class Node : ItemsControl
 	{
 		public new event MouseEventHandler MouseMove = (s, e) => { };

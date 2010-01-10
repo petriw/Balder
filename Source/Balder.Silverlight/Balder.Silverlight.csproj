@@ -91,7 +91,9 @@
     </Compile>
     <Compile Include="AssetLoaders\ImageLoader.cs" />
     <Compile Include="Content\FilePathHelper.cs" />
+    <Compile Include="Controls\INodeModifier.cs" />
     <Compile Include="Controls\NodesControl.cs" />
+    <Compile Include="Controls\NodesStack.cs" />
     <Compile Include="Converters\StringToTypeConverter.cs" />
     <Compile Include="Display\DisplayDevice.cs" />
     <Compile Include="Display\WriteableBitmapQueue.cs" />

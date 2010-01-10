@@ -35,7 +35,6 @@ namespace Balder.Silverlight.Controls
 			Loaded += NodesControlLoaded;
 		}
 
-		
 		private void NodesControlLoaded(object sender, RoutedEventArgs e)
 		{
 			PopulateFromItemsSource();
@@ -65,6 +64,15 @@ namespace Balder.Silverlight.Controls
 				HandleNewItemsSource();
 
 			}
+		}
+
+		public static readonly DependencyProperty<NodesControl, INodeModifier> ModifierProperty =
+			DependencyProperty<NodesControl, INodeModifier>.Register(n => n.Modifier);
+		
+		public INodeModifier Modifier
+		{
+			get { return ModifierProperty.GetValue(this); }
+			set { ModifierProperty.SetValue(this,value); }
 		}
 
 		private void HandleNewItemsSource()
@@ -135,6 +143,18 @@ namespace Balder.Silverlight.Controls
 					throw new ArgumentException("Content of the template for NodeTemplate must be a derivative of Node");
 				}
 
+				var modifier = Modifier;
+				if( null != modifier )
+				{
+					var index = 0;
+					if( _itemsSource is IList )
+					{
+						index = ((IList) _itemsSource).IndexOf(item);
+					}
+					
+					
+					modifier.Apply(content, index, item);
+				}
 				content.DataContext = item;
 				Children.Add(content);
 			}

@@ -96,6 +96,7 @@
     <Compile Include="Interpolator.cs" />
     <Compile Include="ISpanDrawer.cs" />
     <Compile Include="ISpanRenderer.cs" />
+    <Compile Include="Rendering\FlatTriangle.cs" />
     <Compile Include="Rendering\RenderedSpan.cs" />
     <Compile Include="Rendering\Scanline.cs" />
     <Compile Include="Shapes.cs" />
