@@ -49,23 +49,6 @@ namespace Balder.Silverlight.Notification
 
 		private static readonly Dictionary<Type, Type> Proxies = new Dictionary<Type, Type>();
 
-		public class MyClass
-		{
-			public MyClass(INotifyPropertyChanged i)
-			{
-				
-			}
-		}
-
-		public class MySecondClass : MyClass
-		{
-			public MySecondClass(INotifyPropertyChanged i) : base(i)
-			{
-				
-			}
-		}
-
-
 		static NotifyingObjectWeaver()
 		{
 			var dynamicAssemblyName = string.Format("{0}_{1}", DynamicAssemblyName, Guid.NewGuid());
@@ -77,7 +60,7 @@ namespace Balder.Silverlight.Notification
 			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName);
 		}
 
-		public Type Get<T>()
+		public Type GetProxyType<T>()
 		{
 			var type = typeof(T);
 			Type proxyType;
