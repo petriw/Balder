@@ -98,6 +98,10 @@
     <Compile Include="Content\FileLoader.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Interaction\ICommandSource.cs" />
+    <Compile Include="Notification\IgnoreChangesAttribute.cs" />
+    <Compile Include="Notification\NotifyChangesForAttribute.cs" />
+    <Compile Include="Notification\NotifyingObjectWeaver.cs" />
+    <Compile Include="Notification\ViewModelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Display\Display.cs" />
     <Compile Include="Services\TargetDevice.cs" />

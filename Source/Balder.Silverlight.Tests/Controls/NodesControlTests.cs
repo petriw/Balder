@@ -21,7 +21,9 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
+using Balder.Core.Objects.Geometries;
 using Balder.Silverlight.Controls;
 using CThru.Silverlight;
 using NUnit.Framework;
@@ -31,20 +33,32 @@ namespace Balder.Silverlight.Tests.Controls
 	[TestFixture]
 	public class NodesControlTests
 	{
-		private const string NodeTemplateXaml = 
-			"<UserControl xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" "+
-			"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" "+
-			"xmlns:Geometries=\"clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core\">"+
-			"</UserControl>";
+		private const string NodeTemplateXaml =
+			"<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" + // http://schemas.microsoft.com/winfx/2006/xaml/presentation
+            "<ComboBox/>"+
+			//"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" "+
+			//"xmlns:Geometries=\"clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core\">"+
+			"</DataTemplate>";
 
+
+		private DataTemplate Create(Type type)
+		{
+			var dt = new DataTemplate();
+			string xaml = @"<DataTemplate 
+                xmlns=""http://schemas.microsoft.com/client/2007""
+                xmlns:controls=""clr-namespace:" + type.Namespace + @";assembly=" + type.Namespace + @""">
+                <controls:" + type.Name + @"/></DataTemplate>";
+			return (DataTemplate)XamlReader.Load(xaml);
+		}
 		[Test, SilverlightUnitTest]
 		public void SettingDataSourceWithANodeTemplateShouldGenerateAllChildren()
 		{
 			var nodesControl = new NodesControl();
 
-			var nodeTemplate = XamlReader.Load(NodeTemplateXaml) as DataTemplate;
+			var nodeTemplate = Create(typeof (Mesh));
+				//XamlReader.Load(NodeTemplateXaml);
 
-			nodesControl.NodeTemplate = nodeTemplate;
+			//nodesControl.NodeTemplate = nodeTemplate;
 			
 			throw new NotImplementedException();
 		}

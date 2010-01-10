@@ -152,6 +152,7 @@
     <Compile Include="Controls\NodesControlTests.cs" />
     <Compile Include="Converters\StringToTypeConverterTests.cs" />
     <Compile Include="Execution\PlatformTests.cs" />
+    <Compile Include="Notification\NotifyingObjectWeaverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Display\DisplayTests.cs" />
   </ItemGroup>
