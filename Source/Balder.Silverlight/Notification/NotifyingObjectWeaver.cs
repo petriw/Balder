@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading;
 
 namespace Balder.Silverlight.Notification
 {
@@ -51,13 +52,13 @@ namespace Balder.Silverlight.Notification
 
 		static NotifyingObjectWeaver()
 		{
-			var dynamicAssemblyName = string.Format("{0}_{1}", DynamicAssemblyName, Guid.NewGuid());
-			var dynamicModuleName = string.Format("{0}_{1}", DynamicModuleName, Guid.NewGuid());
+			var dynamicAssemblyName = CreateUniqueName(DynamicAssemblyName);
+			var dynamicModuleName = CreateUniqueName(DynamicModuleName);
+			var appDomain = Thread.GetDomain();
+			DynamicAssembly = appDomain.DefineDynamicAssembly(new AssemblyName(dynamicAssemblyName),
+																			AssemblyBuilderAccess.Run);
 
-			DynamicAssembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(dynamicAssemblyName),
-			                                                                AssemblyBuilderAccess.Run);
-
-			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName);
+			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName,true);
 		}
 
 		public Type GetProxyType<T>()
@@ -69,17 +70,18 @@ namespace Balder.Silverlight.Notification
 
 		public Type GetProxyType(Type type)
 		{
-			
+
 			Type proxyType;
-			if( Proxies.ContainsKey(type))
+			if (Proxies.ContainsKey(type))
 			{
 				proxyType = Proxies[type];
-			} else
+			}
+			else
 			{
 				proxyType = CreateProxyType(type);
 				Proxies[type] = proxyType;
 			}
-			
+
 			return proxyType;
 		}
 
@@ -101,22 +103,22 @@ namespace Balder.Silverlight.Notification
 		private static void DefineConstructorIfNoDefaultConstructorOnBaseType(Type type, TypeBuilder typeBuilder)
 		{
 			var constructors = type.GetConstructors();
-			if( constructors.Length == 1 && constructors[0].GetParameters().Length == 0 )
+			if (constructors.Length == 1 && constructors[0].GetParameters().Length == 0)
 			{
 				DefineDefaultConstructor(type, typeBuilder);
 				return;
 			}
 
-			foreach( var constructor in constructors )
+			foreach (var constructor in constructors)
 			{
 				var parameters = constructor.GetParameters().Select(p => p.ParameterType).ToArray();
 				var constructorBuilder = typeBuilder.DefineConstructor(constructor.Attributes, constructor.CallingConvention, parameters);
 				var constructorGenerator = constructorBuilder.GetILGenerator();
 				constructorGenerator.Emit(OpCodes.Ldarg_0);
 
-				for( var index=0; index<parameters.Length; index++ )
+				for (var index = 0; index < parameters.Length; index++)
 				{
-					constructorGenerator.Emit(OpCodes.Ldarg,index+1);
+					constructorGenerator.Emit(OpCodes.Ldarg, index + 1);
 				}
 				constructorGenerator.Emit(OpCodes.Call, constructor);
 				constructorGenerator.Emit(OpCodes.Nop);
@@ -136,12 +138,12 @@ namespace Balder.Silverlight.Notification
 		{
 			var properties = baseType.GetProperties();
 			var query = from p in properties
-			            where p.GetGetMethod().IsVirtual
-			            select p;
+						where p.GetGetMethod().IsVirtual
+						select p;
 			var virtualProperties = query.ToArray();
 			foreach (var property in virtualProperties)
 			{
-				if( ShouldPropertyBeIgnored(property))
+				if (ShouldPropertyBeIgnored(property))
 				{
 					continue;
 				}
@@ -152,14 +154,14 @@ namespace Balder.Silverlight.Notification
 
 		private static bool ShouldPropertyBeIgnored(PropertyInfo propertyInfo)
 		{
-			var attributes = propertyInfo.GetCustomAttributes(typeof (IgnoreChangesAttribute), true);
+			var attributes = propertyInfo.GetCustomAttributes(typeof(IgnoreChangesAttribute), true);
 			return attributes.Length == 1;
 		}
 
 		private static void DefineSetMethodForProperty(PropertyInfo property, TypeBuilder typeBuilder, MethodBuilder onPropertyChangedMethodBuilder)
 		{
 			var setMethodToOverride = property.GetSetMethod();
-			if( null == setMethodToOverride )
+			if (null == setMethodToOverride)
 			{
 				return;
 			}
@@ -172,8 +174,8 @@ namespace Balder.Silverlight.Notification
 			setMethodGenerator.Emit(OpCodes.Ldarg_0);
 			setMethodGenerator.Emit(OpCodes.Ldarg_1);
 			setMethodGenerator.Emit(OpCodes.Call, setMethodToOverride);
-			
-			foreach( var propertyName in propertiesToNotifyFor )
+
+			foreach (var propertyName in propertiesToNotifyFor)
 			{
 				setMethodGenerator.Emit(OpCodes.Ldarg_0);
 				setMethodGenerator.Emit(OpCodes.Ldstr, propertyName);
@@ -190,10 +192,10 @@ namespace Balder.Silverlight.Notification
 			var properties = new List<string>();
 			properties.Add(property.Name);
 
-			var attributes = property.GetCustomAttributes(typeof (NotifyChangesForAttribute), true);
-			foreach( NotifyChangesForAttribute attribute in attributes )
+			var attributes = property.GetCustomAttributes(typeof(NotifyChangesForAttribute), true);
+			foreach (NotifyChangesForAttribute attribute in attributes)
 			{
-				foreach( var propertyName in attribute.PropertyNames )
+				foreach (var propertyName in attribute.PropertyNames)
 				{
 					properties.Add(propertyName);
 				}
@@ -211,7 +213,7 @@ namespace Balder.Silverlight.Notification
 			getMethodGenerator.DeclareLocal(property.PropertyType);
 			getMethodGenerator.Emit(OpCodes.Nop);
 			getMethodGenerator.Emit(OpCodes.Ldarg_0);
-			getMethodGenerator.Emit(OpCodes.Call,getMethodToOverride);
+			getMethodGenerator.Emit(OpCodes.Call, getMethodToOverride);
 			getMethodGenerator.Emit(OpCodes.Stloc_0);
 			getMethodGenerator.Emit(OpCodes.Br_S, label);
 			getMethodGenerator.MarkLabel(label);
@@ -232,7 +234,7 @@ namespace Balder.Silverlight.Notification
 		{
 			var removeEventMethod = string.Format("remove_{0}", PropertyChangedEventName);
 			var removeMethodInfo = DelegateType.GetMethod("Remove", BindingFlags.Public | BindingFlags.Static, null,
-			                                              new[] { DelegateType, DelegateType }, null);
+														  new[] { DelegateType, DelegateType }, null);
 			var removeMethodBuilder = typeBuilder.DefineMethod(removeEventMethod, EventMethodAttributes, VoidType, new[] { eventHandlerType });
 			var removeMethodGenerator = removeMethodBuilder.GetILGenerator();
 			removeMethodGenerator.Emit(OpCodes.Ldarg_0);
@@ -249,7 +251,7 @@ namespace Balder.Silverlight.Notification
 		private static void DefineAddMethodForEvent(TypeBuilder typeBuilder, Type eventHandlerType, FieldBuilder fieldBuilder, EventBuilder eventBuilder)
 		{
 			var combineMethodInfo = DelegateType.GetMethod("Combine", BindingFlags.Public | BindingFlags.Static, null,
-			                                               new[] { DelegateType, DelegateType }, null);
+														   new[] { DelegateType, DelegateType }, null);
 
 
 			var addEventMethod = string.Format("add_{0}", PropertyChangedEventName);
@@ -271,11 +273,11 @@ namespace Balder.Silverlight.Notification
 			var propertyChangedEventArgsType = typeof(PropertyChangedEventArgs);
 
 			var onPropertyChangedMethodBuilder = typeBuilder.DefineMethod(OnPropertyChangedMethodName, OnPropertyChangedMethodAttributes, VoidType,
-			                                                              new[] { typeof(string) });
+																		  new[] { typeof(string) });
 			var onPropertyChangedMethodGenerator = onPropertyChangedMethodBuilder.GetILGenerator();
 
 			var label = onPropertyChangedMethodGenerator.DefineLabel();
-			onPropertyChangedMethodGenerator.DeclareLocal(typeof (bool));
+			onPropertyChangedMethodGenerator.DeclareLocal(typeof(bool));
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldnull);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
@@ -283,7 +285,7 @@ namespace Balder.Silverlight.Notification
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ceq);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_0);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_0);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S,label);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S, label);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
@@ -301,13 +303,20 @@ namespace Balder.Silverlight.Notification
 
 		private static TypeBuilder DefineType(Type type)
 		{
-			var uid = Guid.NewGuid();
-			var name = string.Format("{0}{1}", type.Name, uid);
-			var typeBuilder = DynamicModule.DefineType(name, TypeAttributes.Public);
+			var name = CreateUniqueName(type.Name);
+			var typeBuilder = DynamicModule.DefineType(name, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
 			typeBuilder.SetParent(type);
 			var interfaceType = typeof(INotifyPropertyChanged);
 			typeBuilder.AddInterfaceImplementation(interfaceType);
 			return typeBuilder;
+		}
+
+		private static string CreateUniqueName(string prefix)
+		{
+			var uid = Guid.NewGuid().ToString();
+			uid = uid.Replace('-', '_');
+			var name = string.Format("{0}{1}", prefix, uid);
+			return name;
 		}
 	}
 }
