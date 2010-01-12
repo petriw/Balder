@@ -63,6 +63,13 @@ namespace Balder.Silverlight.Notification
 		public Type GetProxyType<T>()
 		{
 			var type = typeof(T);
+			var proxyType = GetProxyType(type);
+			return proxyType;
+		}
+
+		public Type GetProxyType(Type type)
+		{
+			
 			Type proxyType;
 			if( Proxies.ContainsKey(type))
 			{
@@ -96,6 +103,7 @@ namespace Balder.Silverlight.Notification
 			var constructors = type.GetConstructors();
 			if( constructors.Length == 1 && constructors[0].GetParameters().Length == 0 )
 			{
+				DefineDefaultConstructor(type, typeBuilder);
 				return;
 			}
 
@@ -117,6 +125,11 @@ namespace Balder.Silverlight.Notification
 
 				constructorGenerator.Emit(OpCodes.Ret);
 			}
+		}
+
+		private static void DefineDefaultConstructor(Type type, TypeBuilder typeBuilder)
+		{
+			typeBuilder.DefineDefaultConstructor(MethodAttributes.Public);
 		}
 
 		private static void DefineProperties(TypeBuilder typeBuilder, Type baseType, MethodBuilder onPropertyChangedMethodBuilder)
@@ -290,7 +303,7 @@ namespace Balder.Silverlight.Notification
 		{
 			var uid = Guid.NewGuid();
 			var name = string.Format("{0}{1}", type.Name, uid);
-			var typeBuilder = DynamicModule.DefineType(name);
+			var typeBuilder = DynamicModule.DefineType(name, TypeAttributes.Public);
 			typeBuilder.SetParent(type);
 			var interfaceType = typeof(INotifyPropertyChanged);
 			typeBuilder.AddInterfaceImplementation(interfaceType);
