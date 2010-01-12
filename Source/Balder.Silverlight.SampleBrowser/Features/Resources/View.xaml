@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
     xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Features.Resources" 
+    xmlns:Controls1="clr-namespace:System.Windows.Controls;assembly=SyntaxTextBox" 
 	DataContext="{Binding Path=Resources, Source={StaticResource ViewModels}}">
 
 	<UserControl.Resources>
@@ -30,12 +31,11 @@
 							</Border>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
-
 				</ItemsControl>
 
 				<Border BorderBrush="Black" BorderThickness="1" Margin="4,4,4,4">
 					<ScrollViewer>
-						<TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Path=SelectedFile.Content}"/>
+						<Controls1:SyntaxTextBox HorizontalAlignment="Stretch" IsReadOnly="true" VerticalAlignment="Stretch" Text="{Binding Path=SelectedFile.Content}"/>
 					</ScrollViewer>
 				</Border>
 			</Controls:DockPanel>

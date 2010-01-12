@@ -249,6 +249,10 @@
       <Project>{E39B101E-9447-49EE-B849-BA2A9E4664D0}</Project>
       <Name>Balder.Silverlight</Name>
     </ProjectReference>
+    <ProjectReference Include="SyntaxTextBox\SyntaxTextBox.csproj">
+      <Project>{E3B485C3-BA26-4563-AF64-F739ECE64D3D}</Project>
+      <Name>SyntaxTextBox</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Logo.png" />
