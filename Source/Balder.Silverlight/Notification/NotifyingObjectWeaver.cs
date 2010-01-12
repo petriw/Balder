@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -55,11 +56,11 @@ namespace Balder.Silverlight.Notification
 			var dynamicAssemblyName = CreateUniqueName(DynamicAssemblyName);
 			var dynamicModuleName = CreateUniqueName(DynamicModuleName);
 			var appDomain = Thread.GetDomain();
-			DynamicAssembly = appDomain.DefineDynamicAssembly(new AssemblyName(dynamicAssemblyName),
-																			AssemblyBuilderAccess.Run);
-
+			var assemblyName = new AssemblyName(dynamicAssemblyName);
+			DynamicAssembly = appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
 			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName,true);
 		}
+
 
 		public Type GetProxyType<T>()
 		{

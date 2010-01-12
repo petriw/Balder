@@ -26,45 +26,67 @@ using Ninject.Core.Creation.Providers;
 namespace Balder.Core.Execution
 {
 	public delegate IBinding BindingResolver(IContext context);
+	public delegate IBinding GenericBindingResolver(Type type, IContext context);
 
 	public class AutoKernel : StandardKernel
 	{
 		private readonly Dictionary<Type, BindingResolver> _bindingResolvers;
+		private readonly List<GenericBindingResolver> _genericBindingResolvers;
 
 		public AutoKernel(params IModule[] modules)
 			: base(modules)
 		{
 			_bindingResolvers = new Dictionary<Type, BindingResolver>();
+			_genericBindingResolvers = new List<GenericBindingResolver>();
 		}
 
 		public void AddBindingResolver<T>(BindingResolver resolver)
 		{
 			_bindingResolvers[typeof (T)] = resolver;
-			
 		}
+
+		public void AddGenericBindingResolver(GenericBindingResolver resolver)
+		{
+			_genericBindingResolvers.Add(resolver);
+		}
+
+
 
 		protected override IBinding ResolveBinding(Type service, IContext context)
 		{
-			var binding = base.ResolveBinding(service, context);
+			IBinding binding = null;
+			foreach (var resolver in _genericBindingResolvers)
+			{
+				binding = resolver(service, context);
+				if (null != binding)
+				{
+					break;
+				}
+			}
+
 			if (null == binding)
 			{
-				if (_bindingResolvers.ContainsKey(service))
+				binding = base.ResolveBinding(service, context);
+				if (null == binding)
 				{
-					binding = _bindingResolvers[service](context);
-				}
-				else
-				{
-					var serviceName = service.Name;
-					if (serviceName.StartsWith("I"))
-					{
-						var instanceName = string.Format("{0}.{1}", service.Namespace, serviceName.Substring(1));
-						var serviceInstanceType = service.Assembly.GetType(instanceName);
-						if (null != serviceInstanceType)
-						{
-							binding = new StandardBinding(this, service);
-							var provider = new StandardProvider(serviceInstanceType);
-							binding.Provider = provider;
 
+					if (_bindingResolvers.ContainsKey(service))
+					{
+						binding = _bindingResolvers[service](context);
+					}
+					else
+					{
+						var serviceName = service.Name;
+						if (serviceName.StartsWith("I"))
+						{
+							var instanceName = string.Format("{0}.{1}", service.Namespace, serviceName.Substring(1));
+							var serviceInstanceType = service.Assembly.GetType(instanceName);
+							if (null != serviceInstanceType)
+							{
+								binding = new StandardBinding(this, service);
+								var provider = new StandardProvider(serviceInstanceType);
+								binding.Provider = provider;
+							}
 						}
 					}
 				}

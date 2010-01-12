@@ -71,6 +71,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\Siilverlight\MVVMLight\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
+    <Reference Include="Moq_SL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Moq_SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Core, Version=1.5.0.158, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Ninject.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.AutoWiring, Version=1.5.0.158, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\Siilverlight\Ninject.Extensions.AutoWiring.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition, Version=2009.7.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\Siilverlight\System.ComponentModel.Composition.dll</HintPath>
@@ -113,6 +125,13 @@
     <Compile Include="Controls\ViewModels\Category.cs" />
     <Compile Include="Controls\ViewModels\SampleNavigationViewModel.cs" />
     <Compile Include="Controls\ViewModels\SamplePage.cs" />
+    <Compile Include="Features\Resources\FileExtensionToImageConverter.cs" />
+    <Compile Include="Features\Resources\ResourceFile.cs" />
+    <Compile Include="Features\Resources\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Resources\ViewModel.cs" />
+    <Compile Include="Features\Welcome\ViewModel.cs" />
     <Compile Include="Helpers\SampleUriMapper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -120,6 +139,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\Data\NodesControl\BusinessObject.cs" />
     <Compile Include="Samples\Data\NodesControl\MyGame.cs" />
+    <Compile Include="Samples\Data\NodesControl\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Data\NodesControl\ViewModel.cs" />
     <Compile Include="Samples\Data\NodesStack\BusinessObject.cs" />
     <Compile Include="Samples\Data\NodesStack\Content.xaml.cs">
@@ -147,9 +171,10 @@
     <Compile Include="Samples\GettingStarted\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Welcome.xaml.cs">
-      <DependentUpon>Welcome.xaml</DependentUpon>
+    <Compile Include="Features\Welcome\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -161,6 +186,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
     <Page Include="Controls\SampleNavigationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Features\Resources\View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
@@ -192,7 +221,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
-    <Page Include="Views\Welcome.xaml">
+    <Page Include="Features\Welcome\View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
@@ -225,10 +254,21 @@
     <Resource Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Samples\Data\NodesControl\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\View\CameraManipulation\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Features\Resources\Images\code.png" />
+    <Resource Include="Features\Resources\Images\code_csharp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

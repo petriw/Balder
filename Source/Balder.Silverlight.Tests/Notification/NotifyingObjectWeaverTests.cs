@@ -22,6 +22,7 @@
 using System;
 using System.ComponentModel;
 using Balder.Silverlight.Notification;
+using CThru.Silverlight;
 using NUnit.Framework;
 
 namespace Balder.Silverlight.Tests.Notification
@@ -95,6 +96,14 @@ namespace Balder.Silverlight.Tests.Notification
 			var type = weaver.GetProxyType<MyViewModel>();
 			var interfaceType = type.GetInterface(typeof (INotifyPropertyChanged).Name, true);
 			Assert.That(interfaceType,Is.Not.Null);
+		}
+
+		[Test, SilverlightUnitTest]
+		public void CreatingInstanceOfTypeShouldNotCauseException()
+		{
+			var weaver = new NotifyingObjectWeaver();
+			var type = weaver.GetProxyType<MyViewModel>();
+			var instance = Activator.CreateInstance(type);
 		}
 
 		[Test]

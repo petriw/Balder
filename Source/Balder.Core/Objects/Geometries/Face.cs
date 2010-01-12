@@ -44,6 +44,14 @@ namespace Balder.Core.Objects.Geometries
 		public int DiffuseB;
 		public int DiffuseC;
 
+		public int SmoothingGroupA;
+		public int SmoothingGroupB;
+		public int SmoothingGroupC;
+
+		public Vector VertexNormalA;
+		public Vector VertexNormalB;
+		public Vector VertexNormalC;
+
 		public Face(int a, int b, int c)
 			: this()
 		{

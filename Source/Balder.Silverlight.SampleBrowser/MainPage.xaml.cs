@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Balder.Core;
 using Balder.Core.Execution;
-using Balder.Silverlight.SoftwareRendering;
+using Balder.Silverlight.Notification;
 
 namespace Balder.Silverlight.SampleBrowser
 {
@@ -12,10 +12,6 @@ namespace Balder.Silverlight.SampleBrowser
 		public MainPage()
 		{
 			InitializeComponent();
-
-
-
-			RenderingNumbersGrid.DataContext = RenderingManager.RenderingNumbers;
 		}
 
 		private void RemoveGameInVisualTree(UIElement element)
@@ -107,8 +103,7 @@ namespace Balder.Silverlight.SampleBrowser
 
 		private void ContentFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
 		{
-			
-
+			_resourceView.Source = ContentFrame.Source;
 		}
 
 		private void ContentFrame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)

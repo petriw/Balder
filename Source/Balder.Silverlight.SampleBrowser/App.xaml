@@ -1,8 +1,14 @@
 ﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:navigationCore="clr-namespace:System.Windows.Navigation;assembly=System.Windows.Controls.Navigation"
+             xmlns:SampleBrowser="clr-namespace:Balder.Silverlight.SampleBrowser" 
              x:Class="Balder.Silverlight.SampleBrowser.App"
              >
     <Application.Resources>
-        
-    </Application.Resources>
+		<SampleBrowser:ViewModels x:Key="ViewModels"/>
+		<navigationCore:UriMapper x:Key="uriMapper">
+			<navigationCore:UriMapping Uri="Home" MappedUri="/Features/Welcome/View.xaml"/>
+			<navigationCore:UriMapping Uri="{}{page}" MappedUri="/Samples/{page}/Content.xaml"/>
+		</navigationCore:UriMapper>
+	</Application.Resources>
 </Application>

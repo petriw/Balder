@@ -1,41 +1,75 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Navigation;
+using Balder.Core.Execution;
+using Balder.Silverlight.Notification;
+using Ninject.Core;
+using Ninject.Core.Activation;
+using Ninject.Core.Binding;
+using Ninject.Core.Binding.Syntax;
+using Ninject.Core.Creation.Providers;
 
 namespace Balder.Silverlight.SampleBrowser
 {
-	public partial class App : Application
+	public partial class App
 	{
+		public static IKernel Kernel;
+		private static readonly NotifyingObjectWeaver Weaver;
+
+		static App()
+		{
+			Weaver = new NotifyingObjectWeaver();
+			var autoKernel = new AutoKernel();
+			autoKernel.AddGenericBindingResolver(ResolveViewModel);
+			Kernel = autoKernel;
+		}
+
+		private static IBinding ResolveViewModel(Type type, IContext context)
+		{
+			if( type.Name.Equals("ViewModel"))
+			{
+				var proxy = Weaver.GetProxyType(type);
+				var binding = new StandardBinding(Kernel, type);
+				
+				var provider = new StandardProvider(proxy);
+				binding.Provider = provider;
+				return binding;
+			}
+			return null;
+		}
 
 		public App()
 		{
-			this.Startup += this.Application_Startup;
-			this.Exit += this.Application_Exit;
-			this.UnhandledException += this.Application_UnhandledException;
+			Startup += Application_Startup;
+			Exit += Application_Exit;
+			UnhandledException += Application_UnhandledException;
 
 			InitializeComponent();
 		}
 
+		public UriMapper	GetUriMapper()
+		{
+			var uriMapper = Resources["uriMapper"] as UriMapper;
+			return uriMapper;
+		}
+
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			this.RootVisual = new MainPage();
+			
+			RootVisual = new MainPage();
 		}
 
 		private void Application_Exit(object sender, EventArgs e)
 		{
 
 		}
+
+
+
 		private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
 		{
-			// If the app is running outside of the debugger then report the exception using
-			// the browser's exception mechanism. On IE this will display it a yellow alert 
-			// icon in the status bar and Firefox will display a script error.
 			if (!System.Diagnostics.Debugger.IsAttached)
 			{
-
-				// NOTE: This will allow the application to continue running after an exception has been thrown
-				// but not handled. 
-				// For production applications this error handling should be replaced with something that will 
-				// report the error to the website and stop the application.
 				e.Handled = true;
 				Deployment.Current.Dispatcher.BeginInvoke(delegate { ReportErrorToDOM(e); });
 			}

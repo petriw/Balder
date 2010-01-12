@@ -160,6 +160,8 @@
     <Compile Include="Imaging\IImageContext.cs" />
     <Compile Include="Objects\Flat\Sprite.cs" />
     <Compile Include="Imaging\Image.cs" />
+    <Compile Include="Objects\Geometries\Box.cs" />
+    <Compile Include="Objects\Geometries\Cylinder.cs" />
     <Compile Include="Objects\Geometries\GeometryHelper.cs" />
     <Compile Include="Assets\AssetLoader.cs" />
     <Compile Include="Imaging\ImageFormat.cs" />
@@ -167,6 +169,8 @@
     <Compile Include="Imaging\ImagePalette.cs" />
     <Compile Include="Objects\Geometries\Line.cs" />
     <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
+    <Compile Include="Objects\Geometries\Plane.cs" />
+    <Compile Include="Objects\Geometries\Ring.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
     <Compile Include="Execution\IObjectFactory.cs" />

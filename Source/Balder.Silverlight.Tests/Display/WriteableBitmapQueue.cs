@@ -55,6 +55,25 @@ namespace Balder.Silverlight.Tests.Display
 			var showBitmap = writeableBitmapQueue.GetShowBitmap();
 			Assert.That(showBitmap, Is.EqualTo(renderBitmap));
 		}
+
+		[Test, SilverlightUnitTest]
+		public void CompletingShowBitmapShouldPutItInClearQueue()
+		{
+			var writeableBitmapQueue = new WriteableBitmapQueue(640, 480);
+			var renderBitmap = writeableBitmapQueue.GetShowBitmap();
+			writeableBitmapQueue.ShowCompleteForBitmap(renderBitmap);
+			var showBitmap = writeableBitmapQueue.GetClearBitmap();
+			Assert.That(showBitmap, Is.EqualTo(renderBitmap));
+		}
+
+		[Test, SilverlightUnitTest]
+		public void GettingClearBitmapTwiceShouldReturnDifferentBitmaps()
+		{
+			var writeableBitmapQueue = new WriteableBitmapQueue(640, 480);
+			var firstBitmap = writeableBitmapQueue.GetClearBitmap();
+			var secondBitmap = writeableBitmapQueue.GetClearBitmap();
+			Assert.That(firstBitmap,Is.Not.EqualTo(secondBitmap));
+		}
 	}
 }
 

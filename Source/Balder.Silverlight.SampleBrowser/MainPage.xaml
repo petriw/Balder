@@ -7,15 +7,10 @@
 	xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
 	xmlns:navigationCore="clr-namespace:System.Windows.Navigation;assembly=System.Windows.Controls.Navigation"
 	xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+	xmlns:resources="clr-namespace:Balder.Silverlight.SampleBrowser.Features.Resources"
 	xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit"
     mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
 
-	<UserControl.Resources>
-		<navigationCore:UriMapper x:Key="uriMapper">
-			<navigationCore:UriMapping Uri="Home" MappedUri="/Views/Welcome.xaml"/>
-			<navigationCore:UriMapping Uri="{}{page}" MappedUri="/Samples/{page}/Content.xaml"/>
-		</navigationCore:UriMapper>
-	</UserControl.Resources>
 	<Grid x:Name="LayoutRoot">
 		<StackPanel Orientation="Vertical">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -49,38 +44,9 @@
 					</controls:TabItem>
 					
 					<controls:TabItem Header="Resources">
-						
+						<resources:View x:Name="_resourceView" Source="{Binding Path=Source, ElementName=ContentFrame}"/>
 					</controls:TabItem>
 				</controls:TabControl>
-				
-				<Grid Grid.Column="1" x:Name="RenderingNumbersGrid" Margin="8,40,0,0">
-					<Grid.Resources>
-						<Style x:Key="DebugText" TargetType="TextBlock">
-							<Setter Property="FontSize" Value="24"/>
-							<Setter Property="Foreground" Value="Black"/>
-						</Style>
-					</Grid.Resources>
-					
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="200"/>
-						<ColumnDefinition Width="200"/>
-					</Grid.ColumnDefinitions>
-					
-					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-					</Grid.RowDefinitions>
-
-					<TextBlock Style="{StaticResource DebugText}" Text="RenderTime" Grid.Column="0" Grid.Row="0"/> 
-					<TextBlock Style="{StaticResource DebugText}" Text="ClearTime" Grid.Column="0" Grid.Row="1"/> 
-					<TextBlock Style="{StaticResource DebugText}" Text="ShowTime" Grid.Column="0" Grid.Row="2"/> 
-
-					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Render}" Grid.Column="1" Grid.Row="0"/> 
-					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Clear}" Grid.Column="1" Grid.Row="1"/> 
-					<TextBlock Style="{StaticResource DebugText}" Text="{Binding Show}" Grid.Column="1" Grid.Row="2"/> 
-
-				</Grid>
 			</Grid>
 		</StackPanel>
 	</Grid>
