@@ -22,7 +22,6 @@ using Balder.Core.Display;
 using Balder.Core.Materials;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
-using Ninject.Core;
 using Matrix=Balder.Core.Math.Matrix;
 
 namespace Balder.Core.SoftwareRendering
@@ -238,8 +237,7 @@ namespace Balder.Core.SoftwareRendering
 				}
 
 				face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
-				Triangle.Draw(BufferManager.Instance.Current, SpanRenderer, TriangleShade.Gouraud, face, Vertices,
-							  TextureCoordinates);
+				Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
 			}
 		}
 
@@ -259,7 +257,6 @@ namespace Balder.Core.SoftwareRendering
 				var xend = b.TranslatedScreenCoordinates.X;
 				var yend = b.TranslatedScreenCoordinates.Y;
 				Shapes.DrawLine(viewport,
-								BufferManager.Instance.Current, 
 								(int)xstart, 
 								(int)ystart, 
 								(int)xend, 

@@ -208,7 +208,7 @@ namespace Balder.Core.SoftwareRendering
 		private static TextureCoordinate ZeroTextureCoordinate = new TextureCoordinate(0, 0);
 
 
-		public static void Draw(IBuffers buffers, ISpanRenderer renderer, TriangleShade shade, Face face, Vertex[] vertices, TextureCoordinate[] textureCoordinates)
+		public static void Draw(ISpanRenderer renderer, TriangleShade shade, Face face, Vertex[] vertices, TextureCoordinate[] textureCoordinates)
 		{
 			
 			var vertexA = vertices[face.A];
@@ -292,16 +292,9 @@ namespace Balder.Core.SoftwareRendering
 			var yPosition = vertexA.TranslatedScreenCoordinates.Y;
 			var clip = false;
 
-			if( null == buffers )
-			{
-				return;
-			}
-
-
 			for (var index = 0; index < spreadCount; index++)
 			{
-
-				if( yPosition < 0 || yPosition >= buffers.Height )
+				if (yPosition < 0 || yPosition >= BufferContainer.Height)
 				{
 					clip = true;
 				} else
@@ -325,11 +318,11 @@ namespace Balder.Core.SoftwareRendering
 							{
 								if (useTexture)
 								{
-									renderer.Texture(buffers, actualSpan, image, texture);
+									renderer.Texture(actualSpan, image, texture);
 								}
 								else
 								{
-									renderer.Flat(buffers, actualSpan, color);
+									renderer.Flat(actualSpan, color);
 								}
 							}
 							break;
@@ -338,7 +331,7 @@ namespace Balder.Core.SoftwareRendering
 							{
 								if (useTexture)
 								{
-									renderer.Texture(buffers, actualSpan, image, texture);
+									renderer.Texture(actualSpan, image, texture);
 								}
 								else
 								{
@@ -350,7 +343,7 @@ namespace Balder.Core.SoftwareRendering
 									actualSpan.ColorEnd.BlueAsFloat = interpolator.Points[9 - swapIndex].InterpolatedValues[index];
 									actualSpan.ColorStart.AlphaAsFloat = interpolator.Points[10 + swapIndex].InterpolatedValues[index];
 									actualSpan.ColorEnd.AlphaAsFloat = interpolator.Points[11 - swapIndex].InterpolatedValues[index];
-									renderer.Gouraud(buffers, actualSpan);
+									renderer.Gouraud(actualSpan);
 								}
 							}
 							break;

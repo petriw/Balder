@@ -24,7 +24,7 @@ using Balder.Core.SoftwareRendering;
 
 namespace Balder.Silverlight.SoftwareRendering
 {
-	public class FrameBuffer : IFrameBuffer
+	public class FrameBuffer
 	{
 
 		private WriteableBitmap _backBufferBitmap;
@@ -39,6 +39,8 @@ namespace Balder.Silverlight.SoftwareRendering
 			_frontBufferBitmap = new WriteableBitmap(width, height);
 			_clearBufferBitmap = new WriteableBitmap(width, height);
 
+			BackDepthBuffer = new uint[width*height];
+			FrontDepthBuffer = new uint[width * height];
 
 			/*
 			FillBuffer(_backBufferBitmap,0xffffff);
@@ -66,7 +68,8 @@ namespace Balder.Silverlight.SoftwareRendering
 		public WriteableBitmap FrontBufferBitmap { get { return _frontBufferBitmap; } }
 		public WriteableBitmap ClearBufferBitmap { get { return _clearBufferBitmap; } }
 
-		public int[] Pixels { get { return BackBufferBitmap.Pixels; } }
+		public UInt32[] BackDepthBuffer { get; private set; }
+		public UInt32[] FrontDepthBuffer { get; private set; }
 
 		public void Swap()
 		{
@@ -77,12 +80,18 @@ namespace Balder.Silverlight.SoftwareRendering
 			_frontBufferBitmap = backBufferBitmap;
 			_clearBufferBitmap = frontBufferBitmap;
 			_backBufferBitmap = clearBufferBitmap;
+
+			var frontDepthBuffer = FrontDepthBuffer;
+			var backDepthBuffer = BackDepthBuffer;
+			BackDepthBuffer = frontDepthBuffer;
+			FrontDepthBuffer = backDepthBuffer;
 		}
 
 
 		public void Clear()
 		{
 			Array.Clear(_clearBufferBitmap.Pixels, 0, _clearBufferBitmap.Pixels.Length);
+			Array.Clear(FrontDepthBuffer,0,FrontDepthBuffer.Length);
 		}
 
 

@@ -22,8 +22,11 @@ namespace Balder.Core.SoftwareRendering
 {
 	public static class Shapes
 	{
-		public static void DrawLine(Viewport viewport, IBuffers buffers, int xstart, int ystart, int xend, int yend, Color color)
+		public static void DrawLine(Viewport viewport, int xstart, int ystart, int xend, int yend, Color color)
 		{
+			var stride = BufferContainer.Stride;
+			var framebuffer = BufferContainer.Framebuffer;
+
 			var colorAsInt = (int)color.ToUInt32();
 
 			var deltaX = xend - xstart;
@@ -46,8 +49,8 @@ namespace Balder.Core.SoftwareRendering
 				{
 					if (currentX > 0 && currentY > 0 && currentX < viewport.Width && currentY < viewport.Height)
 					{
-						var bufferOffset = (buffers.FrameBuffer.Stride*(int) currentY) + (int) currentX;
-						buffers.FrameBuffer.Pixels[bufferOffset] = colorAsInt;
+						var bufferOffset = (stride*(int) currentY) + (int) currentX;
+						framebuffer[bufferOffset] = colorAsInt;
 					}
 
 					currentX += slopeX;

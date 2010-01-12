@@ -16,23 +16,23 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
+
 namespace Balder.Core.SoftwareRendering
 {
-	public interface IFrameBuffer
+	public class BufferContainer
 	{
-		void Initialize(int width, int height);
-		int Stride { get; }
+		public static int[] Framebuffer { get; set; }
+		public static UInt32[] DepthBuffer { get; set; }
 
-		int RedPosition { get; }
-		int BluePosition { get; }
-		int GreenPosition { get; }
-		int AlphaPosition { get; }
+		public static int Width { get; set; }
+		public static int Height { get; set; }
+		public static int Stride { get; set; }
 
-		int[] Pixels { get; }
-		//int[] BackBuffer { get; }
-
-		void Clear();
-		void Swap();
-		void Show();
+		public static int RedPosition { get; set; }
+		public static int GreenPosition { get; set; }
+		public static int BluePosition { get; set; }
+		public static int AlphaPosition { get; set; }
 	}
 }

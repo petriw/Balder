@@ -39,8 +39,6 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Render(Viewport viewport, Sprite sprite, Matrix view, Matrix projection, Matrix world, float xScale, float yScale, float rotation)
 		{
-			var buffer = BufferManager.Instance.Current;
-
 			var image = sprite.CurrentFrame;
 
 			
@@ -48,9 +46,9 @@ namespace Balder.Core.SoftwareRendering
 			var transformedPosition = Vector.Transform(position, world, view);
 			var translatedPosition = Vector.Translate(transformedPosition, projection, viewport.Width, viewport.Height);
 			var depthBufferAdjustedZ = -transformedPosition.Z / viewport.View.DepthDivisor;
-			var positionOffset = (((int)translatedPosition.X)) + (((int)translatedPosition.Y) * buffer.FrameBuffer.Stride);
+			var positionOffset = (((int)translatedPosition.X)) + (((int)translatedPosition.Y) * BufferContainer.Stride);
 
-			var bufferSize = buffer.FrameBuffer.Stride*buffer.Height;
+			var bufferSize = BufferContainer.Stride * BufferContainer.Height;
 			var bufferZ = (UInt32)(depthBufferAdjustedZ * (float)UInt32.MaxValue);
 			if( depthBufferAdjustedZ < 0f || depthBufferAdjustedZ >= 1f)
 			{
@@ -59,36 +57,36 @@ namespace Balder.Core.SoftwareRendering
 			
 			if( xScale != 1f || yScale != 1f )
 			{
-				RenderScaled(buffer, positionOffset, sprite.CurrentFrame, translatedPosition, bufferSize, bufferZ, xScale, yScale);
+				RenderScaled(positionOffset, sprite.CurrentFrame, translatedPosition, bufferSize, bufferZ, xScale, yScale);
 				
 			} else
 			{
-				RenderUnscaled(buffer,positionOffset,sprite.CurrentFrame,translatedPosition,bufferSize,bufferZ);
+				RenderUnscaled(positionOffset,sprite.CurrentFrame,translatedPosition,bufferSize,bufferZ);
 			}
 		}
 
-		private static void RenderUnscaled(IBuffers buffer, int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ)
+		private static void RenderUnscaled(int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ)
 		{
-			var rOffset = buffer.FrameBuffer.RedPosition;
-			var gOffset = buffer.FrameBuffer.GreenPosition;
-			var bOffset = buffer.FrameBuffer.BluePosition;
-			var aOffset = buffer.FrameBuffer.AlphaPosition;
+			var rOffset = BufferContainer.RedPosition;
+			var gOffset = BufferContainer.GreenPosition;
+			var bOffset = BufferContainer.BluePosition;
+			var aOffset = BufferContainer.AlphaPosition;
 			var imageContext = image.ImageContext as ImageContext;
 			var spriteOffset = 0;
 
 			for (var y = 0; y < image.Height; y++)
 			{
-				var offset = y * buffer.FrameBuffer.Stride;
-				var depthBufferOffset = (buffer.Width * ((int)translatedPosition.Y + y)) + (int)translatedPosition.X;
+				var offset = y * BufferContainer.Stride;
+				var depthBufferOffset = (BufferContainer.Width * ((int)translatedPosition.Y + y)) + (int)translatedPosition.X;
 				for (var x = 0; x < image.Width; x++)
 				{
 					var actualOffset = offset + positionOffset;
 
 					if (actualOffset >= 0 && actualOffset < bufferSize &&
-						bufferZ < buffer.DepthBuffer[depthBufferOffset])
+						bufferZ < BufferContainer.DepthBuffer[depthBufferOffset])
 					{
-						buffer.FrameBuffer.Pixels[actualOffset] = imageContext.Pixels[spriteOffset];
-						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
+						BufferContainer.Framebuffer[actualOffset] = imageContext.Pixels[spriteOffset];
+						BufferContainer.DepthBuffer[depthBufferOffset] = bufferZ;
 					}
 					offset ++;
 					spriteOffset ++;
@@ -97,12 +95,12 @@ namespace Balder.Core.SoftwareRendering
 			}
 		}
 
-		private static void RenderScaled(IBuffers buffer, int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ, float xScale, float yScale)
+		private static void RenderScaled(int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ, float xScale, float yScale)
 		{
-			var rOffset = buffer.FrameBuffer.RedPosition;
-			var gOffset = buffer.FrameBuffer.GreenPosition;
-			var bOffset = buffer.FrameBuffer.BluePosition;
-			var aOffset = buffer.FrameBuffer.AlphaPosition;
+			var rOffset = BufferContainer.RedPosition;
+			var gOffset = BufferContainer.GreenPosition;
+			var bOffset = BufferContainer.BluePosition;
+			var aOffset = BufferContainer.AlphaPosition;
 			var imageContext = image.ImageContext as ImageContext;
 
 			var actualWidth = (int) (((float) image.Width)*xScale);
@@ -124,8 +122,8 @@ namespace Balder.Core.SoftwareRendering
 
 			for (var y = 0; y < actualHeight; y++)
 			{
-				var offset = y*buffer.FrameBuffer.Stride;
-				var depthBufferOffset = (buffer.Width*((int) translatedPosition.Y + y)) + (int) translatedPosition.X;
+				var offset = y * BufferContainer.Stride;
+				var depthBufferOffset = (BufferContainer.Width * ((int)translatedPosition.Y + y)) + (int)translatedPosition.X;
 
 				var spriteY = (int)YScalingInterpolator.Points[0].InterpolatedValues[y];
 
@@ -137,10 +135,10 @@ namespace Balder.Core.SoftwareRendering
 					spriteOffset = (int)((spriteY*image.Width) + spriteX);
 
 					if (actualOffset >= 0 && actualOffset < bufferSize &&
-					    bufferZ < buffer.DepthBuffer[depthBufferOffset])
+						bufferZ < BufferContainer.DepthBuffer[depthBufferOffset])
 					{
-						buffer.FrameBuffer.Pixels[actualOffset] = imageContext.Pixels[spriteOffset];
-						buffer.DepthBuffer[depthBufferOffset] = bufferZ;
+						BufferContainer.Framebuffer[actualOffset] = imageContext.Pixels[spriteOffset];
+						BufferContainer.DepthBuffer[depthBufferOffset] = bufferZ;
 					}
 					offset ++;
 					

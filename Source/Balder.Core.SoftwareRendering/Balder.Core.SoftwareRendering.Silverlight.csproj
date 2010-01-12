@@ -87,11 +87,8 @@
     <Compile Include="..\Common\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BufferManager.cs" />
-    <Compile Include="Buffers.cs" />
+    <Compile Include="BufferContainer.cs" />
     <Compile Include="GeometryContext.cs" />
-    <Compile Include="IBuffers.cs" />
-    <Compile Include="IFrameBuffer.cs" />
     <Compile Include="ImageContext.cs" />
     <Compile Include="Interpolator.cs" />
     <Compile Include="ISpanDrawer.cs" />

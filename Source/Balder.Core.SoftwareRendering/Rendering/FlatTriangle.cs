@@ -61,7 +61,7 @@ namespace Balder.Core.SoftwareRendering.Rendering
 		}
 
 
-		public void Draw(IBuffers buffers, Face face, Vertex[] vertices)
+		public void Draw(Face face, Vertex[] vertices)
 		{
 			var vertexA = vertices[face.A];
 			var vertexB = vertices[face.B];
