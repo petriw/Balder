@@ -83,7 +83,6 @@ namespace Balder.Silverlight.Display
 			{
 				_bufferQueues[bufferType] = new Queue<WriteableBitmap>();
 			}
-			
 		}
 
 		private WriteableBitmap Dequeue(BufferType bufferType)

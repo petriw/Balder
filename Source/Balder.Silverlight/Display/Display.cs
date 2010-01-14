@@ -20,6 +20,7 @@
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.SoftwareRendering;
@@ -33,19 +34,23 @@ namespace Balder.Silverlight.Display
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 
 		private readonly IPlatform _platform;
-		private FrameBuffer _framebuffer;
+		//private FrameBuffer _framebuffer;
+		private WriteableBitmapQueue _bitmapQueue;
 
 		private bool _initialized;
 
 		public Display(IPlatform platform)
 		{
-			_framebuffer = new FrameBuffer();
+			//_framebuffer = new FrameBuffer();
 			_platform = platform;
 		}
 
 		public void Initialize(int width, int height)
 		{
-			_framebuffer.Initialize(width, height);
+			//_framebuffer.Initialize(width, height);
+
+			_bitmapQueue = new WriteableBitmapQueue(width,height);
+
 			BufferContainer.Width = width;
 			BufferContainer.Height = height;
 			BufferContainer.RedPosition = 2;
@@ -74,8 +79,13 @@ namespace Balder.Silverlight.Display
 
 		public void PrepareRender()
 		{
-			BufferContainer.Framebuffer = _framebuffer.BackBufferBitmap.Pixels;
-			BufferContainer.DepthBuffer = _framebuffer.BackDepthBuffer;
+			//BufferContainer.Framebuffer = _framebuffer.BackBufferBitmap.Pixels;
+			//BufferContainer.DepthBuffer = _framebuffer.BackDepthBuffer;
+		}
+
+		public void Render()
+		{
+			
 		}
 
 
@@ -83,7 +93,7 @@ namespace Balder.Silverlight.Display
 		{
 			if (_initialized)
 			{
-				_framebuffer.Swap();
+				//_framebuffer.Swap();
 			}
 		}
 
@@ -91,22 +101,35 @@ namespace Balder.Silverlight.Display
 		{
 			if (_initialized)
 			{
-				_framebuffer.Clear();
+				var clearBitmap = _bitmapQueue.GetClearBitmap();
+
+				_bitmapQueue.ClearCompleteForBitmap(clearBitmap);
+
+				//_framebuffer.Clear();
 			}
 		}
+
+
+		private WriteableBitmap _currentFrontBitmap;
 
 		public void Show()
 		{
 			if (_initialized)
 			{
-				_framebuffer.Show();
+				//_framebuffer.Show();
 				if (null != _image)
 				{
-					var bitmap = _framebuffer.FrontBufferBitmap;
-					if (null != bitmap)
+					if( null != _currentFrontBitmap )
 					{
-						_image.Source = bitmap;
-						bitmap.Invalidate();
+						_bitmapQueue.RenderCompleteForBitmap(_currentFrontBitmap);
+					}
+					_currentFrontBitmap = _bitmapQueue.GetShowBitmap();
+					
+					//var bitmap = _framebuffer.FrontBufferBitmap;
+					if (null != _currentFrontBitmap)
+					{
+						_image.Source = _currentFrontBitmap;
+						_currentFrontBitmap.Invalidate();
 					}
 				}
 			}
