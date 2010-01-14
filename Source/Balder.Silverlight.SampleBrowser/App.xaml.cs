@@ -19,6 +19,8 @@ namespace Balder.Silverlight.SampleBrowser
 		static App()
 		{
 			Weaver = new NotifyingObjectWeaver();
+			var dispatcher = new Dispatcher(Deployment.Current.Dispatcher);
+			DispatcherManager.Current = dispatcher;
 			var autoKernel = new AutoKernel();
 			autoKernel.AddGenericBindingResolver(ResolveViewModel);
 			Kernel = autoKernel;
