@@ -21,8 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
@@ -35,6 +35,8 @@ namespace Balder.Silverlight.Notification
 		private const string DynamicModuleName = "Dynamic Module";
 		private const string PropertyChangedEventName = "PropertyChanged";
 		private const string OnPropertyChangedMethodName = "OnPropertyChanged";
+		private const string DispatcherFieldName = "Dispatcher";
+		private const string DispatcherManagerCurrentPropertyName = "Current";
 
 		private static readonly Type VoidType = typeof(void);
 		private static readonly Type DelegateType = typeof(Delegate);
@@ -61,6 +63,10 @@ namespace Balder.Silverlight.Notification
 			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName,true);
 		}
 
+		public static void ClearTypeCache()
+		{
+			Proxies.Clear();
+		}
 
 		public Type GetProxyType<T>()
 		{
@@ -91,15 +97,39 @@ namespace Balder.Silverlight.Notification
 			var typeBuilder = DefineType(type);
 			var eventHandlerType = typeof(PropertyChangedEventHandler);
 
-			DefineConstructorIfNoDefaultConstructorOnBaseType(type, typeBuilder);
 			var propertyChangedFieldBuilder = typeBuilder.DefineField(PropertyChangedEventName, eventHandlerType, FieldAttributes.Private);
+			var dispatcherFieldBuilder = typeBuilder.DefineField(DispatcherFieldName, typeof (IDispatcher),
+			                                                     FieldAttributes.Private | FieldAttributes.Static);
+
+			
+			DefineTypeInitializer(type, typeBuilder,dispatcherFieldBuilder);
+			DefineConstructorIfNoDefaultConstructorOnBaseType(type, typeBuilder);
+			
 			DefineEvent(typeBuilder, eventHandlerType, propertyChangedFieldBuilder);
-			var onPropertyChangedMethodBuilder = DefineOnPropertyChangedMethod(typeBuilder, eventHandlerType, propertyChangedFieldBuilder);
+			var onPropertyChangedMethodBuilder = DefineOnPropertyChangedMethod(typeBuilder, eventHandlerType, propertyChangedFieldBuilder, dispatcherFieldBuilder);
+
+
 			DefineProperties(typeBuilder, type, onPropertyChangedMethodBuilder);
 
 			var proxyType = typeBuilder.CreateType();
 			return proxyType;
 		}
+
+
+		private static void DefineTypeInitializer(Type type, TypeBuilder typeBuilder, FieldBuilder dispatcherFieldBuilder)
+		{
+			var constructorBuilder = typeBuilder.DefineTypeInitializer();
+			var constructorGenerator = constructorBuilder.GetILGenerator();
+
+			var dispatcherManagerType = typeof (DispatcherManager);
+			var currentGetCurrentMethodName = string.Format("get_{0}", DispatcherManagerCurrentPropertyName);
+			var dispatcherGetCurrentMethod = dispatcherManagerType.GetMethod(currentGetCurrentMethodName);
+
+			constructorGenerator.Emit(OpCodes.Call,dispatcherGetCurrentMethod);
+			constructorGenerator.Emit(OpCodes.Stsfld, dispatcherFieldBuilder);
+			constructorGenerator.Emit(OpCodes.Ret);
+		}
+
 
 		private static void DefineConstructorIfNoDefaultConstructorOnBaseType(Type type, TypeBuilder typeBuilder)
 		{
@@ -125,7 +155,6 @@ namespace Balder.Silverlight.Notification
 				constructorGenerator.Emit(OpCodes.Nop);
 				constructorGenerator.Emit(OpCodes.Nop);
 				constructorGenerator.Emit(OpCodes.Nop);
-
 				constructorGenerator.Emit(OpCodes.Ret);
 			}
 		}
@@ -269,7 +298,17 @@ namespace Balder.Silverlight.Notification
 			eventBuilder.SetAddOnMethod(addMethodBuilder);
 		}
 
-		private static MethodBuilder DefineOnPropertyChangedMethod(TypeBuilder typeBuilder, Type eventHandlerType, FieldBuilder fieldBuilder)
+		private static MethodInfo GetMethodInfoFromType<T>(Expression<Action<T>> expression)
+		{
+			if( expression.Body is MethodCallExpression )
+			{
+				var methodCallExpresion = expression.Body as MethodCallExpression;
+				return methodCallExpresion.Method;
+			}
+			return null;
+		}
+
+		private static MethodBuilder DefineOnPropertyChangedMethod(TypeBuilder typeBuilder, Type eventHandlerType, FieldBuilder propertyChangedFieldBuilder, FieldBuilder dispatcherFieldBuilder)
 		{
 			var propertyChangedEventArgsType = typeof(PropertyChangedEventArgs);
 
@@ -277,27 +316,86 @@ namespace Balder.Silverlight.Notification
 																		  new[] { typeof(string) });
 			var onPropertyChangedMethodGenerator = onPropertyChangedMethodBuilder.GetILGenerator();
 
-			var label = onPropertyChangedMethodGenerator.DefineLabel();
+			var checkAccessMethod = GetMethodInfoFromType<IDispatcher>(d => d.CheckAccess());
+			var invokeMethod = GetMethodInfoFromType<PropertyChangedEventHandler>(e => e.Invoke(null, null));
+			var beginInvokeMethod = GetMethodInfoFromType<IDispatcher>(d => d.BeginInvoke(null, null, null));
+
+			var propertyChangedNullLabel = onPropertyChangedMethodGenerator.DefineLabel();
+			var checkAccessFalseLabel = onPropertyChangedMethodGenerator.DefineLabel();
+			var doneLabel = onPropertyChangedMethodGenerator.DefineLabel();
+
+			onPropertyChangedMethodGenerator.DeclareLocal(typeof(PropertyChangedEventArgs));
 			onPropertyChangedMethodGenerator.DeclareLocal(typeof(bool));
+			onPropertyChangedMethodGenerator.DeclareLocal(typeof(object[]));
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+
+			onPropertyChangedMethodGenerator.EmitWriteLine("Start");
+
+			// if( null != PropertyChanged )
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldnull);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, propertyChangedFieldBuilder);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ceq);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_0);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_0);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S, label);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_1);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_1);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S, propertyChangedNullLabel);
+
+			// args = new PropertyChangedEventArgs()
+			onPropertyChangedMethodGenerator.EmitWriteLine("PropertyChanged event is not null");
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
-			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_1);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Newobj, propertyChangedEventArgsType.GetConstructor(new[] { typeof(string) }));
-			var invokeMethod = eventHandlerType.GetMethod("Invoke");
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_0);
+
+			// if( Dispatcher.CheckAccess() ) 
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldsfld, dispatcherFieldBuilder);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Callvirt, checkAccessMethod);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldc_I4_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ceq);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_1);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_1);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S, checkAccessFalseLabel);
+
+			// CheckAccess == true
+
+			// Invoke
+			onPropertyChangedMethodGenerator.EmitWriteLine("Check access is true");
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, propertyChangedFieldBuilder);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_0);
 			onPropertyChangedMethodGenerator.EmitCall(OpCodes.Callvirt, invokeMethod, null);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
-			onPropertyChangedMethodGenerator.MarkLabel(label);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Br_S, doneLabel);
+
+			// CheckAccess == false
+			onPropertyChangedMethodGenerator.EmitWriteLine("Check access is false");
+			onPropertyChangedMethodGenerator.MarkLabel(checkAccessFalseLabel);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldsfld, dispatcherFieldBuilder);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, propertyChangedFieldBuilder);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldc_I4_2);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Newarr, typeof(object));
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stloc_2);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_2);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldc_I4_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stelem_Ref);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_2);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldc_I4_1);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_0);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Stelem_Ref);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldloc_2);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Callvirt, beginInvokeMethod);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+
+			onPropertyChangedMethodGenerator.MarkLabel(propertyChangedNullLabel);
+			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
+			onPropertyChangedMethodGenerator.MarkLabel(doneLabel);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ret);
 			return onPropertyChangedMethodBuilder;
 		}

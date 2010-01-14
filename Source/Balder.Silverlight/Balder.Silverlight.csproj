@@ -101,6 +101,15 @@
     <Compile Include="Content\FileLoader.cs" />
     <Compile Include="Input\MouseDevice.cs" />
     <Compile Include="Interaction\ICommandSource.cs" />
+    <Compile Include="MVVM\CommandManager.cs" />
+    <Compile Include="MVVM\CommandService.cs" />
+    <Compile Include="MVVM\CommandSubscription.cs" />
+    <Compile Include="MVVM\DelegateCommand.cs" />
+    <Compile Include="MVVM\ICanBeEnabled.cs" />
+    <Compile Include="MVVM\ICanExecuteCommand.cs" />
+    <Compile Include="Notification\Dispatcher.cs" />
+    <Compile Include="Notification\DispatcherManager.cs" />
+    <Compile Include="Notification\IDispatcher.cs" />
     <Compile Include="Notification\IgnoreChangesAttribute.cs" />
     <Compile Include="Notification\NotifyChangesForAttribute.cs" />
     <Compile Include="Notification\NotifyingObjectWeaver.cs" />

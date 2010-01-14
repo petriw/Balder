@@ -23,6 +23,7 @@ using System;
 using System.ComponentModel;
 using Balder.Silverlight.Notification;
 using CThru.Silverlight;
+using Moq;
 using NUnit.Framework;
 
 namespace Balder.Silverlight.Tests.Notification
@@ -79,11 +80,44 @@ namespace Balder.Silverlight.Tests.Notification
 			}
 		}
 
+		public class Dispatcher : IDispatcher
+		{
+			public bool CheckAccessReturnValue = true;
+			public bool CheckAccess()
+			{
+				return CheckAccessReturnValue;
+			}
+
+			public bool BeginInvokeDelegateCalled = false;
+			public void BeginInvoke(Delegate del, params object[] arguments)
+			{
+				
+				del.DynamicInvoke(arguments);
+				BeginInvokeDelegateCalled = true;
+				
+			}
+
+			public bool BeginInvokeActionCalled = false;
+			public void BeginInvoke(Action a)
+			{
+				a();
+				BeginInvokeActionCalled = true;
+			}
+		}
+
 		#endregion
+
+
+		[SetUp]
+		public void BeforeTest()
+		{
+			NotifyingObjectWeaver.ClearTypeCache();
+		}
 
 		[Test]
 		public void CreatedTypeShouldInheritFromTypeGiven()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			Assert.That(type.BaseType, Is.EqualTo(typeof (MyViewModel)));
@@ -92,6 +126,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void CreatedTypeShouldImplementINotifyPropertyChanged()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var interfaceType = type.GetInterface(typeof (INotifyPropertyChanged).Name, true);
@@ -101,6 +136,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test, SilverlightUnitTest]
 		public void CreatingInstanceOfTypeShouldNotCauseException()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type);
@@ -109,6 +145,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void CallingGeneratedOnPropertyChangedMethodShouldFirePropertyChangedEvent()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -122,6 +159,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void SettingIntegerPropertyShouldReturnSameValueWhenGetting()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -135,6 +173,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void SettingIntegerPropertyShouldFirePropertyChangedEvent()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -155,6 +194,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void SettingStringPropertyShouldReturnSameValueWhenGetting()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -168,6 +208,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void SettingStringPropertyShouldFirePropertyChangedEvent()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -188,6 +229,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void SettingPropertyShouldCallBaseClassSetter()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -199,6 +241,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void GettingPropertyShouldCallBaseClassGetter()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -211,6 +254,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void PropertyDecoratedWithIgnoreChangesShouldNotFirePropertyChangedEvent()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -230,6 +274,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void PropertyDecoratedWithNotificationForMorePropertiesShouldFirePropertyChangedEventForAllProperties()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -255,6 +300,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void PropertyWithPrivateSetterShouldBeIgnored()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
@@ -274,6 +320,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void GettingProxyForSameTypeTwiceShouldYieldSameProxyType()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var firstType = weaver.GetProxyType<MyViewModel>();
 			var secondType = weaver.GetProxyType<MyViewModel>();
@@ -283,6 +330,7 @@ namespace Balder.Silverlight.Tests.Notification
 		[Test]
 		public void ObjectWithNonDefaultConstructorShouldHaveItsArgumentsForwardedFromProxy()
 		{
+			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModelWithConstructorDependencies>();
 
@@ -295,6 +343,41 @@ namespace Balder.Silverlight.Tests.Notification
 			Assert.That(instance.ConstructorArgument1, Is.EqualTo(argument1));
 			Assert.That(instance.ConstructorArgument2, Is.Not.Null);
 			Assert.That(instance.ConstructorArgument2, Is.EqualTo(argument2));
+		}
+
+		[Test]
+		public void ChangingAPropertyShoulCallCanExecuteOnDispatcher()
+		{
+			var dispatcherMock = new Mock<IDispatcher>();
+			dispatcherMock.Expect(d => d.CheckAccess()).Returns(true);
+
+			DispatcherManager.Current = dispatcherMock.Object;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<MyViewModel>();
+			var instance = Activator.CreateInstance(proxyType) as MyViewModel;
+			var notifyingObject = instance as INotifyPropertyChanged;
+			var fired = false;
+			notifyingObject.PropertyChanged += (s,e) => fired = true;
+			
+			instance.SomeInt = 5;
+			dispatcherMock.VerifyAll();
+		}
+
+		[Test]
+		public void ChangingAPropertyWithoutDispatcherAccessShouldCallBeginInvoke()
+		{
+			var dispatcher = new Dispatcher();
+			dispatcher.CheckAccessReturnValue = false;
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<MyViewModel>();
+			var instance = Activator.CreateInstance(proxyType) as MyViewModel;
+			var notifyingObject = instance as INotifyPropertyChanged;
+			var fired = false;
+			notifyingObject.PropertyChanged += (s, e) => fired = true;
+
+			instance.SomeInt = 5;
+			Assert.That(dispatcher.BeginInvokeDelegateCalled, Is.True);
 		}
 	}
 }

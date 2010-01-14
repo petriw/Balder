@@ -69,7 +69,6 @@ namespace Balder.Core.Execution
 				binding = base.ResolveBinding(service, context);
 				if (null == binding)
 				{
-
 					if (_bindingResolvers.ContainsKey(service))
 					{
 						binding = _bindingResolvers[service](context);
@@ -83,6 +82,10 @@ namespace Balder.Core.Execution
 							var serviceInstanceType = service.Assembly.GetType(instanceName);
 							if (null != serviceInstanceType)
 							{
+								if (serviceInstanceType.IsAbstract)
+								{
+									return null;
+								}
 								binding = new StandardBinding(this, service);
 								var provider = new StandardProvider(serviceInstanceType);
 								binding.Provider = provider;
