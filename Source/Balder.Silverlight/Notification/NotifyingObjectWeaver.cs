@@ -25,7 +25,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization;
 using System.Threading;
+using System.Xml.Serialization;
 
 namespace Balder.Silverlight.Notification
 {
@@ -60,7 +62,7 @@ namespace Balder.Silverlight.Notification
 			var appDomain = Thread.GetDomain();
 			var assemblyName = new AssemblyName(dynamicAssemblyName);
 			DynamicAssembly = appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName,true);
+			DynamicModule = DynamicAssembly.DefineDynamicModule(dynamicModuleName, true);
 		}
 
 		public static void ClearTypeCache()
@@ -97,14 +99,18 @@ namespace Balder.Silverlight.Notification
 			var typeBuilder = DefineType(type);
 			var eventHandlerType = typeof(PropertyChangedEventHandler);
 
+			AddAttributesToType(type,typeBuilder);
+
 			var propertyChangedFieldBuilder = typeBuilder.DefineField(PropertyChangedEventName, eventHandlerType, FieldAttributes.Private);
-			var dispatcherFieldBuilder = typeBuilder.DefineField(DispatcherFieldName, typeof (IDispatcher),
-			                                                     FieldAttributes.Private | FieldAttributes.Static);
+			var dispatcherFieldBuilder = typeBuilder.DefineField(DispatcherFieldName, typeof(IDispatcher),
+																 FieldAttributes.Private | FieldAttributes.Static);
 
 			
-			DefineTypeInitializer(type, typeBuilder,dispatcherFieldBuilder);
+
+			DefineTypeInitializer(type, typeBuilder, dispatcherFieldBuilder);
 			DefineConstructorIfNoDefaultConstructorOnBaseType(type, typeBuilder);
-			
+			OverrideToStringIfNotOverridenInBaseType(type, typeBuilder);
+
 			DefineEvent(typeBuilder, eventHandlerType, propertyChangedFieldBuilder);
 			var onPropertyChangedMethodBuilder = DefineOnPropertyChangedMethod(typeBuilder, eventHandlerType, propertyChangedFieldBuilder, dispatcherFieldBuilder);
 
@@ -115,17 +121,76 @@ namespace Balder.Silverlight.Notification
 			return proxyType;
 		}
 
+		private static void AddAttributesToType(Type type, TypeBuilder typeBuilder)
+		{
+			AddAttributeToType<XmlRootAttribute>(typeBuilder,
+				new Dictionary<string, object>() { { "ElementName", type.Name } });
+			/*
+			AddAttributeToType<DataContractAttribute>(typeBuilder,
+				new Dictionary<string, object>() { { "Name", type.Name } });*/
+		}
+
+		private static void AddAttributeToType<T>(TypeBuilder typeBuilder, IDictionary<string, object> propertiesWithValues)
+			where T : Attribute
+		{
+			var attributeType = typeof (T);
+			var constructor = attributeType.GetConstructor(new Type[0]);
+
+			var properties = new List<PropertyInfo>();
+			var values = new List<object>();
+
+			foreach (var propertyName in propertiesWithValues.Keys)
+			{
+				var property = attributeType.GetProperty(propertyName);
+				properties.Add(property);
+				values.Add(propertiesWithValues[propertyName]);
+			}
+
+			var attributeBuilder =
+				new CustomAttributeBuilder(
+					constructor,
+					new object[0],
+					properties.ToArray(),
+					values.ToArray());
+
+			typeBuilder.SetCustomAttribute(attributeBuilder);
+		}
+
+
+
+		private static void OverrideToStringIfNotOverridenInBaseType(Type type, TypeBuilder typeBuilder)
+		{
+			var toStringMethod = type.GetMethod("ToString");
+			if ((toStringMethod.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.VtableLayoutMask)
+			{
+				var fullName = type.FullName;
+
+				var newToStringMethod = typeBuilder.DefineMethod("ToString", toStringMethod.Attributes^MethodAttributes.VtableLayoutMask, typeof(string),
+																new Type[0]);
+
+				var toStringBuilder = newToStringMethod.GetILGenerator();
+				toStringBuilder.DeclareLocal(typeof (string));
+				toStringBuilder.Emit(OpCodes.Nop);
+				toStringBuilder.Emit(OpCodes.Ldstr,fullName);
+				toStringBuilder.Emit(OpCodes.Stloc_0);
+				toStringBuilder.Emit(OpCodes.Ldloc_0);
+				toStringBuilder.Emit(OpCodes.Ret);
+
+				typeBuilder.DefineMethodOverride(newToStringMethod,toStringMethod);
+			}
+		}
+
 
 		private static void DefineTypeInitializer(Type type, TypeBuilder typeBuilder, FieldBuilder dispatcherFieldBuilder)
 		{
 			var constructorBuilder = typeBuilder.DefineTypeInitializer();
 			var constructorGenerator = constructorBuilder.GetILGenerator();
 
-			var dispatcherManagerType = typeof (DispatcherManager);
+			var dispatcherManagerType = typeof(DispatcherManager);
 			var currentGetCurrentMethodName = string.Format("get_{0}", DispatcherManagerCurrentPropertyName);
 			var dispatcherGetCurrentMethod = dispatcherManagerType.GetMethod(currentGetCurrentMethodName);
 
-			constructorGenerator.Emit(OpCodes.Call,dispatcherGetCurrentMethod);
+			constructorGenerator.Emit(OpCodes.Call, dispatcherGetCurrentMethod);
 			constructorGenerator.Emit(OpCodes.Stsfld, dispatcherFieldBuilder);
 			constructorGenerator.Emit(OpCodes.Ret);
 		}
@@ -168,11 +233,13 @@ namespace Balder.Silverlight.Notification
 		{
 			var properties = baseType.GetProperties();
 			var query = from p in properties
-						where p.GetGetMethod().IsVirtual
+						where p.GetGetMethod().IsVirtual && !p.GetGetMethod().IsFinal
 						select p;
+
 			var virtualProperties = query.ToArray();
 			foreach (var property in virtualProperties)
 			{
+
 				if (ShouldPropertyBeIgnored(property))
 				{
 					continue;
@@ -300,7 +367,7 @@ namespace Balder.Silverlight.Notification
 
 		private static MethodInfo GetMethodInfoFromType<T>(Expression<Action<T>> expression)
 		{
-			if( expression.Body is MethodCallExpression )
+			if (expression.Body is MethodCallExpression)
 			{
 				var methodCallExpresion = expression.Body as MethodCallExpression;
 				return methodCallExpresion.Method;
@@ -329,8 +396,6 @@ namespace Balder.Silverlight.Notification
 			onPropertyChangedMethodGenerator.DeclareLocal(typeof(object[]));
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 
-			onPropertyChangedMethodGenerator.EmitWriteLine("Start");
-
 			// if( null != PropertyChanged )
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldnull);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
@@ -341,7 +406,6 @@ namespace Balder.Silverlight.Notification
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Brtrue_S, propertyChangedNullLabel);
 
 			// args = new PropertyChangedEventArgs()
-			onPropertyChangedMethodGenerator.EmitWriteLine("PropertyChanged event is not null");
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_1);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Newobj, propertyChangedEventArgsType.GetConstructor(new[] { typeof(string) }));
@@ -359,7 +423,6 @@ namespace Balder.Silverlight.Notification
 			// CheckAccess == true
 
 			// Invoke
-			onPropertyChangedMethodGenerator.EmitWriteLine("Check access is true");
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldarg_0);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldfld, propertyChangedFieldBuilder);
@@ -371,7 +434,6 @@ namespace Balder.Silverlight.Notification
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Br_S, doneLabel);
 
 			// CheckAccess == false
-			onPropertyChangedMethodGenerator.EmitWriteLine("Check access is false");
 			onPropertyChangedMethodGenerator.MarkLabel(checkAccessFalseLabel);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Nop);
 			onPropertyChangedMethodGenerator.Emit(OpCodes.Ldsfld, dispatcherFieldBuilder);
@@ -404,10 +466,22 @@ namespace Balder.Silverlight.Notification
 		{
 			var name = CreateUniqueName(type.Name);
 			var typeBuilder = DynamicModule.DefineType(name, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
+
+			AddInterfacesFromBaseType(type, typeBuilder);
+
 			typeBuilder.SetParent(type);
 			var interfaceType = typeof(INotifyPropertyChanged);
 			typeBuilder.AddInterfaceImplementation(interfaceType);
 			return typeBuilder;
+		}
+
+		private static void AddInterfacesFromBaseType(Type type, TypeBuilder typeBuilder)
+		{
+			var interfaces = type.GetInterfaces();
+			foreach (var interfaceType in interfaces)
+			{
+				typeBuilder.AddInterfaceImplementation(interfaceType);
+			}
 		}
 
 		private static string CreateUniqueName(string prefix)

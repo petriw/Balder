@@ -20,7 +20,12 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.ComponentModel;
+using System.Reflection;
+using System.Xml.Serialization;
+using Balder.Core;
+using Balder.Core.Display;
 using Balder.Silverlight.Notification;
 using CThru.Silverlight;
 using Moq;
@@ -32,6 +37,21 @@ namespace Balder.Silverlight.Tests.Notification
 	public class NotifyingObjectWeaverTests
 	{
 		#region Stubs
+		public class SimpleObject
+		{
+
+		}
+
+		public class SimpleObjectOverridingToString
+		{
+			public const string ToStringReturn = "Something something something - Dark Side";
+
+			public override string ToString()
+			{
+				return ToStringReturn;
+			}
+		}
+
 		public class MyViewModel
 		{
 			public virtual int SomeInt { get; set; }
@@ -91,10 +111,10 @@ namespace Balder.Silverlight.Tests.Notification
 			public bool BeginInvokeDelegateCalled = false;
 			public void BeginInvoke(Delegate del, params object[] arguments)
 			{
-				
+
 				del.DynamicInvoke(arguments);
 				BeginInvokeDelegateCalled = true;
-				
+
 			}
 
 			public bool BeginInvokeActionCalled = false;
@@ -102,6 +122,33 @@ namespace Balder.Silverlight.Tests.Notification
 			{
 				a();
 				BeginInvokeActionCalled = true;
+			}
+		}
+
+		public interface ISomeInterface
+		{
+			void SomeMethod();
+		}
+
+		public class TypeImplementingOtherInterface : ISomeInterface
+		{
+			public void SomeMethod()
+			{
+
+			}
+		}
+
+		public class TypeImplementingInterfaceInOtherAssembly : IDisplay
+		{
+			public Color BackgroundColor { get; set; }
+			public virtual Color VirtualBackgroundColor { get; set; }
+
+			public void Initialize(int width, int height)
+			{
+			}
+
+			public void InitializeContainer(object container)
+			{
 			}
 		}
 
@@ -120,7 +167,7 @@ namespace Balder.Silverlight.Tests.Notification
 			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
-			Assert.That(type.BaseType, Is.EqualTo(typeof (MyViewModel)));
+			Assert.That(type.BaseType, Is.EqualTo(typeof(MyViewModel)));
 		}
 
 		[Test]
@@ -129,8 +176,8 @@ namespace Balder.Silverlight.Tests.Notification
 			DispatcherManager.Current = new Dispatcher();
 			var weaver = new NotifyingObjectWeaver();
 			var type = weaver.GetProxyType<MyViewModel>();
-			var interfaceType = type.GetInterface(typeof (INotifyPropertyChanged).Name, true);
-			Assert.That(interfaceType,Is.Not.Null);
+			var interfaceType = type.GetInterface(typeof(INotifyPropertyChanged).Name, true);
+			Assert.That(interfaceType, Is.Not.Null);
 		}
 
 		[Test, SilverlightUnitTest]
@@ -152,8 +199,8 @@ namespace Balder.Silverlight.Tests.Notification
 			var fired = false;
 			instance.PropertyChanged += (s, e) => fired = true;
 			var method = type.GetMethod("OnPropertyChanged");
-			method.Invoke(instance, new[] {"Something"});
-			Assert.That(fired,Is.True);
+			method.Invoke(instance, new[] { "Something" });
+			Assert.That(fired, Is.True);
 		}
 
 		[Test]
@@ -167,7 +214,7 @@ namespace Balder.Silverlight.Tests.Notification
 			var expected = 5;
 			myViewModel.SomeInt = expected;
 			var actual = myViewModel.SomeInt;
-			Assert.That(actual,Is.EqualTo(expected));
+			Assert.That(actual, Is.EqualTo(expected));
 		}
 
 		[Test]
@@ -180,12 +227,12 @@ namespace Balder.Silverlight.Tests.Notification
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
 			instance.PropertyChanged += (s, e) =>
-			                            	{
-			                            		if( e.PropertyName.Equals("SomeInt"))
-			                            		{
-			                            			fired = true;	
-			                            		}
-			                            	};
+											{
+												if (e.PropertyName.Equals("SomeInt"))
+												{
+													fired = true;
+												}
+											};
 
 			myViewModel.SomeInt = 5;
 			Assert.That(fired, Is.True);
@@ -215,12 +262,12 @@ namespace Balder.Silverlight.Tests.Notification
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
 			instance.PropertyChanged += (s, e) =>
-			                            	{
-			                            		if (e.PropertyName.Equals("SomeString"))
-			                            		{
-			                            			fired = true;
-			                            		}
-			                            	};
+											{
+												if (e.PropertyName.Equals("SomeString"))
+												{
+													fired = true;
+												}
+											};
 
 			myViewModel.SomeString = "Hello world";
 			Assert.That(fired, Is.True);
@@ -235,7 +282,7 @@ namespace Balder.Silverlight.Tests.Notification
 			var instance = Activator.CreateInstance(type) as INotifyPropertyChanged;
 			var myViewModel = instance as MyViewModel;
 			myViewModel.SomeStringWithImplementation = "Something";
-			Assert.That(myViewModel.SomeStringWithImplementationSetCalled,Is.True);
+			Assert.That(myViewModel.SomeStringWithImplementationSetCalled, Is.True);
 		}
 
 		[Test]
@@ -261,14 +308,14 @@ namespace Balder.Silverlight.Tests.Notification
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
 			instance.PropertyChanged += (s, e) =>
-			                            	{
-			                            		if (e.PropertyName.Equals("IgnoredProperty"))
-			                            		{
-			                            			fired = true;
-			                            		}
-			                            	};
+											{
+												if (e.PropertyName.Equals("IgnoredProperty"))
+												{
+													fired = true;
+												}
+											};
 			myViewModel.IgnoredProperty = "Something";
-			Assert.That(fired,Is.False);
+			Assert.That(fired, Is.False);
 		}
 
 		[Test]
@@ -282,18 +329,18 @@ namespace Balder.Silverlight.Tests.Notification
 			var someStringFired = false;
 			var someOtherStringFired = false;
 			instance.PropertyChanged += (s, e) =>
-			                            	{
-			                            		if (e.PropertyName.Equals("SomeOtherString"))
-			                            		{
-			                            			someOtherStringFired = true;
-			                            		}
-			                            		if( e.PropertyName.Equals("SomeString"))
-			                            		{
-			                            			someStringFired = true;
-			                            		}
-			                            	};
+											{
+												if (e.PropertyName.Equals("SomeOtherString"))
+												{
+													someOtherStringFired = true;
+												}
+												if (e.PropertyName.Equals("SomeString"))
+												{
+													someStringFired = true;
+												}
+											};
 			myViewModel.SomeOtherString = "Hello";
-			Assert.That(someOtherStringFired,Is.True);
+			Assert.That(someOtherStringFired, Is.True);
 			Assert.That(someStringFired, Is.True);
 		}
 
@@ -307,14 +354,14 @@ namespace Balder.Silverlight.Tests.Notification
 			var myViewModel = instance as MyViewModel;
 			var fired = false;
 			instance.PropertyChanged += (s, e) =>
-			                            	{
-			                            		if (e.PropertyName.Equals("PropertyWithPrivateSetter"))
-			                            		{
-			                            			fired = true;
-			                            		}
-			                            	};
+											{
+												if (e.PropertyName.Equals("PropertyWithPrivateSetter"))
+												{
+													fired = true;
+												}
+											};
 			myViewModel.SetPropertyWithPrivateSetter("Something");
-			Assert.That(fired,Is.False);
+			Assert.That(fired, Is.False);
 		}
 
 		[Test]
@@ -324,7 +371,7 @@ namespace Balder.Silverlight.Tests.Notification
 			var weaver = new NotifyingObjectWeaver();
 			var firstType = weaver.GetProxyType<MyViewModel>();
 			var secondType = weaver.GetProxyType<MyViewModel>();
-			Assert.That(firstType,Is.EqualTo(secondType));
+			Assert.That(firstType, Is.EqualTo(secondType));
 		}
 
 		[Test]
@@ -357,8 +404,8 @@ namespace Balder.Silverlight.Tests.Notification
 			var instance = Activator.CreateInstance(proxyType) as MyViewModel;
 			var notifyingObject = instance as INotifyPropertyChanged;
 			var fired = false;
-			notifyingObject.PropertyChanged += (s,e) => fired = true;
-			
+			notifyingObject.PropertyChanged += (s, e) => fired = true;
+
 			instance.SomeInt = 5;
 			dispatcherMock.VerifyAll();
 		}
@@ -378,6 +425,82 @@ namespace Balder.Silverlight.Tests.Notification
 
 			instance.SomeInt = 5;
 			Assert.That(dispatcher.BeginInvokeDelegateCalled, Is.True);
+		}
+
+		[Test]
+		public void InterfacesImplementedByBaseTypeShouldBePresentInProxy()
+		{
+			var dispatcher = new Dispatcher();
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<TypeImplementingOtherInterface>();
+
+			var interfaceType = proxyType.GetInterface(typeof(ISomeInterface).Name, true);
+			Assert.That(interfaceType, Is.Not.Null);
+		}
+
+		[Test]
+		public void InterfacesFromOtherAssemblyImplementedByBaseTypeShouldBePresentInProxy()
+		{
+			var dispatcher = new Dispatcher();
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<TypeImplementingInterfaceInOtherAssembly>();
+
+			var interfaceType = proxyType.GetInterface(typeof(IDisplay).Name, true);
+			Assert.That(interfaceType, Is.Not.Null);
+		}
+
+		[Test]
+		public void ToStringShouldBeOverriddenAndReturnTheBaseTypeFullNameIfNotOverriddenInBaseTyp()
+		{
+			var dispatcher = new Dispatcher();
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<SimpleObject>();
+
+			var instance = Activator.CreateInstance(proxyType);
+			var toStringResult = instance.ToString();
+
+			Assert.That(toStringResult, Is.EqualTo(typeof(SimpleObject).ToString()));
+		}
+
+		[Test]
+		public void ToStringShouldNotBeOverridenIfBaseTypeOverridesIt()
+		{
+			var dispatcher = new Dispatcher();
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+			var proxyType = weaver.GetProxyType<SimpleObjectOverridingToString>();
+
+			var instance = Activator.CreateInstance(proxyType);
+			var toStringResult = instance.ToString();
+
+			Assert.That(toStringResult, Is.EqualTo(SimpleObjectOverridingToString.ToStringReturn));
+		}
+
+		[Test]
+		public void TypesShouldHaveXmlRootAttributeAdded()
+		{
+			var dispatcher = new Dispatcher();
+			DispatcherManager.Current = dispatcher;
+			var weaver = new NotifyingObjectWeaver();
+
+			var proxyType = weaver.GetProxyType<SimpleObject>();
+			var hasXmlRootAttribute = false;
+			var elementName = string.Empty;
+			var attributes = proxyType.GetCustomAttributes(true);
+			foreach( var attribute in attributes )
+			{
+				if( attribute is XmlRootAttribute )
+				{
+					elementName = ((XmlRootAttribute)attribute).ElementName;
+					hasXmlRootAttribute = true;
+				}
+			}
+
+			Assert.That(hasXmlRootAttribute,Is.True);
+			Assert.That(elementName,Is.EqualTo(typeof(SimpleObject).Name));
 		}
 	}
 }
