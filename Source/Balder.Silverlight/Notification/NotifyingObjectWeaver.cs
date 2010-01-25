@@ -157,7 +157,6 @@ namespace Balder.Silverlight.Notification
 		}
 
 
-
 		private static void OverrideToStringIfNotOverridenInBaseType(Type type, TypeBuilder typeBuilder)
 		{
 			var toStringMethod = type.GetMethod("ToString");

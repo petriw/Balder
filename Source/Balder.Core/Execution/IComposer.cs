@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2009, DoLittle Studios
@@ -16,22 +16,21 @@
 // limitations under the License.
 //
 #endregion
-using Balder.Core.Debug;
-using Balder.Core.Display;
-using Balder.Core.Math;
 
-namespace Balder.Core
+namespace Balder.Core.Execution
 {
-	public abstract class RenderableNode : Node
+	///<summary>
+	/// Adds composition to any component/class
+	/// 
+	/// The purpose is to provide a generic way of importing instances of types
+	/// from any loaded assembly based on [Import] criterias set
+	///</summary>
+	public interface IComposer
 	{
-		public virtual void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world) {}
-
-		public virtual void RenderDebugInfo(Viewport viewport, Matrix view, Matrix projection, Matrix world)
-		{
-			if (viewport.DebugLevel.BoundingSpheres )
-			{
-				DebugRenderer.Instance.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
-			}
-		}
+		/// <summary>
+		/// Satisfy all imports for an instance of a component
+		/// </summary>
+		/// <param name="component">Component to satisfy imports for</param>
+		void SatisfyImportsFor(object component);
 	}
 }

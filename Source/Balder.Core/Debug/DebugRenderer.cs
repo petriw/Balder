@@ -38,6 +38,25 @@ namespace Balder.Core.Debug
 			CreateShapes();
 		}
 
+		// Todo: Get rid of this singleton - find a good way for handling same behavior 
+		private static object InstanceLockObject = new object();
+		private static IDebugRenderer _instance;
+		internal static IDebugRenderer Instance
+		{
+			get
+			{
+				lock( InstanceLockObject )
+				{
+					if( null == _instance )
+					{
+						_instance = ObjectFactory.Instance.Get<IDebugRenderer>();
+					}
+					return _instance;
+				}
+				
+			}
+		}
+
 
 		private void CreateShapes()
 		{

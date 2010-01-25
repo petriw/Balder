@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows.Media;
 using Balder.Core;
 using Balder.Silverlight.SampleBrowser.Constants;
 using Balder.Silverlight.SampleBrowser.Content;

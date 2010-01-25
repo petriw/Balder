@@ -74,12 +74,6 @@ namespace Balder.Core.Objects.Geometries
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			/*
-			if (viewport.DebugLevel.BoundingSpheres)
-			{
-				DebugRenderer.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
-			}
-			 * */
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 

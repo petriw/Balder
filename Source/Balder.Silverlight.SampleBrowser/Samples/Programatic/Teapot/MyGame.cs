@@ -33,6 +33,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 			var teapot = ContentManager.Load<Mesh>("teapot.ase");
 			Scene.AddNode(teapot);
 
+			
+
 			base.OnLoadContent();
 		}
 

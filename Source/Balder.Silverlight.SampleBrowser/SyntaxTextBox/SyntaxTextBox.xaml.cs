@@ -12,6 +12,7 @@ namespace System.Windows.Controls
 		bool _updated_locked = false;
 		bool _is_loaded = false;
 
+
 		public static readonly DependencyProperty SyntaxLanguageProperty = DependencyProperty.Register("SyntaxLanguage", typeof(SyntaxLanguage), typeof(SyntaxTextBox),
 		  new PropertyMetadata(SyntaxLanguage.CSharp, delegate(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		  {
@@ -49,6 +50,7 @@ namespace System.Windows.Controls
 					if (box != null)
 					{
 						string new_val = (string)e.NewValue;
+						
 						string old_val = box._document.Text;
 						string[] new_lines = null;
 						string[] old_lines = null;
@@ -116,6 +118,7 @@ namespace System.Windows.Controls
 		public SyntaxTextBox()
 		{
 			InitializeComponent();
+			_document = new Fireball.Syntax.SyntaxDocument(); 
 			Loaded += new RoutedEventHandler(OnLoaded);
 		}
 
@@ -139,7 +142,7 @@ namespace System.Windows.Controls
 		protected void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			this.Focus();
-			_document = new Fireball.Syntax.SyntaxDocument();
+			//_document = new Fireball.Syntax.SyntaxDocument();
 			CodeEditorSyntaxLoader.SetSyntax(_document, SyntaxLanguage);
 			//*****************TEST ONLY***********************//
 			XElement elm = new XElement("Objects",

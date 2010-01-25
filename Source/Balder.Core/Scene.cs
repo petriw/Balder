@@ -90,35 +90,6 @@ namespace Balder.Core
 		/// </summary>
 		public NodeCollection Lights { get { return _lights; } }
 
-		/*
-		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal)
-		{
-			return CalculateColorForVector(viewport, vector, normal, Color.Black, Color.Black, Color.Black);
-		}
-
-		public Color CalculateColorForVector(Viewport viewport, Vector vector, Vector normal, Color vectorAmbient, Color vectorDiffuse, Color vectorSpecular)
-		{
-			var color = AmbientColor.Additive(vectorDiffuse);
-
-			lock (_environmentalNodes)
-			{
-				foreach (var node in _environmentalNodes)
-				{
-					if (node is Light)
-					{
-						var light = node as Light;
-						var currentLightResult = light.Calculate(viewport, vector, normal);
-						var currentLightResultAsVector = currentLightResult;
-						
-						color += currentLightResultAsVector;
-					}
-				}
-				color.Clamp();
-				return color;
-			}
-		}
-		 * */
-
 		public void Render(Viewport viewport, Matrix view, Matrix projection)
 		{
 			lock (_renderableNodes)
@@ -131,10 +102,12 @@ namespace Balder.Core
 			}
 		}
 
-		private static void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			world = node.World * world;
+			node.RenderDebugInfo(viewport, view, projection, world);
 			node.Render(viewport, view, projection, world);
+
 			foreach (var child in node.Children)
 			{
 				if (child is RenderableNode)
@@ -183,7 +156,7 @@ namespace Balder.Core
 
 			var closestObjectDistance = float.MaxValue;
 			RenderableNode closestObject = null;
-			return null;
+			
 			lock (_renderableNodes)
 			{
 				foreach (var node in _renderableNodes)
