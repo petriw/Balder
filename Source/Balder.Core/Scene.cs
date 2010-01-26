@@ -185,14 +185,18 @@ namespace Balder.Core
 			{
 				foreach (var node in _renderableNodes)
 				{
-					var transformedSphere = node.BoundingSphere.Transform(node.World);
-					var distance = pickRay.Intersects(transformedSphere);
-					if (distance.HasValue)
+					if (null != (object)node.BoundingSphere)
 					{
-						if (distance < closestObjectDistance)
+						// Todo : Hierarchical pick
+						var transformedSphere = node.BoundingSphere.Transform(node.World);
+						var distance = pickRay.Intersects(transformedSphere);
+						if (distance.HasValue)
 						{
-							closestObject = node as RenderableNode;
-							closestObjectDistance = distance.Value;
+							if (distance < closestObjectDistance)
+							{
+								closestObject = node as RenderableNode;
+								closestObjectDistance = distance.Value;
+							}
 						}
 					}
 				}
