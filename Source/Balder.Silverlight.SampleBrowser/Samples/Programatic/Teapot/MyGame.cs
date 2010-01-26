@@ -15,6 +15,9 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 		{
 			ContentManager.AssetsRoot = "Samples/Programatic/Teapot/Assets";
 
+			DebugLevel.BoundingSpheres = true;
+
+
 			var light = new OmniLight();
 			light.Diffuse = Color.FromArgb(0xff, 255, 121, 32);
 			light.Specular = Color.FromArgb(0xff, 0xff, 0xff, 0xff);
@@ -40,9 +43,9 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 
 		public override void OnUpdate()
 		{
-			Camera.Position.X = Math.Sin(_sin)*120.0;
+			Camera.Position.X = Math.Sin(_sin)*60.0;
 			Camera.Position.Y = 0;
-			Camera.Position.Z = Math.Cos(_sin)*120.0;
+			Camera.Position.Z = Math.Cos(_sin)*60.0;
 
 			_sin += 0.05;
 			base.OnUpdate();

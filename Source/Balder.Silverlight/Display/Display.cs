@@ -17,6 +17,7 @@
 //
 #endregion
 
+using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -24,7 +25,6 @@ using System.Windows.Media.Imaging;
 using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.SoftwareRendering;
-using Balder.Silverlight.SoftwareRendering;
 using Color = Balder.Core.Color;
 
 namespace Balder.Silverlight.Display
@@ -34,14 +34,12 @@ namespace Balder.Silverlight.Display
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 
 		private readonly IPlatform _platform;
-		//private FrameBuffer _framebuffer;
 		private WriteableBitmapQueue _bitmapQueue;
 
 		private bool _initialized;
 
 		public Display(IPlatform platform)
 		{
-			//_framebuffer = new FrameBuffer();
 			_platform = platform;
 		}
 
@@ -49,7 +47,9 @@ namespace Balder.Silverlight.Display
 		{
 			//_framebuffer.Initialize(width, height);
 
+
 			_bitmapQueue = new WriteableBitmapQueue(width,height);
+			_frontDepthBuffer = new UInt32[width*height];
 
 			BufferContainer.Width = width;
 			BufferContainer.Height = height;
@@ -77,10 +77,30 @@ namespace Balder.Silverlight.Display
 
 		public Color BackgroundColor { get; set; }
 
+		private WriteableBitmap _currentFrontBitmap;
+		private WriteableBitmap _currentRenderBitmap;
+		
+		private UInt32[] _frontDepthBuffer;
+
 		public void PrepareRender()
 		{
-			//BufferContainer.Framebuffer = _framebuffer.BackBufferBitmap.Pixels;
-			//BufferContainer.DepthBuffer = _framebuffer.BackDepthBuffer;
+			if (_initialized)
+			{
+				_currentRenderBitmap = _bitmapQueue.GetRenderBitmap();
+				
+				BufferContainer.Framebuffer = _currentRenderBitmap.Pixels;
+				BufferContainer.DepthBuffer = _frontDepthBuffer;
+				Array.Clear(_frontDepthBuffer,0,_frontDepthBuffer.Length);
+			}
+		}
+
+		public void AfterRender()
+		{
+			if (_initialized)
+			{
+				_bitmapQueue.RenderCompleteForBitmap(_currentRenderBitmap);
+			}
+
 		}
 
 		public void Render()
@@ -93,7 +113,6 @@ namespace Balder.Silverlight.Display
 		{
 			if (_initialized)
 			{
-				//_framebuffer.Swap();
 			}
 		}
 
@@ -102,34 +121,30 @@ namespace Balder.Silverlight.Display
 			if (_initialized)
 			{
 				var clearBitmap = _bitmapQueue.GetClearBitmap();
+				Array.Clear(clearBitmap.Pixels,0,clearBitmap.Pixels.Length);
 
 				_bitmapQueue.ClearCompleteForBitmap(clearBitmap);
-
-				//_framebuffer.Clear();
 			}
 		}
 
-
-		private WriteableBitmap _currentFrontBitmap;
 
 		public void Show()
 		{
 			if (_initialized)
 			{
-				//_framebuffer.Show();
+				_bitmapQueue.UpdateStatistics();
 				if (null != _image)
 				{
 					if( null != _currentFrontBitmap )
 					{
-						_bitmapQueue.RenderCompleteForBitmap(_currentFrontBitmap);
+						_bitmapQueue.ShowCompleteForBitmap(_currentFrontBitmap);
 					}
 					_currentFrontBitmap = _bitmapQueue.GetShowBitmap();
-					
-					//var bitmap = _framebuffer.FrontBufferBitmap;
 					if (null != _currentFrontBitmap)
 					{
 						_image.Source = _currentFrontBitmap;
 						_currentFrontBitmap.Invalidate();
+						
 					}
 				}
 			}

@@ -154,6 +154,8 @@ namespace Balder.Core
 
 		public Matrix World { get; set; }
 
+		public Matrix RenderingWorld { get; internal set; }
+
 		private void PrepareWorld()
 		{
 			if( _isInitializingTransform )
@@ -172,9 +174,7 @@ namespace Balder.Core
 		}
 		#endregion
 
-		public virtual void Prepare(Viewport viewport) { }
-		public virtual void Update() { }
-
+		public virtual void PrepareForRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world) { }
 
 		internal void OnHover()
 		{

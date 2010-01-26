@@ -32,11 +32,18 @@ namespace Balder.Core.Lighting
             Range = 10.0f;
 		}
 
+		public override void PrepareForRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		{
+			base.PrepareForRendering(viewport, view, projection, world);
+		}
+
+
 		public override Color Calculate(Viewport viewport, Vector point, Vector normal)
 		{
 			var actualAmbient = Ambient;
 			var actualDiffuse = Diffuse;
 			var actualSpecular = Specular;
+
 
             // Use dotproduct for diffuse lighting. Add point functionality as this now is a directional light.
             // Ambient light
@@ -47,7 +54,7 @@ namespace Balder.Core.Lighting
             lightDir.Normalize();
             normal.Normalize();
             var dfDot = lightDir.Dot(normal);
-            MathHelper.Saturate(ref dfDot);
+            dfDot = MathHelper.Saturate(dfDot);
             var diffuse = actualDiffuse * dfDot * Strength;
 
             // Specular highlight
@@ -56,16 +63,16 @@ namespace Balder.Core.Lighting
             var view = viewport.View.Position - point;
             view.Normalize();
             var spDot = reflection.Dot(view);
-            MathHelper.Saturate(ref spDot);
+            spDot = MathHelper.Saturate(spDot);
             var specular = actualSpecular * spDot * Strength;
 
             // Compute self shadowing
             var shadow = 4.0f * lightDir.Dot(normal);
-            MathHelper.Saturate(ref shadow);
+            shadow = MathHelper.Saturate(shadow);
 
             // Compute range for the light
             var attenuation = ((lightDir / Range).Dot(lightDir / Range));
-            MathHelper.Saturate(ref attenuation);
+            attenuation = MathHelper.Saturate(attenuation);
             attenuation = 1f - attenuation;
 
             // Final result

@@ -26,6 +26,10 @@ namespace Balder.Core.SoftwareRendering
 		{
 			var stride = BufferContainer.Stride;
 			var framebuffer = BufferContainer.Framebuffer;
+			if( null == framebuffer )
+			{
+				return;
+			}
 
 			var colorAsInt = (int)color.ToUInt32();
 

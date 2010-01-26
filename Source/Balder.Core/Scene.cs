@@ -33,6 +33,7 @@ namespace Balder.Core
 		private readonly NodeCollection _flatNodes;
 		private readonly NodeCollection _environmentalNodes;
 		private readonly NodeCollection _lights;
+		private readonly NodeCollection _allNodes;
 
 		public Color AmbientColor;
 
@@ -42,6 +43,7 @@ namespace Balder.Core
 			_flatNodes = new NodeCollection();
 			_environmentalNodes = new NodeCollection();
 			_lights = new NodeCollection();
+			_allNodes = new NodeCollection();
 
 			AmbientColor = Color.FromArgb(0xff, 0x3f, 0x3f, 0x3f);
 		}
@@ -78,6 +80,10 @@ namespace Balder.Core
 					}
 				}
 			}
+			lock (_allNodes)
+			{
+				_allNodes.Add(node);
+			}
 		}
 
 		/// <summary>
@@ -92,27 +98,45 @@ namespace Balder.Core
 
 		public void Render(Viewport viewport, Matrix view, Matrix projection)
 		{
+			lock( _allNodes )
+			{
+				foreach( var node in _allNodes )
+				{
+					var world = Matrix.Identity;
+					PrepareRender(node, viewport, view, projection, world);
+				}
+			}
+			
 			lock (_renderableNodes)
 			{
 				foreach (RenderableNode node in _renderableNodes)
 				{
-					var world = Matrix.Identity;
-					RenderNode(node, viewport, view, projection, world);
+					RenderNode(node, viewport, view, projection);
 				}
 			}
 		}
 
-		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private void PrepareRender(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			world = node.World * world;
-			node.RenderDebugInfo(viewport, view, projection, world);
-			node.Render(viewport, view, projection, world);
+			node.RenderingWorld = world;
+			node.PrepareForRendering(viewport,view,projection,node.RenderingWorld);
+			foreach (var child in node.Children)
+			{
+				PrepareRender(child, viewport, view, projection, world);
+			}
+		}
+
+		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection)
+		{
+			//node.RenderDebugInfo(viewport, view, projection, world);
+			node.Render(viewport, view, projection, node.RenderingWorld);
 
 			foreach (var child in node.Children)
 			{
 				if (child is RenderableNode)
 				{
-					RenderNode((RenderableNode)child, viewport, view, projection, world);
+					RenderNode((RenderableNode)child, viewport, view, projection);
 				}
 			}
 		}

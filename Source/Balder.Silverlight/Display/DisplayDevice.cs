@@ -61,6 +61,7 @@ namespace Balder.Silverlight.Display
 			{
 				display.PrepareRender();
 				Render(display);
+				display.AfterRender();
 			}
 		}
 

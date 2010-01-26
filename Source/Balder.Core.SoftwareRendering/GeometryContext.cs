@@ -237,6 +237,7 @@ namespace Balder.Core.SoftwareRendering
 				}
 
 				face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
+				
 				Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
 			}
 		}

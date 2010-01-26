@@ -125,7 +125,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Display\Display.cs" />
     <Compile Include="Services\TargetDevice.cs" />
-    <Compile Include="SoftwareRendering\FrameBuffer.cs" />
     <Compile Include="SoftwareRendering\RenderingManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,8 +18,12 @@
 //
 
 #endregion
+
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Media.Imaging;
+using Balder.Silverlight.Notification;
 
 namespace Balder.Silverlight.Display
 {
@@ -33,6 +37,34 @@ namespace Balder.Silverlight.Display
 
 	public class WriteableBitmapQueue
 	{
+		public class WriteableBitmapQueueStatistics
+		{
+			public virtual int ClearCount { get; set; }
+			public virtual int RenderCount { get; set; }
+			public virtual int ShowCount { get; set; }
+
+			private static object InstanceLockObject = new object();
+			private static WriteableBitmapQueueStatistics _instance;
+			public static WriteableBitmapQueueStatistics	Instance
+			{
+				get
+				{
+					lock( InstanceLockObject )
+					{
+						if( null == _instance )
+						{
+							var weaver = new NotifyingObjectWeaver();
+							var proxyType = weaver.GetProxyType<WriteableBitmapQueueStatistics>();
+							_instance = Activator.CreateInstance(proxyType) as WriteableBitmapQueueStatistics;
+						}
+						return _instance;
+					}
+					
+				}
+			}
+		}
+
+
 		private readonly Dictionary<BufferType,Queue<WriteableBitmap>> _bufferQueues;
 		private readonly int _width;
 		private readonly int _height;
@@ -42,6 +74,35 @@ namespace Balder.Silverlight.Display
 			_width = width;
 			_height = height;
 			_bufferQueues = new Dictionary<BufferType, Queue<WriteableBitmap>>();
+
+			EnsureQueueExistence(BufferType.Clear);
+			EnsureQueueExistence(BufferType.Show);
+			EnsureQueueExistence(BufferType.Render);
+
+			/*
+			for( var i=0; i<20; i++ )
+			{
+				CreateAndEnqueue(BufferType.Clear);
+				CreateAndEnqueue(BufferType.Show);
+				CreateAndEnqueue(BufferType.Render);
+			}*/
+
+		}
+
+		private void CreateAndEnqueue(BufferType bufferType)
+		{
+			var writeableBitmap = new WriteableBitmap(_width, _height);
+			Enqueue(bufferType,writeableBitmap);
+		}
+
+
+
+
+		public void UpdateStatistics()
+		{
+			WriteableBitmapQueueStatistics.Instance.ClearCount = _bufferQueues[BufferType.Clear].Count;
+			WriteableBitmapQueueStatistics.Instance.RenderCount = _bufferQueues[BufferType.Render].Count;
+			WriteableBitmapQueueStatistics.Instance.ShowCount = _bufferQueues[BufferType.Show].Count;
 		}
 
 		public WriteableBitmap GetClearBitmap()
@@ -87,12 +148,12 @@ namespace Balder.Silverlight.Display
 
 		private WriteableBitmap Dequeue(BufferType bufferType)
 		{
-			EnsureQueueExistence(bufferType);
 			var queue = _bufferQueues[bufferType];
 			lock (queue)
 			{
 				WriteableBitmap bitmap;
-				if (queue.Count == 0)
+				
+				if (queue.Count == 0) 
 				{
 					bitmap = new WriteableBitmap(_width,_height);
 				}
@@ -100,13 +161,14 @@ namespace Balder.Silverlight.Display
 				{
 					bitmap = queue.Dequeue();
 				}
+				
+				
 				return bitmap;
 			}
 		}
 
 		private void Enqueue(BufferType bufferType, WriteableBitmap bitmap)
 		{
-			EnsureQueueExistence(bufferType);
 			var queue = _bufferQueues[bufferType];
 			lock (queue)
 			{

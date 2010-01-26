@@ -49,8 +49,10 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Flat(Span span, Color color)
 		{
+			
 			var spreadCount = span.Length; //span.XEnd - span.XStart;
 			DepthInterpolator.SetPoint(0, span.ZStart, span.ZEnd);
+			
 			var yOffset = span.Y * BufferContainer.Stride;
 			var rOffset = BufferContainer.RedPosition;
 			var gOffset = BufferContainer.GreenPosition;
@@ -68,6 +70,7 @@ namespace Balder.Core.SoftwareRendering
 			for (var index = 0; index < spreadCount; index++)
 			{
 
+				
 				if (xOffset >= 0 && xOffset < BufferContainer.Width)
 				{
 					var z = DepthInterpolator.Points[0].InterpolatedValues[index];

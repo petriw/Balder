@@ -210,6 +210,12 @@ namespace Balder.Core.SoftwareRendering
 
 		public static void Draw(ISpanRenderer renderer, TriangleShade shade, Face face, Vertex[] vertices, TextureCoordinate[] textureCoordinates)
 		{
+			if( null == BufferContainer.Framebuffer )
+			{
+				return;
+			}
+			
+			shade = TriangleShade.Flat;
 			
 			var vertexA = vertices[face.A];
 			var vertexB = vertices[face.B];

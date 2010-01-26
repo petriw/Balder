@@ -22,47 +22,40 @@ using System.Threading;
 using System.Windows.Media;
 using Balder.Core.Diagnostics;
 using Balder.Core.Extensions;
+using Balder.Silverlight.Notification;
 
 namespace Balder.Silverlight.SoftwareRendering
 {
 	public delegate void RenderEventHandler();
 
-	public class RenderingNumbers : INotifyPropertyChanged
+	public class RenderingStatistics
 	{
-		private long _render;
-		public long Render
+
+		public virtual long ShowTime { get; set; }
+		public virtual long ClearTime { get; set; }
+		public virtual long RenderTime { get; set; }
+
+		private static object InstanceLockObject = new object();
+		private static RenderingStatistics _instance;
+
+		public static RenderingStatistics Instance
 		{
-			get { return _render; }
-			set
+			get
 			{
-				_render = value;
-				PropertyChanged.Notify(()=>Render);
+				lock( InstanceLockObject )
+				{
+					if( null == _instance )
+					{
+						var weaver = new NotifyingObjectWeaver();
+						var proxyType = weaver.GetProxyType<RenderingStatistics>();
+						_instance = Activator.CreateInstance(proxyType) as RenderingStatistics;
+					}
+
+					return _instance;
+				}
 			}
 		}
-
-		private long _clear;
-		public long Clear
-		{
-			get { return _clear; }
-			set
-			{
-				_clear = value;
-				PropertyChanged.Notify(() => Clear);
-			}
-		}
-
-		private long _show;
-		public long Show
-		{
-			get { return _show; }
-			set
-			{
-				_show = value;
-				PropertyChanged.Notify(() => Show);
-			}
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
+		
 	}
 
 
@@ -70,24 +63,19 @@ namespace Balder.Silverlight.SoftwareRendering
 	{
 		public static readonly RenderingManager Instance = new RenderingManager();
 
-		public static readonly RenderingNumbers	RenderingNumbers = new RenderingNumbers();
-
 		public event RenderEventHandler Updated = () => { };
 		public event RenderEventHandler Render = () => { };
 		public event RenderEventHandler Clear = () => { };
 		public event RenderEventHandler Swapped = () => { };
 		public event RenderEventHandler Show = () => { };
 
-		private ManualResetEvent _renderEvent;
-		private ManualResetEvent _clearEvent;
+		private ManualResetEvent _renderWait;
+		private ManualResetEvent _clearWait;
 
 		private Thread _renderThread;
 		private Thread _clearThread;
 
 		private bool _frameBufferManagerAlive;
-
-		private bool _hasCleared;
-		private bool _hasRendered;
 
 		private RenderingManager()
 		{
@@ -97,19 +85,14 @@ namespace Balder.Silverlight.SoftwareRendering
 		{
 			_frameBufferManagerAlive = true;
 
-			_renderEvent = new ManualResetEvent(true);
-			_clearEvent = new ManualResetEvent(true);
+			_renderWait = new ManualResetEvent(false);
+			_clearWait = new ManualResetEvent(false);
 
-			
 			_renderThread = new Thread(RenderThread);
 			_clearThread = new Thread(ClearThread);
 
 			//_renderThread.Start();
 			//_clearThread.Start();
-
-
-			_hasCleared = false;
-			_hasRendered = false;
 
 			CompositionTarget.Rendering += ShowTimer;
 		}
@@ -117,9 +100,6 @@ namespace Balder.Silverlight.SoftwareRendering
 		public void Stop()
 		{
 			_frameBufferManagerAlive = false;
-
-			_renderEvent.Set();
-			_clearEvent.Set();
 		}
 
 
@@ -127,23 +107,20 @@ namespace Balder.Silverlight.SoftwareRendering
 		{
 			while (_frameBufferManagerAlive)
 			{
-				//_renderEvent.WaitOne(200);
-				_renderEvent.Reset();
+				//_renderWait.WaitOne();
 				Render();
-
-				_hasRendered = true;
+				//_renderWait.Reset();
 			}
 		}
 
+		
 		private void ClearThread()
 		{
 			while (_frameBufferManagerAlive)
 			{
-				//_clearEvent.WaitOne(200);
-				_clearEvent.Reset();
+				//_clearWait.WaitOne();
 				Clear();
-
-				_hasCleared = true;
+				//_clearWait.Reset();
 			}
 		}
 
@@ -151,13 +128,11 @@ namespace Balder.Silverlight.SoftwareRendering
 
 		private void ShowTimer(object sender, EventArgs e)
 		{
-			var startEvents = new[]
-			                  	{
-			                  		_renderEvent,
-			                  		_clearEvent
-			                  	};
-
+			//_renderWait.Set();
+			//_clearWait.Set();
+			//Show();
 			Updated();
+			//return;
 			//if (_hasCleared && _hasRendered)
 			{
 				
@@ -166,7 +141,7 @@ namespace Balder.Silverlight.SoftwareRendering
 				Render();
 
 				stopwatch.Stop();
-				RenderingNumbers.Render = stopwatch.ElapsedMilliseconds;
+				RenderingStatistics.Instance.RenderTime = stopwatch.ElapsedMilliseconds;
 				stopwatch.Reset();
 
 				Swapped();
@@ -174,20 +149,17 @@ namespace Balder.Silverlight.SoftwareRendering
 				stopwatch.Start();
 				Clear();
 				stopwatch.Stop();
-				RenderingNumbers.Clear = stopwatch.ElapsedMilliseconds;
+				RenderingStatistics.Instance.ClearTime = stopwatch.ElapsedMilliseconds;
 				stopwatch.Reset();
 
 				stopwatch.Start();
 				Show();
 				stopwatch.Stop();
-				RenderingNumbers.Show = stopwatch.ElapsedMilliseconds;
+				RenderingStatistics.Instance.ShowTime = stopwatch.ElapsedMilliseconds;
 				stopwatch.Reset();
 
 				
-				_hasCleared = false;
-				_hasRendered = false;
 			}
-			startEvents.SetAll();
 		}
 
 		

@@ -16,11 +16,13 @@
 // limitations under the License.
 //
 #endregion
+using System;
+using System.Runtime.InteropServices;
+
 namespace Balder.Core.Math
 {
 	public static class MathHelper
 	{
-		// Fields
 		public const float E = 2.718282f;
 		public const float Log10E = 0.4342945f;
 		public const float Log2E = 1.442695f;
@@ -29,7 +31,7 @@ namespace Balder.Core.Math
 		public const float PiOver4 = 0.7853982f;
 		public const float TwoPi = 6.283185f;
 
-		// Methods
+		
 		public static float Barycentric(float value1, float value2, float value3, float amount1, float amount2)
 		{
 			return ((value1 + (amount1 * (value2 - value1))) + (amount2 * (value3 - value1)));
@@ -37,8 +39,8 @@ namespace Balder.Core.Math
 
 		public static float CatmullRom(float value1, float value2, float value3, float value4, float amount)
 		{
-			float num = amount * amount;
-			float num2 = amount * num;
+			var num = amount * amount;
+			var num2 = amount * num;
 			return (0.5f * ((((2f * value2) + ((-value1 + value3) * amount)) + (((((2f * value1) - (5f * value2)) + (4f * value3)) - value4) * num)) + ((((-value1 + (3f * value2)) - (3f * value3)) + value4) * num2)));
 		}
 
@@ -51,23 +53,23 @@ namespace Balder.Core.Math
 
 		public static float Distance(float value1, float value2)
 		{
-			return System.Math.Abs((float)(value1 - value2));
+			return System.Math.Abs(value1 - value2);
 		}
 
-        public static float Abs(float value)
-        {
-            return System.Math.Abs(value);
-        }
+		public static float Abs(float value)
+		{
+			return System.Math.Abs(value);
+		}
 
 		public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
 		{
-			float num3 = amount;
-			float num = num3 * num3;
-			float num2 = num3 * num;
-			float num7 = ((2f * num2) - (3f * num)) + 1f;
-			float num6 = (-2f * num2) + (3f * num);
-			float num5 = (num2 - (2f * num)) + num3;
-			float num4 = num2 - num;
+			var num3 = amount;
+			var num = num3 * num3;
+			var num2 = num3 * num;
+			var num7 = ((2f * num2) - (3f * num)) + 1f;
+			var num6 = (-2f * num2) + (3f * num);
+			var num5 = (num2 - (2f * num)) + num3;
+			var num4 = num2 - num;
 			return ((((value1 * num7) + (value2 * num6)) + (tangent1 * num5)) + (tangent2 * num4));
 		}
 
@@ -88,7 +90,7 @@ namespace Balder.Core.Math
 
 		public static float SmoothStep(float value1, float value2, float amount)
 		{
-			float num = Clamp(amount, 0f, 1f);
+			var num = Clamp(amount, 0f, 1f);
 			return Lerp(value1, value2, (num * num) * (3f - (2f * num)));
 		}
 
@@ -97,17 +99,84 @@ namespace Balder.Core.Math
 			return (radians * 57.29578f);
 		}
 
-        public static void Saturate(ref float value)
-        {
-            if (value > 1)
-                value = 1;
-            if (value < 0)
-                value = 0;
-        }
+		public static float Saturate(float value)
+		{
+			if (value > 1)
+			{
+				value = 1;
+			}
+			if (value < 0)
+			{
+				value = 0;
+			}
+
+			return value;
+		}
 
 		public static float ToRadians(float degrees)
 		{
 			return (degrees * 0.01745329f);
+		}
+
+
+
+		public static float Sqrt(float value)
+		{
+			var result = 1f/InvSqrt(value);
+			return result;
+		}
+
+		[StructLayout(LayoutKind.Explicit, Size = 4)]
+		private struct IntFloat
+		{
+			[FieldOffset(0)]
+			public float floatValue;
+
+			[FieldOffset(0)]
+			public int intValue;
+
+			// redundant assignment to avoid any complaints about uninitialized members
+			IntFloat(int x)
+			{
+				floatValue = 0;
+				intValue = x;
+			}
+
+			IntFloat(float x)
+			{
+				intValue = 0;
+				floatValue = x;
+			}
+
+			public static explicit operator float(IntFloat x)
+			{
+				return x.floatValue;
+			}
+
+			public static explicit operator int(IntFloat x)
+			{
+				return x.intValue;
+			}
+
+			public static explicit operator IntFloat(int i)
+			{
+				return new IntFloat(i);
+			}
+			public static explicit operator IntFloat(float f)
+			{
+				return new IntFloat(f);
+			}
+		}
+
+		private static IntFloat InvSqrtCalc;
+		public static float InvSqrt(float value)
+		{
+			var xhalf = 0.5f*value;
+			InvSqrtCalc.floatValue = value;
+			InvSqrtCalc.intValue = 0x5f3759df - (InvSqrtCalc.intValue >> 1);
+			value = InvSqrtCalc.floatValue;
+			value = value*(1.5f - xhalf*value*value);
+			return value;
 		}
 	}
 }
