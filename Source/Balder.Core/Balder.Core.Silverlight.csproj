@@ -151,6 +151,7 @@
     <Compile Include="Math\Coordinate.cs" />
     <Compile Include="Math\Coordinate.Silverlight.cs" />
     <Compile Include="Math\Gjk.cs" />
+    <Compile Include="Math\IntFloat.cs" />
     <Compile Include="Math\PlaneIntersectionType.cs" />
     <Compile Include="Math\Ray.cs" />
     <Compile Include="Node.Silverlight.cs">

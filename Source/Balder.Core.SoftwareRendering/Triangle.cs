@@ -197,7 +197,7 @@ namespace Balder.Core.SoftwareRendering
 			var u = vertex.TransformedVectorNormalized;
 			var n = vertex.TransformedNormal;
 			var r = Vector.Reflect(n, u);
-			var m = Math.Core.Sqrt((r.X * r.X) + (r.Y * r.Y) +
+			var m = MathHelper.Sqrt((r.X * r.X) + (r.Y * r.Y) +
 									 ((r.Z + 0f) * (r.Z + 0f)));
 			var s = (r.X/m); // +0.5f;
 			var t = (r.Y/m); // +0.5f;
@@ -215,7 +215,7 @@ namespace Balder.Core.SoftwareRendering
 				return;
 			}
 			
-			shade = TriangleShade.Flat;
+			//shade = TriangleShade.Flat;
 			
 			var vertexA = vertices[face.A];
 			var vertexB = vertices[face.B];

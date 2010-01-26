@@ -235,6 +235,24 @@ namespace Balder.Core
 			return result;
 		}
 
+		public Color Average(Color secondColor)
+		{
+			var red = (int)Red + (int)secondColor.Red;
+			var green = (int)Green + (int)secondColor.Green;
+			var blue = (int)Blue + (int)secondColor.Blue;
+			var alpha = (int)Alpha + (int)secondColor.Alpha;
+
+			var result = new Color
+			{
+				Red = (byte)(red>>2),
+				Green = (byte)(green>>2),
+				Blue = (byte)(blue>>2),
+				Alpha = (byte)(alpha>>2),
+			};
+			return result;
+			
+		}
+
 
 		private static float ClampValue(float value)
 		{

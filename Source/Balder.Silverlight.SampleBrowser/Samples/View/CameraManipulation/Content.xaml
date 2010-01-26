@@ -9,7 +9,7 @@
 	<Grid x:Name="LayoutRoot">
 		<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 			<Execution:Game x:Name="_game" Width="800" Height="600">
-				<Lighting:OmniLight Position="0,120,0" Ambient="DarkGray" Diffuse="Brown" Specular="White"/>
+				<Lighting:OmniLight Position="0,4020,0" Ambient="Brown" Diffuse="Brown" Specular="Brown"/>
 				<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/View/CameraManipulation/Assets/plane.ase"/>
 				<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/View/CameraManipulation/Assets/box.ase"/>
 				<Execution:Game.Camera>

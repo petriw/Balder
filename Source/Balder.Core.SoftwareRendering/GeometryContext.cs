@@ -22,6 +22,7 @@ using Balder.Core.Display;
 using Balder.Core.Materials;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
+using Balder.Core.SoftwareRendering.Rendering;
 using Matrix=Balder.Core.Math.Matrix;
 
 namespace Balder.Core.SoftwareRendering
@@ -206,7 +207,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
-			vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
+			//vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
 		}
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -236,9 +237,14 @@ namespace Balder.Core.SoftwareRendering
 					continue;
 				}
 
+				//face.Color = a.Color.Average(b.Color.Average(c.Color));
+
 				face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
+				//face.Color = a.Color;
 				
-				Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
+				FlatTriangle.Draw(face,Vertices);
+
+				//Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
 			}
 		}
 

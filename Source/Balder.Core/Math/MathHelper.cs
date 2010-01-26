@@ -16,8 +16,6 @@
 // limitations under the License.
 //
 #endregion
-using System;
-using System.Runtime.InteropServices;
 
 namespace Balder.Core.Math
 {
@@ -126,55 +124,14 @@ namespace Balder.Core.Math
 			return result;
 		}
 
-		[StructLayout(LayoutKind.Explicit, Size = 4)]
-		private struct IntFloat
-		{
-			[FieldOffset(0)]
-			public float floatValue;
-
-			[FieldOffset(0)]
-			public int intValue;
-
-			// redundant assignment to avoid any complaints about uninitialized members
-			IntFloat(int x)
-			{
-				floatValue = 0;
-				intValue = x;
-			}
-
-			IntFloat(float x)
-			{
-				intValue = 0;
-				floatValue = x;
-			}
-
-			public static explicit operator float(IntFloat x)
-			{
-				return x.floatValue;
-			}
-
-			public static explicit operator int(IntFloat x)
-			{
-				return x.intValue;
-			}
-
-			public static explicit operator IntFloat(int i)
-			{
-				return new IntFloat(i);
-			}
-			public static explicit operator IntFloat(float f)
-			{
-				return new IntFloat(f);
-			}
-		}
 
 		private static IntFloat InvSqrtCalc;
 		public static float InvSqrt(float value)
 		{
 			var xhalf = 0.5f*value;
-			InvSqrtCalc.floatValue = value;
-			InvSqrtCalc.intValue = 0x5f3759df - (InvSqrtCalc.intValue >> 1);
-			value = InvSqrtCalc.floatValue;
+			InvSqrtCalc.FloatValue = value;
+			InvSqrtCalc.IntValue = 0x5f3759df - (InvSqrtCalc.IntValue >> 1);
+			value = InvSqrtCalc.FloatValue;
 			value = value*(1.5f - xhalf*value*value);
 			return value;
 		}
