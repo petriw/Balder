@@ -29,6 +29,11 @@ namespace Balder.Core.SoftwareRendering
 {
 	public class GeometryContext : IGeometryContext
 	{
+		private static readonly FlatTriangle	FlatTriangleRenderer = new FlatTriangle();
+		private static readonly FlatTriangleAdditive FlatTriangleAdditiveRenderer = new FlatTriangleAdditive();
+		private static readonly GouraudTriangle GouraudTriangleRenderer = new GouraudTriangle();
+
+
 		private readonly IColorCalculator _colorCalculator;
 
 		public GeometryContext(IColorCalculator colorCalculator)
@@ -207,7 +212,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
-			//vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
+			vertex.Color = _colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color);
 		}
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -239,10 +244,12 @@ namespace Balder.Core.SoftwareRendering
 
 				//face.Color = a.Color.Average(b.Color.Average(c.Color));
 
-				face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
+				//face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
 				//face.Color = a.Color;
 				
-				FlatTriangle.Draw(face,Vertices);
+				//FlatTriangleAdditiveRenderer.Draw(face,Vertices);
+
+				GouraudTriangleRenderer.Draw(face, Vertices);
 
 				//Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
 			}

@@ -94,8 +94,11 @@
     <Compile Include="ISpanDrawer.cs" />
     <Compile Include="ISpanRenderer.cs" />
     <Compile Include="Rendering\FlatTriangle.cs" />
+    <Compile Include="Rendering\FlatTriangleAdditive.cs" />
+    <Compile Include="Rendering\GouraudTriangle.cs" />
     <Compile Include="Rendering\RenderedSpan.cs" />
     <Compile Include="Rendering\Scanline.cs" />
+    <Compile Include="Rendering\Triangle.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\ShapeContext.cs" />

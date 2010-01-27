@@ -24,45 +24,9 @@ using Balder.Core.Objects.Geometries;
 
 namespace Balder.Core.SoftwareRendering.Rendering
 {
-	public class FlatTriangle
+	public class FlatTriangle : Triangle
 	{
-		private static void GetSortedPoints(ref Vertex vertexA,
-											ref Vertex vertexB,
-											ref Vertex vertexC)
-		{
-			var point1 = vertexA;
-			var point2 = vertexB;
-			var point3 = vertexC;
-
-			if (point2.TranslatedScreenCoordinates.Y < point1.TranslatedScreenCoordinates.Y)
-			{
-				var p = point1;
-				point1 = point2;
-				point2 = p;
-			}
-
-			if (point3.TranslatedScreenCoordinates.Y < point2.TranslatedScreenCoordinates.Y)
-			{
-				var p = point2;
-				point2 = point3;
-				point3 = p;
-			}
-
-
-			if (point2.TranslatedScreenCoordinates.Y < point1.TranslatedScreenCoordinates.Y)
-			{
-				var p = point1;
-				point1 = point2;
-				point2 = p;
-			}
-
-			vertexA = point1;
-			vertexB = point2;
-			vertexC = point3;
-		}
-
-
-		public static void Draw(Face face, Vertex[] vertices)
+		public override void Draw(Face face, Vertex[] vertices)
 		{
 			var vertexA = vertices[face.A];
 			var vertexB = vertices[face.B];
@@ -166,12 +130,9 @@ namespace Balder.Core.SoftwareRendering.Rendering
 
 			var zStart = 0f;
 			var zEnd = 0f;
-			var z = 0f;
 			var zAdd = 0f;
 
 			var xClipStart = 0;
-
-
 
 			for (var y = yStart; y <= yEnd; y++)
 			{
@@ -209,28 +170,11 @@ namespace Balder.Core.SoftwareRendering.Rendering
 
 				if (length != 0)
 				{
-					z = zStart;
-					zAdd = (zEnd - zStart)/(float)length;
-					z += zAdd*(float) xClipStart;
-
+					zAdd = (zEnd - zStart) / (float)length;
+					zStart += zAdd*(float) xClipStart;
 					offset = yoffset + xStart;
 
-					for (var x = 0; x <= length; x++)
-					{
-						var bufferZ = (UInt32)((1.0f - z) * (float)UInt32.MaxValue);
-						if (bufferZ > BufferContainer.DepthBuffer[offset] &&
-							z >= 0f &&
-							z < 1f
-							)
-						{
-							framebuffer[offset] = colorAsInt;
-							depthBuffer[offset] = bufferZ;
-						}
-
-						
-						offset++;
-						z += zAdd;
-					}
+					DrawSpan(length, zStart, zAdd, depthBuffer, offset, framebuffer, colorAsInt);
 				}
 
 				if (y == (int)yb)
@@ -250,6 +194,25 @@ namespace Balder.Core.SoftwareRendering.Rendering
 				z2 += zInterpolate2;
 
 				yoffset += BufferContainer.Width;
+			}
+		}
+
+		protected virtual void DrawSpan(int length, float zStart, float zAdd, uint[] depthBuffer, int offset, int[] framebuffer, int colorAsInt)
+		{
+			for (var x = 0; x <= length; x++)
+			{
+				var bufferZ = (UInt32)((1.0f - zStart) * (float)UInt32.MaxValue);
+				if (bufferZ > depthBuffer[offset] &&
+				    zStart >= 0f &&
+				    zStart < 1f
+					)
+				{
+					framebuffer[offset] = colorAsInt;
+					depthBuffer[offset] = bufferZ;
+				}
+						
+				offset++;
+				zStart += zAdd;
 			}
 		}
 	}

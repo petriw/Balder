@@ -12,9 +12,15 @@ namespace Balder.Silverlight.SampleBrowser
 {
 	public partial class MainPage : UserControl
 	{
+
+
 		public MainPage()
 		{
 			InitializeComponent();
+
+			var a = 255L << 24;
+			var b = (long)(-0.5f*(1L << 24));
+
 
 			BufferStatisticsGrid.DataContext = WriteableBitmapQueue.WriteableBitmapQueueStatistics.Instance;
 			RenderStatisticsGrid.DataContext = RenderingStatistics.Instance;
