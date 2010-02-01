@@ -1,11 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Balder.Core.Execution;
-using Balder.Core.Math;
 using Balder.Silverlight.Display;
-using Balder.Silverlight.Notification;
 using Balder.Silverlight.SoftwareRendering;
 
 namespace Balder.Silverlight.SampleBrowser
@@ -17,10 +14,6 @@ namespace Balder.Silverlight.SampleBrowser
 		public MainPage()
 		{
 			InitializeComponent();
-
-			var a = 255L << 24;
-			var b = (long)(-0.5f*(1L << 24));
-
 
 			BufferStatisticsGrid.DataContext = WriteableBitmapQueue.WriteableBitmapQueueStatistics.Instance;
 			RenderStatisticsGrid.DataContext = RenderingStatistics.Instance;

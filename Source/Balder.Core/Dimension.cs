@@ -16,11 +16,18 @@
 // limitations under the License.
 //
 #endregion
+
+using System.ComponentModel;
+using Balder.Core.TypeConverters;
+
 namespace Balder.Core
 {
-	public struct Dimension
+#if(SILVERLIGHT)
+	[TypeConverter(typeof(DimensionTypeConverter))]
+#endif
+	public class Dimension
 	{
-		public int Width { get; set; }
-		public int Height { get; set; }
+		public float Width { get; set; }
+		public float Height { get; set; }
 	}
 }

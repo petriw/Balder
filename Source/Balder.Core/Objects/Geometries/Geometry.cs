@@ -29,7 +29,22 @@ namespace Balder.Core.Objects.Geometries
 
 		public Geometry()
 		{
-			GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
+			// Todo : This should not be necessary.
+			if( ObjectFactory.IsObjectFactoryInitialized )
+			{
+				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();	
+			}
+		}
+
+		protected override void OnInitialize()
+		{
+			// Todo : This should not be necessary.
+			if( null == GeometryContext )
+			{
+				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();	
+			}
+			
+			base.OnInitialize();
 		}
 
 		public void InitializeBoundingSphere()

@@ -173,6 +173,7 @@
     <Compile Include="Objects\Geometries\Line.cs" />
     <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
     <Compile Include="Objects\Geometries\Plane.cs" />
+    <Compile Include="Objects\Geometries\PlaneHeightEventArgs.cs" />
     <Compile Include="Objects\Geometries\Ring.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="RuntimeImports.cs" />
     <Compile Include="TypeConverters\ColorConverter.cs" />
     <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
+    <Compile Include="TypeConverters\DimensionTypeConverter.cs" />
     <Compile Include="Utils\Cloner.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />

@@ -58,6 +58,7 @@ namespace Balder.Core
 		private void NodeLoaded(object sender, RoutedEventArgs e)
 		{
 			Runtime.Instance.WireUpDependencies(this);
+			OnInitialize();
 			OnLoaded();
 		}
 
@@ -128,7 +129,8 @@ namespace Balder.Core
 			MouseLeave(this, e);
 		}
 
-
+		protected virtual void OnInitialize() { }
 		protected virtual void OnLoaded() { }
+		
 	}
 }

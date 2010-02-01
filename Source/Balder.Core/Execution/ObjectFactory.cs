@@ -29,6 +29,11 @@ namespace Balder.Core.Execution
 		private static readonly object InstanceLockObject = new object();
 		private static IObjectFactory _instance;
 
+		internal static bool IsObjectFactoryInitialized
+		{
+			get { return null != KernelContainer.Kernel;  }
+		}
+
 		// TODO:
 		// I'm not too fond of singletons, and this specific singleton I really dislike.
 		// The reason why I "need" it (or rather can't seem to come up with a better way,
