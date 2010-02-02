@@ -2,7 +2,7 @@ using System;
 
 namespace Balder.Core.Objects.Geometries
 {
-	public class PlaneHeightEventArgs : EventArgs
+	public class HeightmapEventArgs : EventArgs
 	{
 		public Vertex ActualVertex { get; set; }
 		public int GridX { get; set; }

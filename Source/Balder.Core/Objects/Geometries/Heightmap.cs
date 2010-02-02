@@ -25,19 +25,19 @@ using Balder.Core.Math;
 
 namespace Balder.Core.Objects.Geometries
 {
-	public class Plane : Geometry
+	public class Heightmap : Geometry
 	{
-		private static readonly PlaneHeightEventArgs EventArgs = new PlaneHeightEventArgs();
-		public event EventHandler<PlaneHeightEventArgs> HeightInput;
+		private static readonly HeightmapEventArgs EventArgs = new HeightmapEventArgs();
+		public event EventHandler<HeightmapEventArgs> HeightInput;
 		private bool _isLoaded = false;
 
-		public Plane()
+		public Heightmap()
 		{
 			LengthSegments = 1;
 			HeightSegments = 1;
 		}
 
-		public static Property<Plane, int> LengthSegmentsProperty = Property<Plane, int>.Register(p => p.LengthSegments);
+		public static Property<Heightmap, int> LengthSegmentsProperty = Property<Heightmap, int>.Register(p => p.LengthSegments);
 		public int LengthSegments
 		{
 			get { return LengthSegmentsProperty.GetValue(this); }
@@ -48,7 +48,7 @@ namespace Balder.Core.Objects.Geometries
 			}
 		}
 
-		public static Property<Plane, int> HeightSegmentsProperty = Property<Plane, int>.Register(p => p.HeightSegments);
+		public static Property<Heightmap, int> HeightSegmentsProperty = Property<Heightmap, int>.Register(p => p.HeightSegments);
 		public int HeightSegments
 		{
 			get { return HeightSegmentsProperty.GetValue(this); }
@@ -59,7 +59,7 @@ namespace Balder.Core.Objects.Geometries
 			}
 		}
 		
-		public static Property<Plane, Dimension> DimensionProperty = Property<Plane, Dimension>.Register(p => p.Dimension);
+		public static Property<Heightmap, Dimension> DimensionProperty = Property<Heightmap, Dimension>.Register(p => p.Dimension);
 		public Dimension Dimension
 		{
 			get { return DimensionProperty.GetValue(this); }

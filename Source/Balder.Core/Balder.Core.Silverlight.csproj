@@ -173,8 +173,8 @@
     <Compile Include="Imaging\ImagePalette.cs" />
     <Compile Include="Objects\Geometries\Line.cs" />
     <Compile Include="Objects\Geometries\Mesh.Silverlight.cs" />
-    <Compile Include="Objects\Geometries\Plane.cs" />
-    <Compile Include="Objects\Geometries\PlaneHeightEventArgs.cs" />
+    <Compile Include="Objects\Geometries\Heightmap.cs" />
+    <Compile Include="Objects\Geometries\HeightmapEventArgs.cs" />
     <Compile Include="Objects\Geometries\Ring.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
