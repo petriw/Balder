@@ -194,7 +194,6 @@ namespace Balder.Core.SoftwareRendering
 			vertex.TransformedVectorNormalized.Normalize();
 			var z = ((vertex.TransformedVector.Z/viewport.View.DepthDivisor) + viewport.View.DepthZero);
 			vertex.DepthBufferAdjustedZ = z;
-			
 		}
 
 		private void TransformAndTranslateVertices(Viewport viewport, Node node, Matrix view, Matrix projection, Matrix world)

@@ -162,6 +162,9 @@
     <Compile Include="Samples\Primitives\Plane\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Primitives\Sprites\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Programatic\Teapot\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -220,6 +223,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
     <Page Include="Samples\Primitives\Plane\Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Samples\Primitives\Sprites\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
@@ -284,6 +291,9 @@
   <ItemGroup>
     <Resource Include="Features\Resources\Images\code.png" />
     <Resource Include="Features\Resources\Images\code_csharp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Primitives\Sprites\Assets\sun.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

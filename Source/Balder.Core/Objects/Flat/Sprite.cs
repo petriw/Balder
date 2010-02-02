@@ -21,29 +21,43 @@ using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Imaging;
 using Balder.Core.Math;
+using Balder.Core.Objects.Geometries;
 using Ninject.Core;
 
 namespace Balder.Core.Objects.Flat
 {
-	public class Sprite : RenderableNode, IAsset
+	public partial class Sprite : RenderableNode, IAsset
 	{
-		private readonly ISpriteContext _spriteContext;
+		private ISpriteContext _spriteContext;
 
 		[Inject]
 		public IAssetLoaderService AssetLoaderService { get; set; }
 
 		public Sprite()
 		{
-			_spriteContext = ObjectFactory.Instance.Get<ISpriteContext>();
+			// Todo : This should not be necessary.
+			if (ObjectFactory.IsObjectFactoryInitialized)
+			{
+				_spriteContext = ObjectFactory.Instance.Get<ISpriteContext>();
+			}
+		}
+
+		protected override void OnInitialize()
+		{
+			// Todo : This should not be necessary.
+			if (null == _spriteContext)
+			{
+				_spriteContext = ObjectFactory.Instance.Get<ISpriteContext>();
+			}
+
+			base.OnInitialize();
 		}
 
 
-		//public Animatable Animation { get; private set; }
 
 		private Image[] _frames;
 
 		public Image CurrentFrame { get { return _frames[0]; } }
-
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{

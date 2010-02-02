@@ -1,4 +1,15 @@
 
+Version 0.8.8.6
+
+* New drawing routines, optimized
+
+* Plane primitive
+
+* Box primitive
+
+* Rotation, Scale on nodes
+
+
 Version 0.8.8.5
 
 * Introduced Silverlight in Core, but still maintaining platform independence

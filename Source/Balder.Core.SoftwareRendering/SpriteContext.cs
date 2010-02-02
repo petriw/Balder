@@ -41,110 +41,176 @@ namespace Balder.Core.SoftwareRendering
 		{
 			var image = sprite.CurrentFrame;
 
-			
 			var position = new Vector(0, 0, 0);
 			var transformedPosition = Vector.Transform(position, world, view);
 			var translatedPosition = Vector.Translate(transformedPosition, projection, viewport.Width, viewport.Height);
-			var depthBufferAdjustedZ = -transformedPosition.Z / viewport.View.DepthDivisor;
-			var positionOffset = (((int)translatedPosition.X)) + (((int)translatedPosition.Y) * BufferContainer.Stride);
+
+			var z = ((transformedPosition.Z / viewport.View.DepthDivisor) + viewport.View.DepthZero);
+			var depthBufferAdjustedZ = z;
+
 
 			var bufferSize = BufferContainer.Stride * BufferContainer.Height;
-			var bufferZ = (UInt32)(depthBufferAdjustedZ * (float)UInt32.MaxValue);
-			if( depthBufferAdjustedZ < 0f || depthBufferAdjustedZ >= 1f)
+			var bufferZ = (UInt32)((1.0f - depthBufferAdjustedZ) * (float)UInt32.MaxValue);
+			if (depthBufferAdjustedZ < 0f || depthBufferAdjustedZ >= 1f)
 			{
 				return;
 			}
-			
-			if( xScale != 1f || yScale != 1f )
+
+			var xOriginOffset = (int)-((sprite.CurrentFrame.Width / 2f) * xScale);
+			var yOriginOffset = (int)-((sprite.CurrentFrame.Height / 2f) * yScale);
+
+			var actualX = ((int) translatedPosition.X) + xOriginOffset;
+			var actualY = ((int) translatedPosition.Y) + yOriginOffset;
+
+			var positionOffset = actualX + (actualY * BufferContainer.Stride);
+
+			if (xScale != 1f || yScale != 1f)
 			{
-				RenderScaled(positionOffset, sprite.CurrentFrame, translatedPosition, bufferSize, bufferZ, xScale, yScale);
-				
-			} else
+				RenderScaled(viewport, positionOffset, actualX, actualY, sprite.CurrentFrame, translatedPosition, bufferSize, bufferZ, xScale, yScale);
+			}
+			else
 			{
-				RenderUnscaled(positionOffset,sprite.CurrentFrame,translatedPosition,bufferSize,bufferZ);
+				RenderUnscaled(viewport, positionOffset, actualX, actualY, sprite.CurrentFrame, translatedPosition, bufferSize, bufferZ);
 			}
 		}
 
-		private static void RenderUnscaled(int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ)
+		private static void RenderUnscaled(Viewport viewport, int positionOffset, int actualX, int actualY, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ)
 		{
-			var rOffset = BufferContainer.RedPosition;
-			var gOffset = BufferContainer.GreenPosition;
-			var bOffset = BufferContainer.BluePosition;
-			var aOffset = BufferContainer.AlphaPosition;
 			var imageContext = image.ImageContext as ImageContext;
 			var spriteOffset = 0;
+
+			var currentY = actualY;
 
 			for (var y = 0; y < image.Height; y++)
 			{
-				var offset = y * BufferContainer.Stride;
-				var depthBufferOffset = (BufferContainer.Width * ((int)translatedPosition.Y + y)) + (int)translatedPosition.X;
-				for (var x = 0; x < image.Width; x++)
+				if (currentY >= viewport.Height)
 				{
-					var actualOffset = offset + positionOffset;
-
-					if (actualOffset >= 0 && actualOffset < bufferSize &&
-						bufferZ < BufferContainer.DepthBuffer[depthBufferOffset])
-					{
-						BufferContainer.Framebuffer[actualOffset] = imageContext.Pixels[spriteOffset];
-						BufferContainer.DepthBuffer[depthBufferOffset] = bufferZ;
-					}
-					offset ++;
-					spriteOffset ++;
-					depthBufferOffset++;
+					break;
 				}
+
+				if (currentY >= 0)
+				{
+					var offset = y*BufferContainer.Stride;
+					var currentX = actualX;
+
+					for (var x = 0; x < image.Width; x++)
+					{
+						if (currentX >= viewport.Width)
+						{
+							break;
+						}
+						if (currentX >= 0)
+						{
+							var actualOffset = offset + positionOffset;
+
+							if (actualOffset >= 0 && actualOffset < bufferSize &&
+							    bufferZ < BufferContainer.DepthBuffer[actualOffset])
+							{
+								var pixel = BlendPixel(imageContext.Pixels[spriteOffset], BufferContainer.Framebuffer[actualOffset]);
+								if ((pixel & 0xff000000) != 0)
+								{
+									BufferContainer.Framebuffer[actualOffset] = pixel;
+									BufferContainer.DepthBuffer[actualOffset] = bufferZ;
+								}
+							}
+						}
+						offset++;
+						spriteOffset++;
+						currentX++;
+					}
+				}
+
+				currentY++;
 			}
 		}
 
-		private static void RenderScaled(int positionOffset, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ, float xScale, float yScale)
+		private static void RenderScaled(Viewport viewport, int positionOffset, int actualX, int actualY, Image image, Vector translatedPosition, int bufferSize, UInt32 bufferZ, float xScale, float yScale)
 		{
-			var rOffset = BufferContainer.RedPosition;
-			var gOffset = BufferContainer.GreenPosition;
-			var bOffset = BufferContainer.BluePosition;
-			var aOffset = BufferContainer.AlphaPosition;
 			var imageContext = image.ImageContext as ImageContext;
 
-			var actualWidth = (int) (((float) image.Width)*xScale);
-			var actualHeight = (int) (((float) image.Height)*yScale);
+			var actualWidth = (int)(((float)image.Width) * xScale);
+			var actualHeight = (int)(((float)image.Height) * yScale);
 
-			if( actualWidth <= 0 || actualHeight <=0 )
+			if (actualWidth <= 0 || actualHeight <= 0)
 			{
 				return;
 			}
 
 			var spriteOffset = 0;
 
-			XScalingInterpolator.SetPoint(0,0f,image.Width);
+			XScalingInterpolator.SetPoint(0, 0f, image.Width);
 			XScalingInterpolator.Interpolate(actualWidth);
 
-			YScalingInterpolator.SetPoint(0,0f,image.Height);
+			YScalingInterpolator.SetPoint(0, 0f, image.Height);
 			YScalingInterpolator.Interpolate(actualHeight);
-			
+
+			var currentY = actualY;
 
 			for (var y = 0; y < actualHeight; y++)
 			{
-				var offset = y * BufferContainer.Stride;
-				var depthBufferOffset = (BufferContainer.Width * ((int)translatedPosition.Y + y)) + (int)translatedPosition.X;
-
-				var spriteY = (int)YScalingInterpolator.Points[0].InterpolatedValues[y];
-
-				for (var x = 0; x < actualWidth; x++)
+				if (currentY >= viewport.Height)
 				{
-					var actualOffset = offset + positionOffset;
-					
-					var spriteX = (int)XScalingInterpolator.Points[0].InterpolatedValues[x];
-					spriteOffset = (int)((spriteY*image.Width) + spriteX);
-
-					if (actualOffset >= 0 && actualOffset < bufferSize &&
-						bufferZ < BufferContainer.DepthBuffer[depthBufferOffset])
-					{
-						BufferContainer.Framebuffer[actualOffset] = imageContext.Pixels[spriteOffset];
-						BufferContainer.DepthBuffer[depthBufferOffset] = bufferZ;
-					}
-					offset ++;
-					
-					depthBufferOffset++;
+					break;
 				}
+				if (currentY >= 0)
+				{
+					var currentX = actualX;
+					var offset = y*BufferContainer.Stride;
+
+					var spriteY = (int) YScalingInterpolator.Points[0].InterpolatedValues[y];
+
+					for (var x = 0; x < actualWidth; x++)
+					{
+						if (currentX >= viewport.Width)
+						{
+							break;
+						}
+						if (currentX >= 0)
+						{
+							var actualOffset = offset + positionOffset;
+
+
+							var spriteX = (int) XScalingInterpolator.Points[0].InterpolatedValues[x];
+							spriteOffset = (int) ((spriteY*image.Width) + spriteX);
+
+							if (actualOffset >= 0 && actualOffset < bufferSize &&
+							    bufferZ > BufferContainer.DepthBuffer[actualOffset])
+							{
+
+								var pixel = BlendPixel(imageContext.Pixels[spriteOffset], BufferContainer.Framebuffer[actualOffset]);
+								if ((pixel & 0xff000000) != 0)
+								{
+									BufferContainer.Framebuffer[actualOffset] = pixel;
+									BufferContainer.DepthBuffer[actualOffset] = bufferZ;
+								}
+							}
+						}
+						offset++;
+
+						currentX++;
+					}
+				}
+				currentY++;
 			}
+		}
+
+		private static int BlendPixel(int sourcePixel, int destinationPixel)
+		{
+			var sa = ((sourcePixel >> 24) & 0xff);
+			var sr = ((sourcePixel >> 16) & 0xff);
+			var sg = ((sourcePixel >> 8) & 0xff);
+			var sb = ((sourcePixel) & 0xff);
+
+			var dr = ((destinationPixel >> 16) & 0xff);
+			var dg = ((destinationPixel >> 8) & 0xff);
+			var db = ((destinationPixel) & 0xff);
+			var da = ((destinationPixel >> 24) & 0xff);
+
+			destinationPixel = ((sa + (((da * (255 - sa)) * 0x8081) >> 23)) << 24) |
+			   ((sr + (((dr * (255 - sa)) * 0x8081) >> 23)) << 16) |
+			   ((sg + (((dg * (255 - sa)) * 0x8081) >> 23)) << 8) |
+			   ((sb + (((db * (255 - sa)) * 0x8081) >> 23)));
+			return destinationPixel;
 		}
 	}
 }
