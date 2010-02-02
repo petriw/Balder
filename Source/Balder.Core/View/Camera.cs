@@ -121,7 +121,7 @@ namespace Balder.Core.View
 				viewport.AspectRatio,
 				Near,
 				Far);
-			var screenTranslationMatrix = Matrix.CreateScreenTranslation(viewport.Width, viewport.Height);
+			//var screenTranslationMatrix = Matrix.CreateScreenTranslation(viewport.Width, viewport.Height);
 			ProjectionMatrix = projectionMatrix; // *screenTranslationMatrix;
 		}
 

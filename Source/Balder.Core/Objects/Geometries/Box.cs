@@ -18,11 +18,88 @@
 //
 
 #endregion
+using Balder.Core.Execution;
+using Balder.Core.Math;
 
 namespace Balder.Core.Objects.Geometries
 {
 	public class Box : Geometry
 	{
-		
+		private bool _isLoaded = false;
+
+		public static Property<Box, Coordinate> DimensionProperty = Property<Box, Coordinate>.Register(p => p.Dimension);
+		public Coordinate Dimension
+		{
+			get { return DimensionProperty.GetValue(this); }
+			set
+			{
+				DimensionProperty.SetValue(this, value);
+				PrepareBox();
+			}
+		}
+
+
+		protected override void OnLoaded()
+		{
+			_isLoaded = true;
+			PrepareBox();
+			base.OnLoaded();
+		}
+
+
+		private void PrepareBox()
+		{
+			if (!_isLoaded)
+			{
+				return;
+			}
+
+			var dimensionAsVector = (Vector)Dimension;
+			var halfDimension = dimensionAsVector / 2f;
+
+			var frontUpperRight = new Vertex(-halfDimension.X, halfDimension.Y, -halfDimension.Z);
+			var frontUpperLeft = new Vertex(halfDimension.X, halfDimension.Y, -halfDimension.Z);
+			var frontLowerRight = new Vertex(-halfDimension.X, -halfDimension.Y, -halfDimension.Z);
+			var frontLowerLeft = new Vertex(halfDimension.X, -halfDimension.Y, -halfDimension.Z);
+
+			var backUpperRight = new Vertex(-halfDimension.X, halfDimension.Y, halfDimension.Z);
+			var backUpperLeft = new Vertex(halfDimension.X, halfDimension.Y, halfDimension.Z);
+			var backLowerRight = new Vertex(-halfDimension.X, -halfDimension.Y, halfDimension.Z);
+			var backLowerLeft = new Vertex(halfDimension.X, -halfDimension.Y, halfDimension.Z);
+
+			GeometryContext.AllocateVertices(8);
+			GeometryContext.SetVertex(0, frontUpperRight);
+			GeometryContext.SetVertex(1, frontUpperLeft);
+			GeometryContext.SetVertex(2, frontLowerRight);
+			GeometryContext.SetVertex(3, frontLowerLeft);
+
+			GeometryContext.SetVertex(4, backUpperRight);
+			GeometryContext.SetVertex(5, backUpperLeft);
+			GeometryContext.SetVertex(6, backLowerRight);
+			GeometryContext.SetVertex(7, backLowerLeft);
+
+			GeometryContext.AllocateFaces(12);
+
+			GeometryContext.SetFace(0, new Face(2, 1, 0) { Normal = Vector.Backward });
+			GeometryContext.SetFace(1, new Face(1, 2, 3) { Normal = Vector.Backward });
+
+			GeometryContext.SetFace(2, new Face(4, 5, 6) { Normal = Vector.Forward });
+			GeometryContext.SetFace(3, new Face(7, 6, 5) { Normal = Vector.Forward });
+
+			GeometryContext.SetFace(4, new Face(0, 4, 2) { Normal = Vector.Left });
+			GeometryContext.SetFace(5, new Face(6, 2, 4) { Normal = Vector.Left });
+
+			GeometryContext.SetFace(6, new Face(3, 5, 1) { Normal = Vector.Right });
+			GeometryContext.SetFace(7, new Face(5, 3, 7) { Normal = Vector.Right });
+
+			GeometryContext.SetFace(8, new Face(0, 1, 4) { Normal = Vector.Up });
+			GeometryContext.SetFace(9, new Face(5, 4, 1) { Normal = Vector.Up });
+
+			GeometryContext.SetFace(10, new Face(6, 3, 2) { Normal = Vector.Down });
+			GeometryContext.SetFace(11, new Face(3, 6, 7) { Normal = Vector.Down });
+
+
+			GeometryHelper.CalculateVertexNormals(GeometryContext);
+		}
 	}
 }

@@ -24,6 +24,83 @@ namespace Balder.Core.Objects.Geometries
 {
 	public static class GeometryHelper
 	{
+		public static void GeneratePlane(IGeometryContext context, int lengthSegments, int heightSegments, float width, float height, Vector lengthDirection, Vector heightDirection)
+		{
+			PrepareVertices(context, lengthSegments, heightSegments, width, height, lengthDirection, heightDirection);
+			PrepareFaces(context, lengthSegments, heightSegments);
+		}
+
+		private static void PrepareVertices(IGeometryContext context, int lengthSegments, int heightSegments, float width, float height, Vector lengthDirection, Vector heightDirection)
+		{
+			context.AllocateVertices(lengthSegments * heightSegments);
+
+			lengthDirection.Normalize();
+			heightDirection.Normalize();
+
+
+			var yStartVector = new Vector(0, 0, height/2);
+			yStartVector.MultiplyWith(-heightDirection);
+			var xStartVector = new Vector(width/2, 0, 0);
+			xStartVector.MultiplyWith(-lengthDirection);
+
+			var xStep = ((float)width) / (float)lengthSegments;
+			var yStep = ((float)height) / (float)heightSegments;
+
+			var uStep = ((float)1.0f) / (float)lengthSegments;
+			var vStep = ((float)1.0f) / (float)heightSegments;
+
+			var lengthStepVector = lengthDirection*xStep;
+			var heightStepVector = heightDirection*yStep;
+
+			var currentY = yStartVector;
+			var v = 0f;
+			var vertexIndex = 0;
+			for (var y = 0; y < heightSegments; y++)
+			{
+				var currentX = xStartVector+currentY;
+
+				var u = 0f;
+
+				for (var x = 0; x < lengthSegments; x++)
+				{
+					var vertex = new Vertex(currentX.X, currentX.Y, currentX.Z) { Normal = Vector.Up };
+					context.SetVertex(vertexIndex, vertex);
+					currentX += lengthStepVector;
+					u += uStep;
+					vertexIndex++;
+				}
+
+				currentY += heightStepVector;
+				v += vStep;
+			}
+		}
+
+		private static void PrepareFaces(IGeometryContext context, int lengthSegments, int heightSegments)
+		{
+			var faceCount = ((lengthSegments - 1) * 2) * (heightSegments - 1);
+			context.AllocateFaces(faceCount);
+			var faceIndex = 0;
+
+			for (var y = 0; y < heightSegments - 1; y++)
+			{
+				for (var x = 0; x < lengthSegments - 1; x++)
+				{
+					var offset = (y * lengthSegments) + x;
+					var offsetNextLine = offset + lengthSegments;
+					var face = new Face(offset, offset + 1, offsetNextLine);
+					face.Normal = Vector.Up;
+					context.SetFace(faceIndex, face);
+					face = new Face(offsetNextLine + 1, offsetNextLine, offset + 1);
+					face.Normal = Vector.Up;
+					context.SetFace(faceIndex + 1, face);
+					faceIndex += 2;
+				}
+			}
+		}
+
+
+
+
 		public static void CalculateVertexNormals(IGeometryContext context)
 		{
 			var vertexCount = new Dictionary<int, int>();

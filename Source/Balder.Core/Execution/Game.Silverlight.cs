@@ -50,6 +50,13 @@ namespace Balder.Core.Execution
 			RegisterGame();
 			AddNodesToScene();
 			InitializeMouse();
+			InitializeViewport();
+		}
+
+		private void InitializeViewport()
+		{
+			Viewport.Width = (int)Width;
+			Viewport.Height = (int)Height;
 		}
 
 		private void RegisterGame()

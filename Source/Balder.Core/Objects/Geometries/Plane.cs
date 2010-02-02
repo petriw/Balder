@@ -31,6 +31,12 @@ namespace Balder.Core.Objects.Geometries
 		public event EventHandler<PlaneHeightEventArgs> HeightInput;
 		private bool _isLoaded = false;
 
+		public Plane()
+		{
+			LengthSegments = 1;
+			HeightSegments = 1;
+		}
+
 		public static Property<Plane, int> LengthSegmentsProperty = Property<Plane, int>.Register(p => p.LengthSegments);
 		public int LengthSegments
 		{
@@ -82,18 +88,21 @@ namespace Balder.Core.Objects.Geometries
 					var offset = y*LengthSegments;
 					for( var x=0; x<LengthSegments; x++ )
 					{
-						
 						var vertex = vertices[offset + x];
 						var heightBefore = vertex.Vector.Y;
+						var colorBefore = vertex.Color;
+						EventArgs.Color = Color.Black;
 						EventArgs.ActualVertex = vertex;
 						EventArgs.GridX = x;
 						EventArgs.GridY = y;
 
 						HeightInput(this,EventArgs);
 
-						if( heightBefore != EventArgs.Height )
+						if( heightBefore != EventArgs.Height ||
+							!colorBefore.Equals(EventArgs.Color) )
 						{
 							vertex.Vector.Y = EventArgs.Height;
+							vertex.Color = EventArgs.Color;
 							GeometryContext.SetVertex(vertexIndex,vertex);
 						}
 
@@ -105,6 +114,12 @@ namespace Balder.Core.Objects.Geometries
 		}
 
 		public void SetHeightForPlanePoint(int gridX, int gridY, float height)
+		{
+			SetHeightForPlanePoint(gridX,gridY,height,Color.Black);
+		}
+
+
+		public void SetHeightForPlanePoint(int gridX, int gridY, float height, Color color)
 		{
 			if( gridX >= LengthSegments || gridY >= HeightSegments )
 			{
@@ -122,6 +137,7 @@ namespace Balder.Core.Objects.Geometries
 			var index = (gridY*LengthSegments)+gridX;
 
 			var vertex = new Vertex(xPos, height, zPos);
+			vertex.Color = color;
 			GeometryContext.SetVertex(index,vertex);
 		}
 
@@ -137,9 +153,6 @@ namespace Balder.Core.Objects.Geometries
 				throw new ArgumentException("LengthSegments and HeightSegments must be 1 or more");
 			}
 
-
-			GeometryContext.AllocateVertices(LengthSegments * HeightSegments);
-
 			PrepareVertices();
 			PrepareFaces();
 		}
@@ -147,6 +160,7 @@ namespace Balder.Core.Objects.Geometries
 
 		private void PrepareVertices()
 		{
+			GeometryContext.AllocateVertices(LengthSegments * HeightSegments);
 			var yStart = (float)-(Dimension.Height / 2);
 			var xStep = ((float)Dimension.Width) / (float)LengthSegments;
 			var yStep = ((float)Dimension.Height) / (float)HeightSegments;

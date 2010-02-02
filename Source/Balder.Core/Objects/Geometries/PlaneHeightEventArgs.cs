@@ -8,5 +8,6 @@ namespace Balder.Core.Objects.Geometries
 		public int GridX { get; set; }
 		public int GridY { get; set; }
 		public float Height { get; set; }
+		public Color Color { get; set; }
 	}
 }

@@ -42,6 +42,7 @@ namespace Balder.Core.Objects.Geometries
 		public Vector TranslatedScreenCoordinates;
 		public float DepthBufferAdjustedZ;
 		public Color Color;
+		public Color CalculatedColor;
 
 		public void Transform(Matrix matrix)
 		{
