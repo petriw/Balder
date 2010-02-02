@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.View.FollowObject.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core">
+	<Grid x:Name="LayoutRoot">
+
+		<Grid.Resources>
+			<Storyboard x:Key="TargetStoryboard">
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Target).(X)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Target).(Y)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Target).(Z)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+			</Storyboard>
+
+			<Storyboard x:Key="PositionStoryboard">
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Position).(X)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Position).(Y)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+				<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Camera.Position).(Z)" From="-40" To="40" Duration="00:00:02">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase/>
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+			</Storyboard>
+
+		</Grid.Resources>
+
+
+
+		<Execution:Game x:Name="Game"  Width="640" Height="480" Update="GameUpdate">
+			<Execution:Game.Camera>
+				<View:Camera x:Name="Camera" Position="0,20,-200"/>
+			</Execution:Game.Camera>
+
+			<Lighting:OmniLight Position="0,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
+
+			<Geometries:Box x:Name="RedBox" Color="Red" Dimension="20,20,20" Position="-30,0,0"/>
+			<Geometries:Box x:Name="GreenBox" Color="Green" Dimension="20,20,20" Position="0,40,60"/>
+			<Geometries:Box x:Name="BlueBox" Color="Blue" Dimension="20,20,20" Position="30,0,0"/>
+		</Execution:Game>
+
+		<StackPanel Orientation="Vertical">
+			<Button Content="Reset" Click="Reset" Width="40"/>
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+				<Button Content="Position from Red" Click="RedPosition"/>
+				<Button Content="Position from Green" Click="GreenPosition"/>
+				<Button Content="Position from Blue" Click="BluePosition"/>
+				<Button Content="Position Left" Click="LeftPosition"/>
+				<Button Content="Position Right" Click="RightPosition"/>
+				<Button Content="Position Front" Click="FrontPosition"/>
+				<Button Content="Position Back" Click="BackPosition"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+				<Button Content="Look at Red" Click="RedTarget"/>
+				<Button Content="Look at Green" Click="GreenTarget"/>
+				<Button Content="Look at Blue" Click="BlueTarget"/>
+				<Button Content="Look at Left" Click="LeftTarget"/>
+				<Button Content="Look at Right" Click="RightTarget"/>
+				<Button Content="Look at Front" Click="FrontTarget"/>
+				<Button Content="Look at Back" Click="BackTarget"/>
+			</StackPanel>
+			
+			<TextBlock x:Name="CameraInfo" FontFamily="Verdana" FontSize="18" Foreground="Black"/>
+		</StackPanel>
+	</Grid>
+</UserControl>

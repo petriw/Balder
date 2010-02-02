@@ -17,7 +17,6 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap
 			InitializeComponent();
 		}
 
-
 		private double _sin;
 		private double _movement;
 

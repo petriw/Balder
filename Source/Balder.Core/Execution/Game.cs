@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
 using Balder.Core.Debug;
 using Balder.Core.Display;
 using Balder.Core.Math;
@@ -25,6 +27,9 @@ namespace Balder.Core.Execution
 {
 	public partial class Game : Actor
 	{
+		private static readonly EventArgs DefaultEventArgs = new EventArgs();
+		public event EventHandler Update = (s, e) => { };
+
 		public Game()
 		{
 			Scene = new Scene();
@@ -52,6 +57,11 @@ namespace Balder.Core.Execution
 				MouseManager.HandleButtonSignals(Mouse);
 				MouseManager.HandlePosition(Mouse);
 			}
+		}
+
+		public override void OnUpdate()
+		{
+			Update(this, DefaultEventArgs);
 		}
 
 		public virtual void OnRender()

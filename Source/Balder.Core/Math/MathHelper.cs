@@ -120,6 +120,7 @@ namespace Balder.Core.Math
 
 		public static float Sqrt(float value)
 		{
+			return (float)System.Math.Sqrt(value);
 			var result = 1f/InvSqrt(value);
 			return result;
 		}

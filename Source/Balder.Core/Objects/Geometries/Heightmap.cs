@@ -113,13 +113,13 @@ namespace Balder.Core.Objects.Geometries
 			base.PrepareForRendering(viewport, view, projection, world);
 		}
 
-		public void SetHeightForPlanePoint(int gridX, int gridY, float height)
+		public void SetHeightForGridPoint(int gridX, int gridY, float height)
 		{
-			SetHeightForPlanePoint(gridX,gridY,height,Color.Black);
+			SetHeightForGridPoint(gridX,gridY,height,Color.Black);
 		}
 
 
-		public void SetHeightForPlanePoint(int gridX, int gridY, float height, Color color)
+		public void SetHeightForGridPoint(int gridX, int gridY, float height, Color color)
 		{
 			if( gridX >= LengthSegments || gridY >= HeightSegments )
 			{

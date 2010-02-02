@@ -13,7 +13,7 @@
 				<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/View/CameraManipulation/Assets/plane.ase"/>
 				<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/View/CameraManipulation/Assets/box.ase"/>
 				<Execution:Game.Camera>
-					<View:Camera Position="0,100,-340"/>
+					<View:Camera x:Name="Camera" Position="0,100,-340"/>
 				</Execution:Game.Camera>
 			</Execution:Game>
 
@@ -30,7 +30,7 @@
 				</Grid.RowDefinitions>
 				
 				<TextBlock Text="X Axis" Grid.Row="0" Grid.Column="0"/>
-				<Slider x:Name="_xSlider" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="360" Value="200" ValueChanged="Slider_ValueChanged"/>
+				<Slider x:Name="_xSlider" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="360" ValueChanged="Slider_ValueChanged"/>
 				<TextBlock Text="{Binding Path=Value, ElementName=_xSlider, Mode=OneWay}" Grid.Row="0" Grid.Column="2"/>
 
 				<TextBlock Text="Y Axis" Grid.Row="1" Grid.Column="0"/>

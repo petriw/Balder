@@ -1,4 +1,5 @@
-﻿using Balder.Core.Execution;
+﻿using System;
+using Balder.Core.Execution;
 
 namespace Balder.Core.Math
 {
@@ -86,5 +87,54 @@ namespace Balder.Core.Math
 			Vector v2 = c2;
 			return v1 - v2;
 		}
+
+
+		public override string ToString()
+		{
+			return ToString(null, null);
+		}
+
+		public string ToString(string format, IFormatProvider formatProvider)
+		{
+			// If no format is passed
+			if (string.IsNullOrEmpty(format))
+			{
+				return string.Format("({0}, {1}, {2})", X, Y, Z);
+			}
+
+			var firstChar = format[0];
+			string remainder = null;
+
+			if (format.Length > 1)
+			{
+				remainder = format.Substring(1);
+			}
+
+			switch (firstChar)
+			{
+				case 'x':
+					{
+						return X.ToString(remainder, formatProvider);
+					}
+				case 'y':
+					{
+						return Y.ToString(remainder, formatProvider);
+					}
+				case 'z':
+					{
+						return Z.ToString(remainder, formatProvider);
+					}
+				default:
+					return string.Format
+						(
+							"({0}, {1}, {2})",
+							X.ToString(format, formatProvider),
+							Y.ToString(format, formatProvider),
+							Z.ToString(format, formatProvider)
+						);
+			}
+		}
+
+
 	}
 }

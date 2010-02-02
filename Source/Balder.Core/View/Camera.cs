@@ -35,7 +35,7 @@ namespace Balder.Core.View
 		{
 			Position = new Coordinate(0f, 0f, 0f);
 			Target = new Coordinate(0f, 0f, -1f);
-			Up = new Vector(0f, 1f, 0f);
+			Up = Vector.Up;
 			Near = DefaultNear;
 			Far = DefaultFar;
 			FieldOfView = DefaultFieldOfView;
