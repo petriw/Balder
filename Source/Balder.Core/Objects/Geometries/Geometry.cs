@@ -19,6 +19,7 @@
 using Balder.Core.Assets;
 using Balder.Core.Display;
 using Balder.Core.Execution;
+using Balder.Core.Materials;
 using Balder.Core.Math;
 
 namespace Balder.Core.Objects.Geometries
@@ -27,21 +28,23 @@ namespace Balder.Core.Objects.Geometries
 	{
 		public IGeometryContext GeometryContext { get; private set; }
 
+		private bool _materialSet = false;
+
 		public Geometry()
 		{
 			// Todo : This should not be necessary.
-			if( ObjectFactory.IsObjectFactoryInitialized )
+			if (ObjectFactory.IsObjectFactoryInitialized)
 			{
-				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();	
+				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
 			}
 		}
 
 		protected override void OnInitialize()
 		{
 			// Todo : This should not be necessary.
-			if( null == GeometryContext )
+			if (null == GeometryContext)
 			{
-				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();	
+				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
 			}
 			
 			base.OnInitialize();
@@ -84,18 +87,46 @@ namespace Balder.Core.Objects.Geometries
 			var length = highestVector - lowestVector;
 			var center = lowestVector + (length / 2);
 
-			BoundingSphere = new BoundingSphere(center, length.Length/2);
+			BoundingSphere = new BoundingSphere(center, length.Length / 2);
 		}
+
 
 		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
+			if( null != Material && !_materialSet )
+			{
+				GeometryContext.SetMaterialForAllFaces(Material);
+
+				foreach( var child in Children )
+				{
+					if( child is Geometry )
+					{
+						((Geometry) child).Material = Material;
+					}
+				}
+
+
+				_materialSet = true;
+			}
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 
 		public override void CopyFrom(Node source)
 		{
-			GeometryContext = ((Geometry) source).GeometryContext;
+			GeometryContext = ((Geometry)source).GeometryContext;
 			base.CopyFrom(source);
+		}
+
+
+		public Property<Geometry, Material> MaterialProperty = Property<Geometry, Material>.Register(g => g.Material);
+		public Material Material
+		{
+			get { return MaterialProperty.GetValue(this); }
+			set
+			{
+				MaterialProperty.SetValue(this, value);
+				_materialSet = false;
+			}
 		}
 
 

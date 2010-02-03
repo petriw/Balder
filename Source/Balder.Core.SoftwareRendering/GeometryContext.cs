@@ -23,18 +23,19 @@ using Balder.Core.Materials;
 using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
 using Balder.Core.SoftwareRendering.Rendering;
-using Matrix=Balder.Core.Math.Matrix;
+using Matrix = Balder.Core.Math.Matrix;
 
 namespace Balder.Core.SoftwareRendering
 {
 	public class GeometryContext : IGeometryContext
 	{
-		private static readonly FlatTriangle	FlatTriangleRenderer = new FlatTriangle();
+		private static readonly FlatTriangle FlatTriangleRenderer = new FlatTriangle();
 		private static readonly FlatTriangleAdditive FlatTriangleAdditiveRenderer = new FlatTriangleAdditive();
 		private static readonly GouraudTriangle GouraudTriangleRenderer = new GouraudTriangle();
-
-
+		private static readonly TextureTriangle TextureTriangleRenderer = new TextureTriangle();
 		private readonly IColorCalculator _colorCalculator;
+
+		private bool _hasPrepared;
 
 		public GeometryContext(IColorCalculator colorCalculator)
 		{
@@ -85,6 +86,19 @@ namespace Balder.Core.SoftwareRendering
 			Faces[index].Material = material;
 		}
 
+		public void SetMaterialForAllFaces(Material material)
+		{
+			if (null == Faces)
+			{
+				return;
+			}
+
+			for (var index = 0; index < Faces.Length; index++)
+			{
+				Faces[index].Material = material;
+			}
+		}
+
 		public Face[] GetFaces()
 		{
 			return Faces;
@@ -130,57 +144,36 @@ namespace Balder.Core.SoftwareRendering
 			TextureCoordinates[index] = textureCoordinate;
 		}
 
-		public void Prepare()
+		private void Prepare()
 		{
-			var vertexCount = new Dictionary<Vertex, int>();
-			var vertexNormal = new Dictionary<Vertex, Vector>();
-
-			Func<Vertex, Vector, int> AddNormal =
-				delegate(Vertex vertex, Vector normal)
+			if (null != TextureCoordinates)
+			{
+				for (var index = 0; index < Faces.Length; index++)
 				{
-					if (!vertexNormal.ContainsKey(vertex))
-					{
-						vertexNormal[vertex] = normal;
-						vertexCount[vertex] = 1;
-					}
-					else
-					{
-						vertexNormal[vertex] += normal;
-						vertexCount[vertex]++;
-					}
-					return 0;
-				};
-
-			foreach (var face in Faces)
-			{
-				AddNormal(Vertices[face.A], face.Normal);
-				AddNormal(Vertices[face.B], face.Normal);
-				AddNormal(Vertices[face.C], face.Normal);
+					Faces[index].DiffuseTextureCoordinateA = TextureCoordinates[Faces[index].DiffuseA];
+					Faces[index].DiffuseTextureCoordinateB = TextureCoordinates[Faces[index].DiffuseB];
+					Faces[index].DiffuseTextureCoordinateC = TextureCoordinates[Faces[index].DiffuseC];
+				}
 			}
-
-			/*
-			foreach (var vertex in vertexNormal.Keys)
-			{
-				var addedNormals = vertexNormal[vertex];
-				var count = vertexCount[vertex];
-
-				var normal = new Vector(addedNormals.X / count,
-											addedNormals.Y / count,
-											addedNormals.Z / count);
-
-				
-
-				vertex.Normal = normal;
-			}
-			 * */
 		}
 
 		private static ISpanRenderer SpanRenderer = new SimpleSpanRenderer();
 
 		public void Render(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
-			TransformAndTranslateVertices(viewport, node,view,projection,world);
-			
+			if (null == Vertices || null == Faces)
+			{
+				return;
+			}
+			if (!_hasPrepared)
+			{
+				Prepare();
+				_hasPrepared = false;
+			}
+
+
+			TransformAndTranslateVertices(viewport, node, view, projection, world);
+
 			RenderFaces(node, viewport, view, projection, world);
 			RenderLines(node, viewport, view, projection, world);
 		}
@@ -192,7 +185,7 @@ namespace Balder.Core.SoftwareRendering
 			vertex.MakeScreenCoordinates();
 			vertex.TransformedVectorNormalized = vertex.TransformedNormal;
 			vertex.TransformedVectorNormalized.Normalize();
-			var z = ((vertex.TransformedVector.Z/viewport.View.DepthDivisor) + viewport.View.DepthZero);
+			var z = ((vertex.TransformedVector.Z / viewport.View.DepthDivisor) + viewport.View.DepthZero);
 			vertex.DepthBufferAdjustedZ = z;
 		}
 
@@ -216,7 +209,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			if( null == Faces )
+			if (null == Faces)
 			{
 				return;
 			}
@@ -241,26 +234,51 @@ namespace Balder.Core.SoftwareRendering
 					continue;
 				}
 
-				//face.Color = a.Color.Average(b.Color.Average(c.Color));
+				if (null != face.Material)
+				{
+					switch (face.Material.Shade)
+					{
+						case MaterialShade.None:
+							{
+								face.Color = node.Color;
+								if( null == face.Material.DiffuseMap )
+								{
+									FlatTriangleRenderer.Draw(face, Vertices);	 
+								} else
+								{
+									TextureTriangleRenderer.Draw(face,Vertices);
+								}
+							}
+							break;
 
-				//face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
-				//face.Color = a.Color;
-				
-				//FlatTriangleAdditiveRenderer.Draw(face,Vertices);
+						case MaterialShade.Flat:
+							{
+								face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
+								FlatTriangleRenderer.Draw(face, Vertices);
+							}
+							break;
 
-				GouraudTriangleRenderer.Draw(face, Vertices);
-
-				//Triangle.Draw(SpanRenderer, TriangleShade.Gouraud, face, Vertices, TextureCoordinates);
+						case MaterialShade.Gouraud:
+							{
+								GouraudTriangleRenderer.Draw(face, Vertices);
+							}
+							break;
+					}
+				}
+				else
+				{
+					GouraudTriangleRenderer.Draw(face, Vertices);
+				}
 			}
 		}
 
 		private void RenderLines(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			if( null == Lines )
+			if (null == Lines)
 			{
 				return;
 			}
-			for( var lineIndex=0; lineIndex< Lines.Length; lineIndex++)
+			for (var lineIndex = 0; lineIndex < Lines.Length; lineIndex++)
 			{
 				var line = Lines[lineIndex];
 				var a = Vertices[line.A];
@@ -270,9 +288,9 @@ namespace Balder.Core.SoftwareRendering
 				var xend = b.TranslatedScreenCoordinates.X;
 				var yend = b.TranslatedScreenCoordinates.Y;
 				Shapes.DrawLine(viewport,
-								(int)xstart, 
-								(int)ystart, 
-								(int)xend, 
+								(int)xstart,
+								(int)ystart,
+								(int)xend,
 								(int)yend, line.Color);
 			}
 		}

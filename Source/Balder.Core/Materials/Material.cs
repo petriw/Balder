@@ -16,18 +16,44 @@
 // limitations under the License.
 //
 #endregion
+
+using Balder.Core.Execution;
 using Balder.Core.Imaging;
 
 namespace Balder.Core.Materials
 {
-	public class Material
+	public partial class Material
 	{
-		public Color Ambient;
-		public Color Diffuse;
-		public Color Specular;
-		public float Shine;
-		public float ShineStrength;
+		public Material()
+		{
+			Shade = MaterialShade.None;
+		}
 
-		public Image DiffuseMap;
+
+		public Color Ambient { get; set; }
+		public Color Diffuse { get; set; }
+		public Color Specular { get; set; }
+		public float Shine { get; set; }
+		public float ShineStrength { get; set; }
+
+		public MaterialShade Shade { get; set; }
+
+		public bool DoubleSided { get; set; }
+
+		public static readonly Property<Material, Image> DiffuseMapProperty =
+			Property<Material, Image>.Register(m => m.DiffuseMap);
+		public Image DiffuseMap
+		{
+			get { return DiffuseMapProperty.GetValue(this); }
+			set { DiffuseMapProperty.SetValue(this, value); }
+		}
+
+		public static readonly Property<Material, Image> ReflectionMapProperty =
+			Property<Material, Image>.Register(m => m.ReflectionMap);
+		public Image ReflectionMap
+		{
+			get { return ReflectionMapProperty.GetValue(this); }
+			set { ReflectionMapProperty.SetValue(this, value); }
+		}
 	}
 }

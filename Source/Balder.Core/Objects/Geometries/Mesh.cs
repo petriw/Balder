@@ -22,7 +22,7 @@ using Ninject.Core;
 
 namespace Balder.Core.Objects.Geometries
 {
-	public partial class Mesh : RenderableNode, IAsset
+	public partial class Mesh : Geometry, IAsset
 	{
 		[Inject]
 		public IAssetLoaderService AssetLoaderService { get; set; }

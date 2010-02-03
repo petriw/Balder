@@ -98,6 +98,7 @@
     <Compile Include="Rendering\GouraudTriangle.cs" />
     <Compile Include="Rendering\RenderedSpan.cs" />
     <Compile Include="Rendering\Scanline.cs" />
+    <Compile Include="Rendering\TextureTriangle.cs" />
     <Compile Include="Rendering\Triangle.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

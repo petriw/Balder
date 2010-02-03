@@ -44,6 +44,10 @@ namespace Balder.Core.Objects.Geometries
 		public int DiffuseB;
 		public int DiffuseC;
 
+		public TextureCoordinate DiffuseTextureCoordinateA;
+		public TextureCoordinate DiffuseTextureCoordinateB;
+		public TextureCoordinate DiffuseTextureCoordinateC;
+
 		public int SmoothingGroupA;
 		public int SmoothingGroupB;
 		public int SmoothingGroupC;

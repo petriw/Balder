@@ -44,6 +44,8 @@ namespace Balder.Core.Objects.Geometries
 		public Color Color;
 		public Color CalculatedColor;
 
+		public TextureCoordinate TextureCoordinate;
+
 		public void Transform(Matrix matrix)
 		{
 			TransformedVector = Vector.Transform(Vector, matrix);

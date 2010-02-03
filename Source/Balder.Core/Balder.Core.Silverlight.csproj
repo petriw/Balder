@@ -144,6 +144,8 @@
     <Compile Include="Input\MouseButtonState.cs" />
     <Compile Include="Input\MouseManager.cs" />
     <Compile Include="Lighting\Light.Silverlight.cs" />
+    <Compile Include="Materials\Material.Silverlight.cs" />
+    <Compile Include="Materials\MaterialShade.cs" />
     <Compile Include="Math\BoundingBox.cs" />
     <Compile Include="Math\BoundingFrustum.cs" />
     <Compile Include="Math\BoundingSphere.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="TypeConverters\ColorConverter.cs" />
     <Compile Include="TypeConverters\CoordinateTypeConverter.cs" />
     <Compile Include="TypeConverters\DimensionTypeConverter.cs" />
+    <Compile Include="TypeConverters\UriToImageTypeConverter.cs" />
     <Compile Include="Utils\Cloner.cs" />
     <Compile Include="Utils\NInjectExtensions.cs" />
     <Compile Include="Execution\ObjectFactory.cs" />

@@ -17,29 +17,12 @@
 //
 #endregion
 
-using System.ComponentModel;
-using Balder.Core.Assets;
-using Balder.Core.TypeConverters;
-using Ninject.Core;
+using System.Windows;
 
-namespace Balder.Core.Imaging
+namespace Balder.Core.Materials
 {
-	[TypeConverter(typeof(UriToImageTypeConverter))]
-	public class Image : IAsset, IAssetPart
+	public partial class Material : FrameworkElement
 	{
-		[Inject]
-		public IAssetLoaderService AssetLoaderService { get; set; }
 
-		[Inject]
-		public IImageContext ImageContext { get; set; }
-
-		public int Width { get; set; }
-		public int Height { get; set; }
-
-		public string Name { get; set; }
-
-		public void Load(string assetName)
-		{
-		}
 	}
 }

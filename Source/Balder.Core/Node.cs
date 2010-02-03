@@ -31,6 +31,7 @@ namespace Balder.Core
 	/// </summary>
 	public abstract partial class Node : IAmCopyable<Node>
 	{
+		private static readonly Random Rnd = new Random();
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
 		public event EventHandler Click = (s, e) => { };
@@ -40,10 +41,20 @@ namespace Balder.Core
 		protected Node()
 		{
 			InitializeTransform();
+			InitializeColor();
 			Initialize();
 		}
 
 		partial void Initialize();
+
+		private void InitializeColor()
+		{
+			var red = (byte)Rnd.Next();
+			var green = (byte)Rnd.Next();
+			var blue = (byte)Rnd.Next();
+			Color = new Color(red, green, blue, 0xff);
+		}
+
 
 		private void InitializeTransform()
 		{
@@ -56,7 +67,7 @@ namespace Balder.Core
 			PrepareWorld();
 		}
 
-		
+
 		public static readonly Property<Node, bool> IsVisibleProp = Property<Node, bool>.Register(n => n.IsVisible);
 		public bool IsVisible
 		{
@@ -94,7 +105,7 @@ namespace Balder.Core
 			}
 		}
 
-		
+
 		public static readonly Property<Node, Coordinate> ScaleProp =
 			Property<Node, Coordinate>.Register(t => t.Scale);
 
@@ -158,7 +169,7 @@ namespace Balder.Core
 
 		private void PrepareWorld()
 		{
-			if( _isInitializingTransform )
+			if (_isInitializingTransform)
 			{
 				return;
 			}
@@ -188,7 +199,7 @@ namespace Balder.Core
 
 		protected void SetColorForChildren()
 		{
-			foreach( var node in Children )
+			foreach (var node in Children)
 			{
 				node.Color = Color;
 			}

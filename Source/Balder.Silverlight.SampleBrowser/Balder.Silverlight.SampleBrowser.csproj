@@ -156,6 +156,9 @@
     <Compile Include="Samples\Data\NodesControl\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Materials\MaterialPicker\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Primitives\Box\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -221,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
+    <Page Include="Samples\Materials\MaterialPicker\Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
     <Page Include="Samples\Primitives\Box\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
@@ -256,6 +263,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+    <Resource Include="Samples\Materials\MaterialPicker\Assets\teapot.ASE" />
     <Resource Include="Samples\Data\NodesStack\Assets\box.ASE" />
     <Resource Include="Samples\Data\NodesControl\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\box.ASE" />
@@ -301,6 +309,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Samples\Primitives\Sprites\Assets\sun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Materials\MaterialPicker\Assets\ReflectionMap.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

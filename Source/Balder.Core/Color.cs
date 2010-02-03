@@ -30,6 +30,15 @@ namespace Balder.Core
 		public static Color Black = FromArgb(0xff, 0, 0, 0);
 		public static Color White = FromArgb(0xff, 0xff, 0xff, 0xff);
 
+		public Color(byte red, byte green, byte blue, byte alpha) : this()
+		{
+			Red = red;
+			Green = green;
+			Blue = blue;
+			Alpha = alpha;
+		}
+
+
 
 		private byte _red;
 		public byte Red

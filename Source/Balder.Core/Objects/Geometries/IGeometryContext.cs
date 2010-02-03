@@ -47,9 +47,8 @@ namespace Balder.Core.Objects.Geometries
 
 		void SetMaterial(int index, Material material);
 
-		void Prepare();
+		void SetMaterialForAllFaces(Material material);
 
 		void Render(Viewport viewport, RenderableNode geometry, Matrix view, Matrix projection, Matrix world);
-		
 	}
 }

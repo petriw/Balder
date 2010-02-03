@@ -27,7 +27,6 @@ namespace Balder.Core.SoftwareRendering.Rendering
 	{
 		protected override void DrawSpan(int length, float zStart, float zAdd, uint[] depthBuffer, int offset, int[] framebuffer, int colorAsInt)
 		{
-			int existingPixel;
 			for (var x = 0; x <= length; x++)
 			{
 				var bufferZ = (UInt32)((1.0f - zStart) * (float)UInt32.MaxValue);
@@ -35,7 +34,6 @@ namespace Balder.Core.SoftwareRendering.Rendering
 					zStart < 1f
 					)
 				{
-					existingPixel = framebuffer[offset];
 					framebuffer[offset] = colorAsInt;
 					depthBuffer[offset] = bufferZ;
 				}
@@ -43,7 +41,6 @@ namespace Balder.Core.SoftwareRendering.Rendering
 				offset++;
 				zStart += zAdd;
 			}
-			
 		}
 	}
 }
