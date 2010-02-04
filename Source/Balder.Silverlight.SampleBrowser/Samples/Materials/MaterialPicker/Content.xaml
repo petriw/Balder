@@ -6,12 +6,20 @@
     xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
     xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core">
-    <Grid x:Name="LayoutRoot">
+	
+	<UserControl.Resources>
+		<Materials:Material x:Key="FlatMaterial" Shade="Flat"/>
+		<Materials:Material x:Key="GouraudMaterial" Shade="Gouraud"/>
+		<Materials:Material x:Key="TexturedMaterial" DiffuseMap="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/ReflectionMap.jpg"/>
+		<Materials:Material x:Key="ReflectionMaterial" ReflectionMap="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/ReflectionMap.jpg"/>
+	</UserControl.Resources>
+	
+	<Grid x:Name="LayoutRoot">
 		<Grid.Triggers>
 			<EventTrigger RoutedEvent="Grid.Loaded">
 				<BeginStoryboard>
 					<Storyboard RepeatBehavior="Forever">
-						<DoubleAnimation Storyboard.TargetName="Teapot" Storyboard.TargetProperty="(Node.Rotation).(Y)" From="0" To="359" Duration="00:00:05"/>
+						<DoubleAnimation Storyboard.TargetName="GeometryContainer" Storyboard.TargetProperty="(Node.Rotation).(Y)" From="0" To="359" Duration="00:00:05"/>
 					</Storyboard>
 				</BeginStoryboard>
 
@@ -23,13 +31,50 @@
 				<View:Camera x:Name="Camera" Position="0,60,-200"/>
 			</Execution:Game.Camera>
 
-			<Lighting:OmniLight Position="0,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
-			<Geometries:Mesh x:Name="Teapot" AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase">
-				<Geometries:Mesh.Material>
-					<Materials:Material DiffuseMap="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/ReflectionMap.jpg"/>
-				</Geometries:Mesh.Material>
-			</Geometries:Mesh>
+			<Lighting:OmniLight Position="0,400,0" Ambient="Grey" Diffuse="Grey" Specular="White"/>
+			
+			<Geometries:Geometry x:Name="GeometryContainer">
+				<Geometries:Mesh x:Name="Teapot" Color="Red"  AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase" IsVisible="True"/>
+				
+				<Geometries:Box x:Name="Box" Dimension="40,40,40" Color="Red" IsVisible="False"/>
+			</Geometries:Geometry>
 		</Execution:Game>
 
-    </Grid>
+		<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="120"/>
+				<ColumnDefinition Width="120"/>
+			</Grid.ColumnDefinitions>
+			
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+			</Grid.RowDefinitions>
+			
+			<TextBlock Text="Object type" Grid.Column="0" Grid.Row="0"/>
+			<ComboBox x:Name="ObjectComboBox" Grid.Column="1" Grid.Row="0" SelectedIndex="0" SelectionChanged="ObjecTypeChanged">
+				<ComboBoxItem Content="Teapot"/>
+				<ComboBoxItem Content="Box"/>
+			</ComboBox>
+
+			<TextBlock Text="Material type" Grid.Column="0" Grid.Row="1"/>
+			<ComboBox x:Name="MaterialComboBox" Grid.Column="1" Grid.Row="1" SelectedIndex="0" SelectionChanged="MaterialTypeChanged">
+				<ComboBoxItem Content="Flat Shaded"/>
+				<ComboBoxItem Content="Gouraud Shaded"/>
+				<ComboBoxItem Content="Textured"/>
+				<ComboBoxItem Content="Reflection mapped"/>
+			</ComboBox>
+
+			<TextBlock Text="Texture" Grid.Column="0" Grid.Row="2"/>
+			<ComboBox x:Name="TextureComboBox" Grid.Column="1" Grid.Row="2" SelectedIndex="0" SelectionChanged="TextureChanged">
+				<ComboBoxItem Content="ReflectionMap"/>
+				<ComboBoxItem Content="Visual Studio"/>
+				<ComboBoxItem Content="Balder Logo"/>
+			</ComboBox>
+
+
+		</Grid>
+
+	</Grid>
 </UserControl>

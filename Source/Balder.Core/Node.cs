@@ -40,6 +40,7 @@ namespace Balder.Core
 
 		protected Node()
 		{
+			IsVisible = true;
 			InitializeTransform();
 			InitializeColor();
 			Initialize();
@@ -49,9 +50,9 @@ namespace Balder.Core
 
 		private void InitializeColor()
 		{
-			var red = (byte)Rnd.Next();
-			var green = (byte)Rnd.Next();
-			var blue = (byte)Rnd.Next();
+			var red = (byte)Rnd.Next(0,64);
+			var green = (byte)Rnd.Next(0, 64);
+			var blue = (byte)Rnd.Next(0, 64);
 			Color = new Color(red, green, blue, 0xff);
 		}
 

@@ -146,7 +146,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void Prepare()
 		{
-			if (null != TextureCoordinates)
+			if (null != TextureCoordinates && TextureCoordinates.Length > 0)
 			{
 				for (var index = 0; index < Faces.Length; index++)
 				{
@@ -204,7 +204,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
-			vertex.CalculatedColor = vertex.Color.Additive(_colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.Normal, node.Color));
+			vertex.CalculatedColor = vertex.Color.Additive(_colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.TransformedNormal, node.Color));
 		}
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -241,12 +241,12 @@ namespace Balder.Core.SoftwareRendering
 						case MaterialShade.None:
 							{
 								face.Color = node.Color;
-								if( null == face.Material.DiffuseMap )
+								if( null != face.Material.DiffuseMap || null != face.Material.ReflectionMap )
 								{
-									FlatTriangleRenderer.Draw(face, Vertices);	 
+									TextureTriangleRenderer.Draw(face, Vertices);
 								} else
 								{
-									TextureTriangleRenderer.Draw(face,Vertices);
+									FlatTriangleRenderer.Draw(face, Vertices);	 
 								}
 							}
 							break;

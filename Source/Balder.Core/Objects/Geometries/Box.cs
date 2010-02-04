@@ -78,25 +78,31 @@ namespace Balder.Core.Objects.Geometries
 			GeometryContext.SetVertex(6, backLowerRight);
 			GeometryContext.SetVertex(7, backLowerLeft);
 
+			GeometryContext.AllocateTextureCoordinates(4);
+			GeometryContext.SetTextureCoordinate(0, new TextureCoordinate(0f, 0f));
+			GeometryContext.SetTextureCoordinate(1, new TextureCoordinate(1f, 0f));
+			GeometryContext.SetTextureCoordinate(2, new TextureCoordinate(0f, 1f));
+			GeometryContext.SetTextureCoordinate(3, new TextureCoordinate(1f, 1f));
+
 			GeometryContext.AllocateFaces(12);
 
-			GeometryContext.SetFace(0, new Face(2, 1, 0) { Normal = Vector.Backward });
-			GeometryContext.SetFace(1, new Face(1, 2, 3) { Normal = Vector.Backward });
+			GeometryContext.SetFace(0, new Face(2, 1, 0) { Normal = Vector.Backward, DiffuseA = 2, DiffuseB = 1, DiffuseC = 0});
+			GeometryContext.SetFace(1, new Face(1, 2, 3) { Normal = Vector.Backward, DiffuseA = 1, DiffuseB = 2, DiffuseC = 3});
 
-			GeometryContext.SetFace(2, new Face(4, 5, 6) { Normal = Vector.Forward });
-			GeometryContext.SetFace(3, new Face(7, 6, 5) { Normal = Vector.Forward });
+			GeometryContext.SetFace(2, new Face(4, 5, 6) { Normal = Vector.Forward, DiffuseA = 0, DiffuseB = 1, DiffuseC = 2 });
+			GeometryContext.SetFace(3, new Face(7, 6, 5) { Normal = Vector.Forward, DiffuseA = 3, DiffuseB = 2, DiffuseC = 1 });
 
-			GeometryContext.SetFace(4, new Face(0, 4, 2) { Normal = Vector.Left });
-			GeometryContext.SetFace(5, new Face(6, 2, 4) { Normal = Vector.Left });
+			GeometryContext.SetFace(4, new Face(0, 4, 2) { Normal = Vector.Left, DiffuseA = 0, DiffuseB = 1, DiffuseC = 2 });
+			GeometryContext.SetFace(5, new Face(6, 2, 4) { Normal = Vector.Left, DiffuseA = 3, DiffuseB = 2, DiffuseC = 1 });
 
-			GeometryContext.SetFace(6, new Face(3, 5, 1) { Normal = Vector.Right });
-			GeometryContext.SetFace(7, new Face(5, 3, 7) { Normal = Vector.Right });
+			GeometryContext.SetFace(6, new Face(3, 5, 1) { Normal = Vector.Right, DiffuseA = 2, DiffuseB = 1, DiffuseC = 0 });
+			GeometryContext.SetFace(7, new Face(5, 3, 7) { Normal = Vector.Right, DiffuseA = 1, DiffuseB = 2, DiffuseC = 3 });
 
-			GeometryContext.SetFace(8, new Face(0, 1, 4) { Normal = Vector.Up });
-			GeometryContext.SetFace(9, new Face(5, 4, 1) { Normal = Vector.Up });
+			GeometryContext.SetFace(8, new Face(0, 1, 4) { Normal = Vector.Up, DiffuseA = 0, DiffuseB = 1, DiffuseC = 2 });
+			GeometryContext.SetFace(9, new Face(5, 4, 1) { Normal = Vector.Up, DiffuseA = 3, DiffuseB = 2, DiffuseC = 1 });
 
-			GeometryContext.SetFace(10, new Face(6, 3, 2) { Normal = Vector.Down });
-			GeometryContext.SetFace(11, new Face(3, 6, 7) { Normal = Vector.Down });
+			GeometryContext.SetFace(10, new Face(6, 3, 2) { Normal = Vector.Down, DiffuseA = 2, DiffuseB = 1, DiffuseC = 0 });
+			GeometryContext.SetFace(11, new Face(3, 6, 7) { Normal = Vector.Down, DiffuseA = 1, DiffuseB = 2, DiffuseC = 3 });
 
 
 			GeometryHelper.CalculateVertexNormals(GeometryContext);

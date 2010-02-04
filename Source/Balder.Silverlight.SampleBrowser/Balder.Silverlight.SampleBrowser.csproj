@@ -314,6 +314,10 @@
     <Resource Include="Samples\Materials\MaterialPicker\Assets\ReflectionMap.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Samples\Materials\MaterialPicker\Assets\BalderLogo.png" />
+    <Resource Include="Samples\Materials\MaterialPicker\Assets\VisualStudio.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />

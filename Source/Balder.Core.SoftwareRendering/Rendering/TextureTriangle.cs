@@ -21,12 +21,26 @@
 
 using System;
 using Balder.Core.Imaging;
+using Balder.Core.Math;
 using Balder.Core.Objects.Geometries;
 
 namespace Balder.Core.SoftwareRendering.Rendering
 {
 	public class TextureTriangle : Triangle
 	{
+		private static void SetSphericalEnvironmentMapTextureCoordinate(ref Vertex vertex, ref TextureCoordinate textureCoordinate)
+		{
+			var u = vertex.TransformedVectorNormalized;
+			var n = vertex.TransformedNormal;
+			var r = Vector.Reflect(n, u);
+			var m = MathHelper.Sqrt((r.X * r.X) + (r.Y * r.Y) +
+									 ((r.Z + 0f) * (r.Z + 0f)));
+			var s = (r.X / m); // +0.5f;
+			var t = (r.Y / m); // +0.5f;
+			textureCoordinate.U = (s * 0.5f) + 0.5f;
+			textureCoordinate.V = (t * 0.5f) + 0.5f;
+		}
+
 		public override void Draw(Face face, Vertex[] vertices)
 		{
 			var vertexA = vertices[face.A];
@@ -34,8 +48,31 @@ namespace Balder.Core.SoftwareRendering.Rendering
 			var vertexC = vertices[face.C];
 
 			vertexA.TextureCoordinate = face.DiffuseTextureCoordinateA;
-			vertexA.TextureCoordinate = face.DiffuseTextureCoordinateB;
-			vertexA.TextureCoordinate = face.DiffuseTextureCoordinateC;
+			vertexB.TextureCoordinate = face.DiffuseTextureCoordinateB;
+			vertexC.TextureCoordinate = face.DiffuseTextureCoordinateC;
+
+			Image image = null;
+
+			if (null != face.Material.DiffuseMap)
+			{
+				image = face.Material.DiffuseMap;
+
+			}
+			else if (null != face.Material.ReflectionMap)
+			{
+				image = face.Material.ReflectionMap;
+
+				SetSphericalEnvironmentMapTextureCoordinate(ref vertexA, ref vertexA.TextureCoordinate);
+				SetSphericalEnvironmentMapTextureCoordinate(ref vertexB, ref vertexB.TextureCoordinate);
+				SetSphericalEnvironmentMapTextureCoordinate(ref vertexC, ref vertexC.TextureCoordinate);
+			}
+			if( null == image )
+			{
+				return;
+			}
+			var imageContext = image.ImageContext as ImageContext;
+
+
 
 			GetSortedPoints(ref vertexA, ref vertexB, ref vertexC);
 
@@ -190,8 +227,6 @@ namespace Balder.Core.SoftwareRendering.Rendering
 			var vEnd = 0f;
 			var vAdd = 0f;
 
-			var image = face.Material.DiffuseMap;
-			var imageContext = image.ImageContext as ImageContext;
 
 			for (var y = yStart; y <= yEnd; y++)
 			{

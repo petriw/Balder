@@ -118,6 +118,10 @@ namespace Balder.Core
 
 		private void PrepareRender(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
+			if( !node.IsVisible )
+			{
+				return;
+			}
 			world = node.World * world;
 			node.RenderingWorld = world;
 			node.PrepareForRendering(viewport,view,projection,node.RenderingWorld);
@@ -130,6 +134,12 @@ namespace Balder.Core
 		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection)
 		{
 			//node.RenderDebugInfo(viewport, view, projection, world);
+
+			if( !node.IsVisible )
+			{
+				return;
+			}
+
 			node.Render(viewport, view, projection, node.RenderingWorld);
 
 			foreach (var child in node.Children)
