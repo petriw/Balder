@@ -3,43 +3,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
     xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Features.Resources" 
-    xmlns:Controls1="clr-namespace:System.Windows.Controls;assembly=SyntaxTextBox" 
+	xmlns:MVVM="clr-namespace:Balder.Silverlight.MVVM;assembly=Balder.Silverlight"
 	DataContext="{Binding Path=Resources, Source={StaticResource ViewModels}}">
 
 	<UserControl.Resources>
 		<local:FileExtensionToImageConverter x:Key="ExtensionToImageConverter"/>
 	</UserControl.Resources>
 	<Grid x:Name="LayoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-		<StackPanel Orientation="Vertical">
+		<ItemsControl ItemsSource="{Binding ResourceFiles}" Grid.Row="0">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Controls:WrapPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,2">
+						<StackPanel Orientation="Horizontal" Margin="3,3,3,3" 
+											MVVM:CommandService.Command="{Binding Path=Resources.SelectFileCommand, Source={StaticResource ViewModels}}"
+											MVVM:CommandService.CommandParameter="{Binding}">
+							<Image Source="{Binding Path=Extension, Converter={StaticResource ExtensionToImageConverter}}"/>
+							<TextBlock Text="{Binding Filename}" Margin="4,0,0,0" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Border>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 
-			<Controls:DockPanel LastChildFill="True">
-
-				<ItemsControl ItemsSource="{Binding ResourceFiles}" Controls:DockPanel.Dock="Top">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Controls:WrapPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,2">
-								<StackPanel Orientation="Horizontal" Margin="3,3,3,3">
-									<Image Source="{Binding Path=Extension, Converter={StaticResource ExtensionToImageConverter}}"/>
-									<TextBlock Text="{Binding Filename}" Margin="4,0,0,0" VerticalAlignment="Center"/>
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-
-				<Border BorderBrush="Black" BorderThickness="1" Margin="4,4,4,4">
-					<ScrollViewer>
-						<Controls1:SyntaxTextBox HorizontalAlignment="Stretch" IsReadOnly="true" VerticalAlignment="Stretch" Text="{Binding Path=SelectedFile.Content}"/>
-					</ScrollViewer>
-				</Border>
-			</Controls:DockPanel>
-		</StackPanel>
+		<TextBox IsReadOnly="true"  
+				 BorderBrush="Black" 
+				 BorderThickness="1" 
+				 Margin="4,4,4,4" 
+				 Grid.Row="1" 
+				 Text="{Binding Path=SelectedFile.Content}" 
+				 HorizontalAlignment="Stretch"
+				 HorizontalContentAlignment="Stretch"
+				 VerticalAlignment="Stretch"
+				 VerticalContentAlignment="Stretch"
+				 HorizontalScrollBarVisibility="Auto"
+				 VerticalScrollBarVisibility="Auto"/>
 
 	</Grid>
 </UserControl>

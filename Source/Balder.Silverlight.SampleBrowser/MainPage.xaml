@@ -5,107 +5,121 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:SampleBrowser="clr-namespace:Balder.Silverlight.SampleBrowser.Controls"
 	xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
-	xmlns:navigationCore="clr-namespace:System.Windows.Navigation;assembly=System.Windows.Controls.Navigation"
 	xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
 	xmlns:resources="clr-namespace:Balder.Silverlight.SampleBrowser.Features.Resources"
-	xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit"
     mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
 
 	<Grid x:Name="LayoutRoot">
-		<StackPanel Orientation="Vertical">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-				<Image Source="Images/Logo.png" Stretch="None"/>
-				<TextBlock FontFamily="Verdana" FontSize="36" Foreground="Black" VerticalAlignment="Center" Padding="40,0,0,0" Text="Sample browser"/>
-			</StackPanel>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="200"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<SampleBrowser:SampleNavigationControl Grid.Column="0"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0">
+			<Image Source="Images/Logo.png" Stretch="None"/>
+			<TextBlock FontFamily="Verdana" FontSize="36" Foreground="Black" VerticalAlignment="Center" Padding="40,0,0,0" Text="Sample browser"/>
+		</StackPanel>
 
-				<controls:TabControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" >
-					<controls:TabItem Header="Sample">
-						<navigation:Frame x:Name="ContentFrame" 
+
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="200"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<SampleBrowser:SampleNavigationControl Grid.Column="0"/>
+
+			<controls:TabControl x:Name="TabControl"
+								 Grid.Column="1" 
+								 Grid.Row="0" 
+								 VerticalContentAlignment="Stretch" 
+								 HorizontalAlignment="Stretch" 
+								 VerticalAlignment="Stretch" 
+								 SelectionChanged="TabControl_SelectionChanged" >
+				<controls:TabItem x:Name="SampleTabItem"
+								  Header="Sample" 
+								  VerticalAlignment="Stretch" 
+								  VerticalContentAlignment="Stretch">
+					<navigation:Frame x:Name="ContentFrame" 
 										  Navigating="ContentFrame_Navigating"
 										  Navigated="ContentFrame_Navigated"
 										  UriMapper="{StaticResource uriMapper}" 
 										  Source="Home" 
 										  JournalOwnership="OwnsJournal">
-							<navigation:Frame.Background>
-								<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-									<GradientStop Offset="0" Color="AliceBlue"/>
-									<GradientStop Offset="0.2" Color="Azure"/>
-									<GradientStop Offset="1" Color="Black"/>
-								</LinearGradientBrush>
-							</navigation:Frame.Background>
-						</navigation:Frame>
-					</controls:TabItem>
+						<navigation:Frame.Background>
+							<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+								<GradientStop Offset="0" Color="AliceBlue"/>
+								<GradientStop Offset="0.2" Color="Azure"/>
+								<GradientStop Offset="1" Color="Black"/>
+							</LinearGradientBrush>
+						</navigation:Frame.Background>
+					</navigation:Frame>
+				</controls:TabItem>
 
-					<controls:TabItem Header="Resources">
-						<resources:View x:Name="_resourceView" Source="{Binding Path=Source, ElementName=ContentFrame}"/>
-					</controls:TabItem>
-				</controls:TabControl>
+				<controls:TabItem Header="Resources">
+					<resources:View x:Name="_resourceView" Source="{Binding Path=Source, ElementName=ContentFrame}"/>
+				</controls:TabItem>
+			</controls:TabControl>
 
-				<StackPanel Orientation="Vertical" Grid.Column="1" Visibility="Collapsed">
-					<Grid x:Name="BufferStatisticsGrid" Margin="0,30,0,0">
-						<Grid.Resources>
-							<Style x:Key="DebugText" TargetType="TextBlock">
-								<Setter Property="FontFamily" Value="Verdana"/>
-								<Setter Property="FontSize" Value="24"/>
-							</Style>
-						</Grid.Resources>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="150"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+			<StackPanel Orientation="Vertical" Grid.Column="1" Visibility="Collapsed">
+				<Grid x:Name="BufferStatisticsGrid" Margin="0,30,0,0">
+					<Grid.Resources>
+						<Style x:Key="DebugText" TargetType="TextBlock">
+							<Setter Property="FontFamily" Value="Verdana"/>
+							<Setter Property="FontSize" Value="24"/>
+						</Style>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="150"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
 
-						<Grid.RowDefinitions>
-							<RowDefinition Height="30"/>
-							<RowDefinition Height="30"/>
-							<RowDefinition Height="30"/>
-						</Grid.RowDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+					</Grid.RowDefinitions>
 
-						<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding ClearCount}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding ClearCount}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
 
-						<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding ShowCount}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding ShowCount}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
 
-						<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding RenderCount}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
-					</Grid>
+					<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding RenderCount}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
+				</Grid>
 
-					<Grid x:Name="RenderStatisticsGrid" Margin="0,30,0,0">
-						<Grid.Resources>
-							<Style x:Key="DebugText" TargetType="TextBlock">
-								<Setter Property="FontFamily" Value="Verdana"/>
-								<Setter Property="FontSize" Value="24"/>
-							</Style>
-						</Grid.Resources>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="150"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+				<Grid x:Name="RenderStatisticsGrid" Margin="0,30,0,0">
+					<Grid.Resources>
+						<Style x:Key="DebugText" TargetType="TextBlock">
+							<Setter Property="FontFamily" Value="Verdana"/>
+							<Setter Property="FontSize" Value="24"/>
+						</Style>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="150"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
 
-						<Grid.RowDefinitions>
-							<RowDefinition Height="30"/>
-							<RowDefinition Height="30"/>
-							<RowDefinition Height="30"/>
-						</Grid.RowDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="30"/>
+					</Grid.RowDefinitions>
 
-						<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding ClearTime}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding ClearTime}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
 
-						<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding ShowTime}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding ShowTime}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
 
-						<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
-						<TextBlock Text="{Binding RenderTime}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
-					</Grid>
-				</StackPanel>
-			</Grid>
-		</StackPanel>
+					<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
+					<TextBlock Text="{Binding RenderTime}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
+				</Grid>
+			</StackPanel>
+		</Grid>
 	</Grid>
 </UserControl>

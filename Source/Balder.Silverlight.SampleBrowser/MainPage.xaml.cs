@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Balder.Core.Execution;
@@ -19,7 +20,7 @@ namespace Balder.Silverlight.SampleBrowser
 			RenderStatisticsGrid.DataContext = RenderingStatistics.Instance;
 		}
 
-		private void RemoveGameInVisualTree(UIElement element)
+		private void HandleGameInVisualTree(UIElement element, bool reload)
 		{
 			if( null == element )
 			{
@@ -31,11 +32,11 @@ namespace Balder.Silverlight.SampleBrowser
 				{
 					if( item is Game )
 					{
-						RemoveGame((Game)item);
+						HandleGame((Game)item, reload);
 						break;
 					} else if( item is UIElement)
 					{
-						RemoveGameInVisualTree((UIElement)item);
+						HandleGameInVisualTree((UIElement)item, reload);
 					}
 				}
 			} else if( element is Panel )
@@ -44,11 +45,11 @@ namespace Balder.Silverlight.SampleBrowser
 				{
 					if( child is Game )
 					{
-						RemoveGame((Game)child);
+						HandleGame((Game)child, reload);
 						break;
 					} else
 					{
-						RemoveGameInVisualTree(child);
+						HandleGameInVisualTree(child, reload);
 					}
 				}
 			} if( element is ContentControl )
@@ -56,10 +57,10 @@ namespace Balder.Silverlight.SampleBrowser
 				var contentControl = element as ContentControl;
 				if( contentControl.Content is Game )
 				{
-					RemoveGame((Game) contentControl.Content);
+					HandleGame((Game)contentControl.Content, reload);
 				} else if( contentControl.Content is UIElement )
 				{
-					RemoveGameInVisualTree((UIElement)contentControl.Content);
+					HandleGameInVisualTree((UIElement)contentControl.Content, reload);
 				}
 			} else
 			{
@@ -68,7 +69,7 @@ namespace Balder.Silverlight.SampleBrowser
 					var child = VisualTreeHelper.GetChild(element, 0);
 					if (null != child && child is UIElement)
 					{
-						RemoveGameInVisualTree(child as UIElement);
+						HandleGameInVisualTree(child as UIElement, reload);
 					}
 				} catch
 				{
@@ -77,32 +78,31 @@ namespace Balder.Silverlight.SampleBrowser
 			}
 		}
 
-		private void RemoveGame(Game game)
+
+		private void HandleGame(Game game, bool reload)
 		{
-			game.Unload();
-			/*
-			var parent = VisualTreeHelper.GetParent(game);
-			if( null != parent )
+			if( reload )
 			{
-				if( parent is ItemsControl )
-				{
-					((ItemsControl) parent).Items.Remove(game);
-				} else if( parent is Panel )
-				{
-					((Panel) parent).Children.Remove(game);
-				} else if( parent is ContentControl )
-				{
-					((ContentControl) parent).Content = null;
-				}
+			} else
+			{
+				game.Unload();	
 			}
-			 */
 		}
+
+
 
 		private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			foreach( TabItem tabItem in e.RemovedItems )
+			if( null == TabControl )
 			{
-				RemoveGameInVisualTree(tabItem);
+				return;
+			}
+			if( TabControl.SelectedIndex != 0 )
+			{
+				HandleGameInVisualTree(SampleTabItem,false);
+			} else
+			{
+				HandleGameInVisualTree(SampleTabItem, true);
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace Balder.Silverlight.SampleBrowser
 
 		private void ContentFrame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
 		{
-			RemoveGameInVisualTree(ContentFrame);
+			HandleGameInVisualTree(ContentFrame, false);
 		}
 	}
 }

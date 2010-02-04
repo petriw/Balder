@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
+namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,41 +61,41 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Content&quot;
+        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap.Content&quot;
         ///    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; 
-        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
-        ///	xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot;
-        ///	xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot;
-        ///	xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot;
-        ///	xmlns:Lighting=&quot;clr-namespace:Balder.Core.Lighting; [rest of string was truncated]&quot;;.
+        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; 
+        ///    xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot; 
+        ///    xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot; 
+        ///    xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot; 
+        ///    xmlns:Lighting=&quot;clr-namespace:Balder.C [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Content_xaml {
+        internal static string Content_cs {
             get {
-                return ResourceManager.GetString("Content_xaml", resourceCulture);
+                return ResourceManager.GetString("Content_cs", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to using System.ComponentModel;
-        ///using Balder.Core.Math;
+        ///   Looks up a localized string similar to using System;
+        ///using System.ComponentModel;
+        ///using Balder.Core;
+        ///using Balder.Core.Objects.Geometries;
         ///using Balder.Silverlight.SampleBrowser.Constants;
         ///using Balder.Silverlight.SampleBrowser.Content;
         ///
-        ///namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation
+        ///namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap
         ///{
-        ///	[Category(Categories.View)]
-        ///	[SamplePage(&quot;Camera Manipulation&quot;)]
-        ///	[Description(&quot;Sample showing how to manipulate camera in Xaml&quot;)]
+        ///	[Category(Categories.Primitives)]
+        ///	[SamplePage(&quot;Heightmap&quot;)]
+        ///	[Description(&quot;Sample showing how to use the Heightmap primitive&quot;)]
         ///	public partial class Content
         ///	{
         ///		public Content()
         ///		{
         ///			InitializeComponent();
-        ///
-        ///			Loaded += Content_Loaded;
         ///		}
         ///
-        ///		void Content_ [rest of string was truncated]&quot;;.
+        ///		p [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Content_xaml_cs {
             get {

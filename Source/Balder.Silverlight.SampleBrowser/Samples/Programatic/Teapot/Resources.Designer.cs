@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
+namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,13 +61,17 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Content&quot;
+        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot.Content&quot;
         ///    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; 
-        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
-        ///	xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot;
-        ///	xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot;
-        ///	xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot;
-        ///	xmlns:Lighting=&quot;clr-namespace:Balder.Core.Lighting; [rest of string was truncated]&quot;;.
+        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; 
+        ///	xmlns:local=&quot;clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot&quot;
+        ///    &gt;
+        ///    &lt;Grid x:Name=&quot;LayoutRoot&quot;&gt;
+        ///		&lt;local:MyGame Width=&quot;800&quot; Height=&quot;600&quot;/&gt;
+        ///
+        ///    &lt;/Grid&gt;
+        ///&lt;/UserControl&gt;
+        ///.
         /// </summary>
         internal static string Content_xaml {
             get {
@@ -77,29 +81,57 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         
         /// <summary>
         ///   Looks up a localized string similar to using System.ComponentModel;
-        ///using Balder.Core.Math;
         ///using Balder.Silverlight.SampleBrowser.Constants;
         ///using Balder.Silverlight.SampleBrowser.Content;
         ///
-        ///namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation
+        ///namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
         ///{
-        ///	[Category(Categories.View)]
-        ///	[SamplePage(&quot;Camera Manipulation&quot;)]
-        ///	[Description(&quot;Sample showing how to manipulate camera in Xaml&quot;)]
+        ///	[Category(Categories.Programatic)]
+        ///	[SamplePage(&quot;Simple Teapot&quot;)]
+        ///	[Description(&quot;&quot;)]
         ///	public partial class Content
         ///	{
         ///		public Content()
         ///		{
         ///			InitializeComponent();
-        ///
-        ///			Loaded += Content_Loaded;
         ///		}
-        ///
-        ///		void Content_ [rest of string was truncated]&quot;;.
+        ///	}
+        ///}
+        ///.
         /// </summary>
         internal static string Content_xaml_cs {
             get {
                 return ResourceManager.GetString("Content_xaml_cs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to using System;
+        ///using System.Windows.Media;
+        ///using Balder.Core.Execution;
+        ///using Balder.Core.Lighting;
+        ///using Balder.Core.Objects.Geometries;
+        ///using Color=Balder.Core.Color;
+        ///
+        ///namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
+        ///{
+        ///	public class MyGame : Game
+        ///	{
+        ///		private double _sin = 0;
+        ///
+        ///		public override void OnInitialize()
+        ///		{
+        ///			ContentManager.AssetsRoot = &quot;Samples/Programatic/Teapot/Assets&quot;;
+        ///
+        ///			DebugLevel.BoundingSpheres = true;
+        ///
+        ///
+        ///			var light = new OmniLight();
+        ///			light [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MyGame_cs {
+            get {
+                return ResourceManager.GetString("MyGame_cs", resourceCulture);
             }
         }
     }

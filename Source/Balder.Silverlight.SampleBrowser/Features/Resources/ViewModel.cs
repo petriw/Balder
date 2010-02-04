@@ -20,12 +20,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Windows;
+using System.Windows.Input;
+using Balder.Silverlight.MVVM;
 
 namespace Balder.Silverlight.SampleBrowser.Features.Resources
 {
@@ -35,6 +36,8 @@ namespace Balder.Silverlight.SampleBrowser.Features.Resources
 		public ViewModel()
 		{
 			ResourceFiles = new ObservableCollection<ResourceFile>();
+
+			SelectFileCommand = DelegateCommand.Create<ResourceFile>(SelectFile);
 		}
 
 		public void SetUrl(Uri uri)
@@ -45,6 +48,13 @@ namespace Balder.Silverlight.SampleBrowser.Features.Resources
 		public virtual ObservableCollection<ResourceFile> ResourceFiles { get; private set; }
 
 		public virtual ResourceFile SelectedFile { get; set; }
+
+		public ICommand SelectFileCommand { get; set; }
+
+		public void SelectFile(ResourceFile file)
+		{
+			SelectedFile = file;
+		}
 
 
 		private void GetNamespaceFromUri(Uri uri)

@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Content_xaml" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="BusinessObject_cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>BusinessObject.cs;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Content_cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Content.xaml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="Content_xaml_cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Content.xaml.cs;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ViewModel_cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>ViewModel.cs;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

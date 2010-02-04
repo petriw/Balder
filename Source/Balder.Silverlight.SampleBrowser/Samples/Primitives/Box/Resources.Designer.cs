@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
+namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Box {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.Primitives.Box.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,13 +61,13 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation.Content&quot;
+        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.Primitives.Box.Content&quot;
         ///    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; 
-        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
-        ///	xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot;
-        ///	xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot;
-        ///	xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot;
-        ///	xmlns:Lighting=&quot;clr-namespace:Balder.Core.Lighting; [rest of string was truncated]&quot;;.
+        ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; 
+        ///    xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot; 
+        ///    xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot; 
+        ///    xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot; 
+        ///    xmlns:Lighting=&quot;clr-namespace:Balder.Core.Li [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Content_xaml {
             get {
@@ -77,25 +77,23 @@ namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation {
         
         /// <summary>
         ///   Looks up a localized string similar to using System.ComponentModel;
-        ///using Balder.Core.Math;
         ///using Balder.Silverlight.SampleBrowser.Constants;
         ///using Balder.Silverlight.SampleBrowser.Content;
         ///
-        ///namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation
+        ///namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Box
         ///{
-        ///	[Category(Categories.View)]
-        ///	[SamplePage(&quot;Camera Manipulation&quot;)]
-        ///	[Description(&quot;Sample showing how to manipulate camera in Xaml&quot;)]
+        ///	[Category(Categories.Primitives)]
+        ///	[SamplePage(&quot;Box&quot;)]
+        ///	[Description(&quot;Sample showing how to use the Box primitive&quot;)]
         ///	public partial class Content
         ///	{
         ///		public Content()
         ///		{
         ///			InitializeComponent();
-        ///
-        ///			Loaded += Content_Loaded;
         ///		}
-        ///
-        ///		void Content_ [rest of string was truncated]&quot;;.
+        ///	}
+        ///}
+        ///.
         /// </summary>
         internal static string Content_xaml_cs {
             get {
