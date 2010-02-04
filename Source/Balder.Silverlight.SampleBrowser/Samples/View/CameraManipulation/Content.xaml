@@ -29,17 +29,17 @@
 					<RowDefinition Height="30"/>
 				</Grid.RowDefinitions>
 				
-				<TextBlock Text="X Axis" Grid.Row="0" Grid.Column="0"/>
-				<Slider x:Name="_xSlider" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="360" ValueChanged="Slider_ValueChanged"/>
-				<TextBlock Text="{Binding Path=Value, ElementName=_xSlider, Mode=OneWay}" Grid.Row="0" Grid.Column="2"/>
+				<TextBlock Text="X Axis" Grid.Row="0" Grid.Column="0" Foreground="White" />
+				<Slider x:Name="_xSlider" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="360" Value="30" ValueChanged="Slider_ValueChanged"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_xSlider, Mode=OneWay}" Grid.Row="0" Grid.Column="2" Foreground="White"/>
 
-				<TextBlock Text="Y Axis" Grid.Row="1" Grid.Column="0"/>
+				<TextBlock Text="Y Axis" Grid.Row="1" Grid.Column="0" Foreground="White"/>
 				<Slider x:Name="_ySlider" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="360" Value="200" ValueChanged="Slider_ValueChanged"/>
-				<TextBlock Text="{Binding Path=Value, ElementName=_ySlider, Mode=OneWay}" Grid.Row="1" Grid.Column="2"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_ySlider, Mode=OneWay}" Grid.Row="1" Grid.Column="2" Foreground="White"/>
 
-				<TextBlock Text="Zoom" Grid.Row="2" Grid.Column="0"/>
+				<TextBlock Text="Zoom" Grid.Row="2" Grid.Column="0" Foreground="White"/>
 				<Slider x:Name="_zoomSlider" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="1" Minimum="200" Maximum="500" ValueChanged="Slider_ValueChanged"/>
-				<TextBlock Text="{Binding Path=Value, ElementName=_zoomSlider, Mode=OneWay}" Grid.Row="2" Grid.Column="2"/>
+				<TextBlock Text="{Binding Path=Value, ElementName=_zoomSlider, Mode=OneWay}" Grid.Row="2" Grid.Column="2" Foreground="White"/>
 			</Grid>
 			
 		</StackPanel>

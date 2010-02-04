@@ -90,20 +90,22 @@ namespace Balder.Silverlight.SampleBrowser
 		}
 
 
-
+		private bool _tabItemChanged = false;
 		private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if( null == TabControl )
+			if (null == TabControl)
 			{
 				return;
 			}
+			_tabItemChanged = true;
+			/*
 			if( TabControl.SelectedIndex != 0 )
 			{
 				HandleGameInVisualTree(SampleTabItem,false);
 			} else
 			{
 				HandleGameInVisualTree(SampleTabItem, true);
-			}
+			}*/
 		}
 
 		private void ContentFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -113,7 +115,11 @@ namespace Balder.Silverlight.SampleBrowser
 
 		private void ContentFrame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
 		{
-			HandleGameInVisualTree(ContentFrame, false);
+			if (!_tabItemChanged)
+			{
+				HandleGameInVisualTree(ContentFrame, false);
+			}
+			_tabItemChanged = false;
 		}
 	}
 }

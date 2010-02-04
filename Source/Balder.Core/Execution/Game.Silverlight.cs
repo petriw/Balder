@@ -10,6 +10,7 @@ namespace Balder.Core.Execution
 	{
 		private Node _previousNode;
 		private IDisplay _display;
+		private bool _loaded = false;
 
 		partial void Constructed()
 		{
@@ -46,6 +47,11 @@ namespace Balder.Core.Execution
 
 		private void GameLoaded(object sender, RoutedEventArgs e)
 		{
+			if( _loaded )
+			{
+				return;
+			}
+			_loaded = true;
 			Validate();
 			RegisterGame();
 			AddNodesToScene();
