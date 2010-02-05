@@ -81,12 +81,15 @@ namespace Balder.Core.Objects.Geometries
 		{
 			if( null != HeightInput )
 			{
+				var actualLength = LengthSegments + 1;
+				var actualHeight = HeightSegments + 1;
+
 				var vertexIndex = 0;
 				var vertices = GeometryContext.GetVertices();
-				for( var y=0; y<HeightSegments; y++ )
+				for( var y=0; y<actualHeight; y++ )
 				{
-					var offset = y*LengthSegments;
-					for( var x=0; x<LengthSegments; x++ )
+					var offset = y*actualLength;
+					for( var x=0; x<actualLength; x++ )
 					{
 						var vertex = vertices[offset + x];
 						var heightBefore = vertex.Vector.Y;
@@ -121,20 +124,23 @@ namespace Balder.Core.Objects.Geometries
 
 		public void SetHeightForGridPoint(int gridX, int gridY, float height, Color color)
 		{
-			if( gridX >= LengthSegments || gridY >= HeightSegments )
+			var actualLength = LengthSegments + 1;
+			var actualHeight = HeightSegments + 1;
+
+			if( gridX >= actualLength || gridY >= actualHeight )
 			{
 				throw new ArgumentException("Point outside grid");
 			}
 
-			var xStep = ((float)Dimension.Width) / (float)LengthSegments;
-			var yStep = ((float)Dimension.Height) / (float)HeightSegments;
+			var xStep = ((float)Dimension.Width) / (float)actualLength;
+			var yStep = ((float)Dimension.Height) / (float)actualHeight;
 			var yStart = (float)-(Dimension.Height / 2);
 			var xStart = (float)-(Dimension.Width / 2);
 
 			var xPos = xStart + (xStep*gridX);
 			var zPos = yStart + (yStep*gridY);
 
-			var index = (gridY*LengthSegments)+gridX;
+			var index = (gridY*actualLength)+gridX;
 
 			var vertex = new Vertex(xPos, height, zPos);
 			vertex.Color = color;
@@ -160,23 +166,25 @@ namespace Balder.Core.Objects.Geometries
 
 		private void PrepareVertices()
 		{
-			GeometryContext.AllocateVertices(LengthSegments * HeightSegments);
+			var actualLength = LengthSegments + 1;
+			var actualHeight = HeightSegments + 1;
+			GeometryContext.AllocateVertices(actualLength*actualHeight);
 			var yStart = (float)-(Dimension.Height / 2);
-			var xStep = ((float)Dimension.Width) / (float)LengthSegments;
-			var yStep = ((float)Dimension.Height) / (float)HeightSegments;
+			var xStep = ((float)Dimension.Width) / (float)actualLength;
+			var yStep = ((float)Dimension.Height) / (float)actualHeight;
 
-			var uStep = ((float)1.0f) / (float)LengthSegments;
-			var vStep = ((float)1.0f) / (float)HeightSegments;
+			var uStep = ((float)1.0f) / (float)actualLength;
+			var vStep = ((float)1.0f) / (float)actualHeight;
 
 			var v = 0f;
 			var vertexIndex = 0;
-			for (var y = 0; y < HeightSegments; y++)
+			for (var y = 0; y < actualHeight; y++)
 			{
 				var xStart = (float)-(Dimension.Width / 2);
 
 				var u = 0f;
 
-				for (var x = 0; x < LengthSegments; x++)
+				for (var x = 0; x < actualLength; x++)
 				{
 					var vertex = new Vertex(xStart, 0, yStart) { Normal = Vector.Up };
 					GeometryContext.SetVertex(vertexIndex, vertex);
@@ -192,16 +200,19 @@ namespace Balder.Core.Objects.Geometries
 
 		private void PrepareFaces()
 		{
-			var faceCount = ((LengthSegments - 1)*2)*(HeightSegments-1);
+			var actualLength = LengthSegments + 1;
+			var actualHeight = HeightSegments + 1;
+
+			var faceCount = ((actualLength- 1) * 2) * (actualHeight - 1);
 			GeometryContext.AllocateFaces(faceCount);
 			var faceIndex = 0;
 
-			for (var y = 0; y < HeightSegments - 1; y++)
+			for (var y = 0; y < actualHeight - 1; y++)
 			{
-				for (var x = 0; x < LengthSegments - 1; x++)
+				for (var x = 0; x < actualLength - 1; x++)
 				{
 					var offset = (y*LengthSegments)+x;
-					var offsetNextLine = offset + LengthSegments;
+					var offsetNextLine = offset + actualLength;
 					var face = new Face(offset, offset + 1, offsetNextLine);
 					face.Normal = Vector.Up;
 					GeometryContext.SetFace(faceIndex,face);

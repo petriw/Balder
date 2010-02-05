@@ -1,0 +1,28 @@
+﻿<Geometries:Geometry x:Class="Balder.Silverlight.SampleBrowser.Samples.Data.BarChart.BarChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
+    xmlns:Controls="clr-namespace:Balder.Silverlight.Controls;assembly=Balder.Silverlight" 
+    xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.BarChart" 
+    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core">
+
+	<Geometries:Geometry.Resources>
+		<Materials:Material x:Key="BarBackgroundMaterial" DoubleSided="True" Shade="Flat"/>
+	</Geometries:Geometry.Resources>
+
+	<Geometries:Geometry Position="0,0,5" x:Name="BackgroundContainer">
+		<Geometries:Heightmap Dimension="15,20" Color="Grey" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="15,100" Color="Grey" Rotation="90,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="100,20" Color="Grey" Rotation="0,0,-90" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="100,20" Color="Grey" Rotation="0,0,-90" Position="-30,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
+	</Geometries:Geometry>
+
+	<Controls:NodesStack x:Name="NodesStack" StartPosition="0,0,0" ItemAdd="10,0,0" Scale="1,1,1">
+		<Controls:NodesStack.NodeTemplate>
+			<DataTemplate>
+				<local:Bar Value="{Binding Value}"/>
+			</DataTemplate>
+		</Controls:NodesStack.NodeTemplate>
+	</Controls:NodesStack>
+
+</Geometries:Geometry>

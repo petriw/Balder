@@ -105,7 +105,6 @@ namespace Balder.Core.Objects.Geometries
 					}
 				}
 
-
 				_materialSet = true;
 			}
 			GeometryContext.Render(viewport, this, view, projection, world);

@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.Data.BarChart.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.BarChart" 
+    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data">
+	<UserControl.DataContext>
+		<local:ViewModel/>
+	</UserControl.DataContext>
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.Triggers>
+			<EventTrigger RoutedEvent="Grid.Loaded">
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever" AutoReverse="True">
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetName="Chart" Storyboard.TargetProperty="(Node.Rotation).(Y)">
+							<EasingDoubleKeyFrame KeyTime="00:00:00" Value="-22.5">
+								<EasingDoubleKeyFrame.EasingFunction>
+
+									<CircleEase EasingMode="EaseInOut"/>
+								</EasingDoubleKeyFrame.EasingFunction>
+							</EasingDoubleKeyFrame>
+							<EasingDoubleKeyFrame KeyTime="00:00:02" Value="22.5">
+								<EasingDoubleKeyFrame.EasingFunction>
+									<CircleEase EasingMode="EaseInOut"/>
+								</EasingDoubleKeyFrame.EasingFunction>
+							</EasingDoubleKeyFrame>
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger>
+		</Grid.Triggers>
+
+		<Execution:Game Width="640" Height="480">
+			<Execution:Game.Camera>
+				<View:Camera Position="0,20,-100"/>
+			</Execution:Game.Camera>
+
+			<Lighting:OmniLight Position="0,30,-50" Ambient="Brown" Diffuse="Green" Specular="White"/>
+
+			<local:BarChart x:Name="Chart" ValueMember="Value" ValuesSource="{Binding Objects}"/>
+		</Execution:Game>
+
+
+		<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+			<Controls:DataGrid ItemsSource="{Binding Objects}" Width="100" Height="100"/>
+			<Button Content="Add Value" Click="AddValueClick"/>
+		</StackPanel>
+	</Grid>
+</UserControl>

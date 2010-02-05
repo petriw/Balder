@@ -50,7 +50,7 @@ namespace Balder.Core
 
 		private void InitializeColor()
 		{
-			var red = (byte)Rnd.Next(0,64);
+			var red = (byte)Rnd.Next(0, 64);
 			var green = (byte)Rnd.Next(0, 64);
 			var blue = (byte)Rnd.Next(0, 64);
 			Color = new Color(red, green, blue, 0xff);
@@ -61,6 +61,7 @@ namespace Balder.Core
 		{
 			_isInitializingTransform = true;
 			Position = new Coordinate();
+			PivotPoint = new Coordinate();
 			Scale = new Coordinate(1f, 1f, 1f);
 			Rotation = new Coordinate();
 			_isInitializingTransform = false;
@@ -79,6 +80,13 @@ namespace Balder.Core
 		public BoundingSphere BoundingSphere { get; set; }
 		public Scene Scene { get; set; }
 		public NodeCollection Children { get; private set; }
+
+		public static readonly Property<Node, Coordinate> PivotPointProperty = Property<Node, Coordinate>.Register(n => n.PivotPoint);
+		public Coordinate PivotPoint
+		{
+			get { return PivotPointProperty.GetValue(this); }
+			set { PivotPointProperty.SetValue(this, value); }
+		}
 
 		#region Transform
 		public static readonly Property<Node, Coordinate> PositionProp =

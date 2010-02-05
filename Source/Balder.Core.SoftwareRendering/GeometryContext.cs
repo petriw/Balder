@@ -191,12 +191,17 @@ namespace Balder.Core.SoftwareRendering
 
 		private void TransformAndTranslateVertices(Viewport viewport, Node node, Matrix view, Matrix projection, Matrix world)
 		{
+			var negativePivot = -(Vector)node.PivotPoint;
+
 			var localView = (world * view);
 			for (var vertexIndex = 0; vertexIndex < Vertices.Length; vertexIndex++)
 			{
 				var vertex = Vertices[vertexIndex];
+				vertex.Vector += negativePivot;
+				
 				TransformAndTranslateVertex(ref vertex, viewport, localView, projection);
 				CalculateColorForVertex(ref vertex, viewport, node);
+				vertex.Vector -= negativePivot;
 				Vertices[vertexIndex] = vertex;
 			}
 		}
@@ -229,6 +234,10 @@ namespace Balder.Core.SoftwareRendering
 
 
 				var visible = mixedProduct < 0; // && viewport.View.IsInView(a.TransformedVector);
+				if( null != face.Material)
+				{
+					visible |= face.Material.DoubleSided;
+				}
 				if (!visible)
 				{
 					continue;
