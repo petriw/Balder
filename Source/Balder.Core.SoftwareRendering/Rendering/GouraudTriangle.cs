@@ -2,7 +2,7 @@
 
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
-// Copyright (c) 2007-2009, DoLittle Studios
+// Copyright (c) 2007-2010, DoLittle Studios
 //
 // Licensed under the Microsoft Permissive License (Ms-PL), Version 1.1 (the "License")
 // you may not use this file except in compliance with the License.
