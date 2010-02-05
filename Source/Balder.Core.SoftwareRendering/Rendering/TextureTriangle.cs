@@ -35,10 +35,10 @@ namespace Balder.Core.SoftwareRendering.Rendering
 			var r = Vector.Reflect(n, u);
 			var m = MathHelper.Sqrt((r.X * r.X) + (r.Y * r.Y) +
 									 ((r.Z + 0f) * (r.Z + 0f)));
-			var s = (r.X / m); // +0.5f;
-			var t = (r.Y / m); // +0.5f;
+			var s = (r.X / m);
+			var t = (r.Y / m);
 			textureCoordinate.U = (s * 0.5f) + 0.5f;
-			textureCoordinate.V = (t * 0.5f) + 0.5f;
+			textureCoordinate.V = -(t * 0.5f) + 0.5f;
 		}
 
 		public override void Draw(Face face, Vertex[] vertices)

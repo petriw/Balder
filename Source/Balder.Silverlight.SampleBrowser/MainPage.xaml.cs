@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Balder.Core.Execution;
@@ -52,7 +51,7 @@ namespace Balder.Silverlight.SampleBrowser
 						HandleGameInVisualTree(child, reload);
 					}
 				}
-			} if( element is ContentControl )
+			} else if( element is ContentControl )
 			{
 				var contentControl = element as ContentControl;
 				if( contentControl.Content is Game )
@@ -64,16 +63,14 @@ namespace Balder.Silverlight.SampleBrowser
 				}
 			} else
 			{
-				try
+				var count = VisualTreeHelper.GetChildrenCount(element);
+				if (count > 0)
 				{
 					var child = VisualTreeHelper.GetChild(element, 0);
 					if (null != child && child is UIElement)
 					{
 						HandleGameInVisualTree(child as UIElement, reload);
 					}
-				} catch
-				{
-					// Todo: fix this in total.  Smells already 
 				}
 			}
 		}
@@ -98,14 +95,6 @@ namespace Balder.Silverlight.SampleBrowser
 				return;
 			}
 			_tabItemChanged = true;
-			/*
-			if( TabControl.SelectedIndex != 0 )
-			{
-				HandleGameInVisualTree(SampleTabItem,false);
-			} else
-			{
-				HandleGameInVisualTree(SampleTabItem, true);
-			}*/
 		}
 
 		private void ContentFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)

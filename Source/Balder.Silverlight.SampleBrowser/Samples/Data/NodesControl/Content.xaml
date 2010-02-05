@@ -15,10 +15,7 @@
 			<Controls:NodesControl ItemsSource="{Binding Objects}">
 				<Controls:NodesControl.NodeTemplate>
 					<DataTemplate>
-						<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Data/NodesControl/Assets/box.ase" 
-										 Color="{Binding Color}" 
-										 Position="{Binding Position}"  
-										 IsVisible="{Binding IsVisible}"/> 
+						<Geometries:Box Color="{Binding Color}" Position="{Binding Position}" Dimension="60,60,60"/>
 					</DataTemplate>
 				</Controls:NodesControl.NodeTemplate>
 			</Controls:NodesControl>

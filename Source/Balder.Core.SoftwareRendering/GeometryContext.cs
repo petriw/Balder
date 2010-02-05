@@ -146,7 +146,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void Prepare()
 		{
-			if (null != TextureCoordinates && TextureCoordinates.Length > 0)
+			if (null != TextureCoordinates && TextureCoordinates.Length > 0 && null != Faces)
 			{
 				for (var index = 0; index < Faces.Length; index++)
 				{
@@ -161,7 +161,7 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Render(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
-			if (null == Vertices || null == Faces)
+			if (null == Vertices )
 			{
 				return;
 			}

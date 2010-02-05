@@ -305,7 +305,6 @@
     <None Include="Properties\AppManifest.xml" />
     <Resource Include="Samples\Materials\MaterialPicker\Assets\teapot.ASE" />
     <Resource Include="Samples\Data\NodesStack\Assets\box.ASE" />
-    <Resource Include="Samples\Data\NodesControl\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\teapot.ASE" />
     <Resource Include="Samples\View\CameraManipulation\Assets\box.ASE" />

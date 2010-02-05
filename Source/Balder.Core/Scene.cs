@@ -133,13 +133,12 @@ namespace Balder.Core
 
 		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection)
 		{
-			//node.RenderDebugInfo(viewport, view, projection, world);
-
 			if( !node.IsVisible )
 			{
 				return;
 			}
 
+			
 			node.Render(viewport, view, projection, node.RenderingWorld);
 
 			foreach (var child in node.Children)
@@ -149,6 +148,7 @@ namespace Balder.Core
 					RenderNode((RenderableNode)child, viewport, view, projection);
 				}
 			}
+			node.RenderDebugInfo(viewport, view, projection, node.RenderingWorld);
 		}
 
 
