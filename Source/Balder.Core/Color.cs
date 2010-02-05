@@ -27,6 +27,7 @@ namespace Balder.Core
 {
 	public struct Color : IEquatable<Color>
 	{
+		private static readonly Random Rnd = new Random();
 		public static Color Black = FromArgb(0xff, 0, 0, 0);
 		public static Color White = FromArgb(0xff, 0xff, 0xff, 0xff);
 
@@ -128,6 +129,14 @@ namespace Balder.Core
 			}
 		}
 
+		public static Color Random()
+		{
+			var red = (byte)Rnd.Next(0, 64);
+			var green = (byte)Rnd.Next(0, 64);
+			var blue = (byte)Rnd.Next(0, 64);
+			var color = new Color(red, green, blue, 0xff);
+			return color;
+		}
 
 		public static Color FromArgb(byte alpha, byte red, byte green, byte blue)
 		{

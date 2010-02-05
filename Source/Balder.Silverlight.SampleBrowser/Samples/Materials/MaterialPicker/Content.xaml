@@ -8,8 +8,8 @@
     xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core">
 	
 	<UserControl.Resources>
-		<Materials:Material x:Key="FlatMaterial" Shade="Flat"/>
-		<Materials:Material x:Key="GouraudMaterial" Shade="Gouraud"/>
+		<Materials:Material x:Key="FlatMaterial" Diffuse="Red" Shade="Flat"/>
+		<Materials:Material x:Key="GouraudMaterial"  Diffuse="Red" Shade="Gouraud"/>
 		<Materials:Material x:Key="TexturedMaterial" DiffuseMap="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/ReflectionMap.jpg"/>
 		<Materials:Material x:Key="ReflectionMaterial" ReflectionMap="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/ReflectionMap.jpg"/>
 	</UserControl.Resources>
@@ -34,9 +34,8 @@
 			<Lighting:OmniLight Position="0,400,0" Ambient="Grey" Diffuse="Grey" Specular="White"/>
 			
 			<Geometries:Geometry x:Name="GeometryContainer">
-				<Geometries:Mesh x:Name="Teapot" Color="Red"  AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase" IsVisible="True"/>
-				
-				<Geometries:Box x:Name="Box" Dimension="40,40,40" Color="Red" IsVisible="False"/>
+				<Geometries:Mesh x:Name="Teapot" AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase" IsVisible="True"/>
+				<Geometries:Box x:Name="Box" Dimension="40,40,40" IsVisible="False"/>
 			</Geometries:Geometry>
 		</Execution:Game>
 

@@ -17,8 +17,10 @@
 //
 #endregion
 
+using System.ComponentModel;
 using Balder.Core.Execution;
 using Balder.Core.Imaging;
+using Balder.Core.TypeConverters;
 
 namespace Balder.Core.Materials
 {
@@ -27,11 +29,17 @@ namespace Balder.Core.Materials
 		public Material()
 		{
 			Shade = MaterialShade.None;
+			Diffuse = Color.Random();
 		}
 
 
+		[TypeConverter(typeof(ColorConverter))]
 		public Color Ambient { get; set; }
+
+		[TypeConverter(typeof(ColorConverter))]
 		public Color Diffuse { get; set; }
+
+		[TypeConverter(typeof(ColorConverter))]
 		public Color Specular { get; set; }
 		public float Shine { get; set; }
 		public float ShineStrength { get; set; }

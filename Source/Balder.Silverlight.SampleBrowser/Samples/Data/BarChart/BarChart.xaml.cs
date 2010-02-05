@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Data;
 using Balder.Core.Helpers;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.Data.BarChart
@@ -34,6 +29,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Data.BarChart
 			{
 				PrepareValueCollection(value, ValuesSource);
 				ValuesSourceProperty.SetValue(this, value);
+				AdjustBarChartElements();
 			}
 		}
 
@@ -88,8 +84,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Data.BarChart
 					}
 					break;
 			}
-			BackgroundContainer.Scale.X = _values.Count;
-			NodesStack.Position.X = -(_values.Count*5);
+			AdjustBarChartElements();
 		}
 
 		private void AddValues(IEnumerable enumerable)
@@ -107,59 +102,12 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Data.BarChart
 			_values.Add(barChartValue);
 			_hashedValues[element] = barChartValue;
 		}
-	}
 
-	public class BarChartValue : INotifyPropertyChanged
-	{
-		private readonly object _element;
-		private readonly string _valueMember;
-
-		private PropertyInfo _propertyInfo;
-		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
-
-		public BarChartValue(object element, string valueMember)
+		private void AdjustBarChartElements()
 		{
-			_element = element;
-			_valueMember = valueMember;
-			_propertyInfo = element.GetType().GetProperty(valueMember);
-			if( element is INotifyPropertyChanged )
-			{
-				((INotifyPropertyChanged) element).PropertyChanged += ElementPropertyChanged;
-			}
-			GetValueFromSourceAndSetToValue();
-		}
-
-		private void ElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if( e.PropertyName.Equals(_valueMember) )
-			{
-				GetValueFromSourceAndSetToValue();
-			}
-		}
-
-		private void GetValueFromSourceAndSetToValue()
-		{
-			var value = (double)_propertyInfo.GetValue(_element, null);
-			Value = value;
-		}
-
-
-
-
-		private double _value;
-		public double Value
-		{
-			get { return _value; }
-			set
-			{
-				_value = value;
-				OnPropertyChanged("Value");
-			}
-		}
-
-		private void OnPropertyChanged(string property)
-		{
-			PropertyChanged(this, new PropertyChangedEventArgs(property));
+			BackgroundContainer.Scale.X = _values.Count;
+			BackgroundContainer.Position.X = (_values.Count * 5)-5;
+			NodesStack.Position.X = -(_values.Count * 5);
 		}
 	}
 }

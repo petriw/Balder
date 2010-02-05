@@ -19,14 +19,12 @@
 
 #endregion
 using Balder.Core.Display;
-using Balder.Core.Materials;
 using Balder.Core.Math;
 
 namespace Balder.Core
 {
 	public interface IColorCalculator
 	{
-		Color Calculate(Viewport viewport, Vector vector, Vector normal, Material material);
-		Color Calculate(Viewport viewport, Vector vector, Vector normal, Color diffuseColor);
+		Color Calculate(Viewport viewport, Vector vector, Vector normal);
 	}
 }

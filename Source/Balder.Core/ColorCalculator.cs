@@ -1,23 +1,14 @@
-﻿using System;
-using Balder.Core.Display;
+﻿using Balder.Core.Display;
 using Balder.Core.Lighting;
-using Balder.Core.Materials;
 using Balder.Core.Math;
 
 namespace Balder.Core
 {
 	public class ColorCalculator : IColorCalculator
 	{
-		public Color Calculate(Viewport viewport, Vector vector, Vector normal, Material material)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Color Calculate(Viewport viewport, Vector vector, Vector normal, Color diffuseColor)
+		public Color Calculate(Viewport viewport, Vector vector, Vector normal)
 		{
 			var color = viewport.Scene.AmbientColor;
-			color = color.Additive(diffuseColor);
-			
 
 			foreach( ILight light in viewport.Scene.Lights )
 			{

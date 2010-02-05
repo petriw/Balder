@@ -31,7 +31,6 @@ namespace Balder.Core
 	/// </summary>
 	public abstract partial class Node : IAmCopyable<Node>
 	{
-		private static readonly Random Rnd = new Random();
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
 		public event EventHandler Click = (s, e) => { };
@@ -50,10 +49,7 @@ namespace Balder.Core
 
 		private void InitializeColor()
 		{
-			var red = (byte)Rnd.Next(0, 64);
-			var green = (byte)Rnd.Next(0, 64);
-			var blue = (byte)Rnd.Next(0, 64);
-			Color = new Color(red, green, blue, 0xff);
+			Color = Color.Random();
 		}
 
 

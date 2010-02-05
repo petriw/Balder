@@ -11,10 +11,10 @@
 	</Geometries:Geometry.Resources>
 
 	<Geometries:Geometry Position="0,0,5" x:Name="BackgroundContainer">
-		<Geometries:Heightmap Dimension="15,20" Color="Grey" Material="{StaticResource BarBackgroundMaterial}"/>
-		<Geometries:Heightmap Dimension="15,100" Color="Grey" Rotation="90,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
-		<Geometries:Heightmap Dimension="100,20" Color="Grey" Rotation="0,0,-90" Material="{StaticResource BarBackgroundMaterial}"/>
-		<Geometries:Heightmap Dimension="100,20" Color="Grey" Rotation="0,0,-90" Position="-30,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="20,20" Color="Grey" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="20,40" Color="Grey" Rotation="90,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="40,20" Color="Grey" Rotation="0,0,-90" Material="{StaticResource BarBackgroundMaterial}"/>
+		<Geometries:Heightmap Dimension="40,20" Color="Grey" Rotation="0,0,-90" Position="-10,0,0" Material="{StaticResource BarBackgroundMaterial}"/>
 	</Geometries:Geometry>
 
 	<Controls:NodesStack x:Name="NodesStack" StartPosition="0,0,0" ItemAdd="10,0,0" Scale="1,1,1">

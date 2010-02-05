@@ -209,7 +209,7 @@ namespace Balder.Core.SoftwareRendering
 
 		private void CalculateColorForVertex(ref Vertex vertex, Viewport viewport, Node node)
 		{
-			vertex.CalculatedColor = vertex.Color.Additive(_colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.TransformedNormal, node.Color));
+			vertex.CalculatedColor = vertex.Color.Additive(_colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.TransformedNormal));
 		}
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -249,7 +249,7 @@ namespace Balder.Core.SoftwareRendering
 					{
 						case MaterialShade.None:
 							{
-								face.Color = node.Color;
+								face.Color = face.Material.Diffuse;
 								if( null != face.Material.DiffuseMap || null != face.Material.ReflectionMap )
 								{
 									TextureTriangleRenderer.Draw(face, Vertices);
@@ -262,13 +262,18 @@ namespace Balder.Core.SoftwareRendering
 
 						case MaterialShade.Flat:
 							{
-								face.Color = _colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal, node.Color);
+								var color = face.Material.Diffuse;
+								face.Color = color.Additive(_colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal));
 								FlatTriangleRenderer.Draw(face, Vertices);
 							}
 							break;
 
 						case MaterialShade.Gouraud:
 							{
+								var color = face.Material.Diffuse;
+								Vertices[face.A].CalculatedColor = color.Additive(Vertices[face.A].CalculatedColor);
+								Vertices[face.B].CalculatedColor = color.Additive(Vertices[face.B].CalculatedColor);
+								Vertices[face.C].CalculatedColor = color.Additive(Vertices[face.C].CalculatedColor);
 								GouraudTriangleRenderer.Draw(face, Vertices);
 							}
 							break;
@@ -276,7 +281,17 @@ namespace Balder.Core.SoftwareRendering
 				}
 				else
 				{
+					var color = node.Color;
+					var aColor = Vertices[face.A].CalculatedColor;
+					var bColor = Vertices[face.B].CalculatedColor;
+					var cColor = Vertices[face.C].CalculatedColor;
+					Vertices[face.A].CalculatedColor = Vertices[face.A].CalculatedColor.Additive(color);
+					Vertices[face.B].CalculatedColor = Vertices[face.B].CalculatedColor.Additive(color);
+					Vertices[face.C].CalculatedColor = Vertices[face.C].CalculatedColor.Additive(color);
 					GouraudTriangleRenderer.Draw(face, Vertices);
+					Vertices[face.A].CalculatedColor = aColor;
+					Vertices[face.B].CalculatedColor = bColor;
+					Vertices[face.C].CalculatedColor = cColor;
 				}
 			}
 		}

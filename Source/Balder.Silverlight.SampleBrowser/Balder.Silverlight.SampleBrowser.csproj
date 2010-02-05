@@ -144,9 +144,15 @@
     <Compile Include="Samples\Data\BarChart\BarChart.xaml.cs">
       <DependentUpon>BarChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Data\BarChart\BarChartValue.cs" />
     <Compile Include="Samples\Data\BarChart\BusinessObject.cs" />
     <Compile Include="Samples\Data\BarChart\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Data\BarChart\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Data\BarChart\ViewModel.cs" />
     <Compile Include="Samples\Data\NodesControl\BusinessObject.cs" />
@@ -353,6 +359,10 @@
     <Resource Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Samples\Data\BarChart\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\Data\NodesControl\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

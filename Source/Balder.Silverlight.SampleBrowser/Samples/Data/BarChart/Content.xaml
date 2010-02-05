@@ -5,10 +5,21 @@
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
     xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
     xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.BarChart" 
-    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data">
+    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data" 
+    xmlns:Controls1="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit">
 	<UserControl.DataContext>
 		<local:ViewModel/>
 	</UserControl.DataContext>
+
+	<UserControl.Resources>
+		<Storyboard x:Key="CameraMoveStoryboard">
+			<DoubleAnimation Storyboard.TargetName="Camera" Storyboard.TargetProperty="(Node.Position).Z" Duration="00:00:01" From="-100" To="-110">
+				<DoubleAnimation.EasingFunction>
+					<ElasticEase/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.Triggers>
@@ -35,7 +46,7 @@
 
 		<Execution:Game Width="640" Height="480">
 			<Execution:Game.Camera>
-				<View:Camera Position="0,20,-100"/>
+				<View:Camera x:Name="Camera" Position="0,30,-100"/>
 			</Execution:Game.Camera>
 
 			<Lighting:OmniLight Position="0,30,-50" Ambient="Brown" Diffuse="Green" Specular="White"/>
@@ -44,9 +55,21 @@
 		</Execution:Game>
 
 
-		<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-			<Controls:DataGrid ItemsSource="{Binding Objects}" Width="100" Height="100"/>
-			<Button Content="Add Value" Click="AddValueClick"/>
-		</StackPanel>
+		<Controls1:DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" LastChildFill="true">
+			<Button Content="Add Value" Click="AddValueClick" Controls1:DockPanel.Dock="Top"/>
+			<Controls:DataGrid ItemsSource="{Binding Objects}" Width="200" AutoGenerateColumns="False">
+				<Controls:DataGrid.Columns>
+					<Controls:DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="80"/>
+					<Controls:DataGridTemplateColumn Width="100">
+						<Controls:DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Slider Value="{Binding Path=Value, Mode=TwoWay}" Minimum="0" Maximum="200"/>
+							</DataTemplate>
+						</Controls:DataGridTemplateColumn.CellTemplate>
+					</Controls:DataGridTemplateColumn>
+				</Controls:DataGrid.Columns>
+			</Controls:DataGrid>
+
+		</Controls1:DockPanel>
 	</Grid>
 </UserControl>
