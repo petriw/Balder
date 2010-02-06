@@ -97,6 +97,7 @@
     <Compile Include="..\Common\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Animation\StoryboardExtensions.cs" />
     <Compile Include="AssetLoaders\ImageLoader.cs" />
     <Compile Include="Content\FilePathHelper.cs" />
     <Compile Include="Controls\INodeModifier.cs" />

@@ -4,13 +4,16 @@
     xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
-    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core">
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight">
 	<Grid x:Name="LayoutRoot">
 		<Grid.Triggers>
 			<EventTrigger RoutedEvent="Grid.Loaded">
 				<BeginStoryboard>
 					<Storyboard RepeatBehavior="Forever">
-						<DoubleAnimation Storyboard.TargetName="Box" Storyboard.TargetProperty="(Node.Rotation).(Y)" From="0" To="359" Duration="00:00:05"/>
+						<Animation:StoryboardExtensions.CoordinateAnimation>
+							<Animation:CoordinateAnimation From="0,0,0" To="0,359,0" Duration="00:00:05" TargetName="Box" TargetProperty="(Node.Rotation)"/>
+						</Animation:StoryboardExtensions.CoordinateAnimation>
 					</Storyboard>
 				</BeginStoryboard>
 
