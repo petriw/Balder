@@ -19,6 +19,7 @@
 
 #endregion
 using Balder.Core.Execution;
+using Balder.Core.Math;
 
 namespace Balder.Core.Objects.Geometries
 {
@@ -69,6 +70,30 @@ namespace Balder.Core.Objects.Geometries
 			set { SizeProperty.SetValue(this, value); }
 		}
 
+		public static readonly Property<Cylinder, double> StartAngleProperty = Property<Cylinder, double>.Register(c => c.StartAngle);
+		public double StartAngle
+		{
+			get { return StartAngleProperty.GetValue(this); }
+			set { StartAngleProperty.SetValue(this, value); }
+		}
+
+		public static readonly Property<Cylinder, double> EndAngleProperty = Property<Cylinder, double>.Register(c => c.EndAngle);
+		public double EndAngle
+		{
+			get { return EndAngleProperty.GetValue(this); }
+			set { EndAngleProperty.SetValue(this, value); }
+		}
+
+
+		public Cylinder()
+		{
+			StartAngle = 0;
+			EndAngle = 360;
+			Segments = 8;
+			Stacks = 1;
+			CapEnds = true;
+		}
+
 
 		protected override void OnLoaded()
 		{
@@ -87,12 +112,13 @@ namespace Balder.Core.Objects.Geometries
 
 			var actualStacks = Stacks + 1;
 			var actualSegments = Segments;
+			var nextSegmentOffset = actualSegments + 1;
 
 			var deltaRadius = BottomRadius - TopRadius;
 			var radiusAdd = deltaRadius / actualStacks;
 			var currentRadius = TopRadius;
 
-			var vertexCount = (actualStacks * actualSegments) + 2;
+			var vertexCount = (actualStacks * (actualSegments+1));
 			var vertexIndex = 0;
 
 			GeometryContext.AllocateVertices(vertexCount);
@@ -111,18 +137,56 @@ namespace Balder.Core.Objects.Geometries
 
 			var currentV = 0f;
 
-			var thetaAdd = (System.Math.PI * 2) / actualSegments;
+			var radianAdd = 0d;
+			var startRadian = 0d;
+
+			var faceSegments = 0;
+			var faceOffset = 0;
+			var additionalFaceSegments = 0;
+			var isFull = true;
+			if (StartAngle > 0 || EndAngle < 360)
+			{
+				faceSegments = actualSegments+1;
+
+				startRadian = MathHelper.ToRadians((float)StartAngle);
+				var endRadian = MathHelper.ToRadians((float)EndAngle);
+				var radianDelta = endRadian - startRadian;
+				radianAdd = radianDelta / actualSegments;
+
+				radianAdd += radianAdd/actualSegments;
+
+				isFull = false;
+				faceOffset = 0;
+				additionalFaceSegments = 1;
+			}
+			else
+			{
+				faceSegments = actualSegments;
+				radianAdd = (System.Math.PI * 2) / actualSegments;
+				isFull = true;
+				faceOffset = 1;
+				additionalFaceSegments = 0;
+			}
+
 
 			Vertex vertex;
 
 			for (var y = 0; y < actualStacks; y++)
 			{
 				var currentU = 0f;
-				var currentTheta = 0d;
+				var currentRadian = startRadian;
+
+				var centerTextureCoordinate = new TextureCoordinate(0.5f, 0.5f);
+				vertex = new Vertex(0, currentY, 0);
+				GeometryContext.SetVertex(vertexIndex, vertex);
+				GeometryContext.SetTextureCoordinate(vertexIndex, centerTextureCoordinate);
+				vertexIndex++;
+
+
 				for (var x = 0; x < actualSegments; x++)
 				{
-					var currentX = (float)(System.Math.Sin(currentTheta) * currentRadius);
-					var currentZ = (float)(System.Math.Cos(currentTheta) * currentRadius);
+					var currentX = (float)(System.Math.Sin(currentRadian) * currentRadius);
+					var currentZ = (float)(System.Math.Cos(currentRadian) * currentRadius);
 
 					vertex = new Vertex(currentX, currentY, currentZ);
 					GeometryContext.SetVertex(vertexIndex, vertex);
@@ -131,22 +195,16 @@ namespace Balder.Core.Objects.Geometries
 					GeometryContext.SetTextureCoordinate(vertexIndex, textureCoordinate);
 
 					vertexIndex++;
-					currentTheta += thetaAdd;
+					currentRadian += radianAdd;
 					currentU += uAdd;
 				}
+
 
 				currentRadius += radiusAdd;
 				currentY -= yAdd;
 				currentV += vAdd;
 			}
 
-			var centerTextureCoordinate = new TextureCoordinate(0.5f, 0.5f);
-			vertex = new Vertex(0, (float)Size / 2f, 0);
-			GeometryContext.SetVertex(vertexCount - 2, vertex);
-			GeometryContext.SetTextureCoordinate(vertexCount - 2, centerTextureCoordinate);
-			vertex = new Vertex(0, (float)-Size / 2f, 0);
-			GeometryContext.SetVertex(vertexCount - 1, vertex);
-			GeometryContext.SetTextureCoordinate(vertexCount - 1, centerTextureCoordinate);
 
 
 			var faceIndex = 0;
@@ -157,22 +215,30 @@ namespace Balder.Core.Objects.Geometries
 			{
 				faceCount += actualSegments * 2;
 			}
+			if (!isFull)
+			{
+				faceCount += actualStacks * 2;
+			}
 			GeometryContext.AllocateFaces(faceCount);
 
 			var vertexOffset = 0;
 			var nextSegmentVertexOffset = 0;
 
+
+
 			for (var y = 0; y < actualStacks - 1; y++)
 			{
-				vertexOffset = y * actualSegments;
-				nextSegmentVertexOffset = (y + 1) * actualSegments;
+				vertexOffset = (y * actualSegments);
+				nextSegmentVertexOffset = (y + 1) * nextSegmentOffset;
 
-				for (var x = 0; x < actualSegments; x++)
+				for (var x = 0; x < faceSegments; x++)
 				{
-					var nextX = (x + 1) % actualSegments;
-					face = new Face(vertexOffset + x,
+					var actualX = x + faceOffset;
+					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments))+faceOffset;
+
+					face = new Face(vertexOffset + actualX,
 									vertexOffset + nextX,
-									nextSegmentVertexOffset + x);
+									nextSegmentVertexOffset + actualX);
 					face.DiffuseA = face.A;
 					face.DiffuseB = face.B;
 					face.DiffuseC = face.C;
@@ -180,7 +246,7 @@ namespace Balder.Core.Objects.Geometries
 					faceIndex++;
 
 					face = new Face(nextSegmentVertexOffset + nextX,
-									nextSegmentVertexOffset + x,
+									nextSegmentVertexOffset + actualX,
 									vertexOffset + nextX);
 					face.DiffuseA = face.A;
 					face.DiffuseB = face.B;
@@ -188,16 +254,18 @@ namespace Balder.Core.Objects.Geometries
 					GeometryContext.SetFace(faceIndex, face);
 
 					faceIndex++;
+					
 				}
 			}
 
 			if (CapEnds)
 			{
 				vertexOffset = 0;
-				for (var x = 0; x < actualSegments; x++)
+				for (var x = 0; x < faceSegments; x++)
 				{
-					var nextX = (x + 1) % actualSegments;
-					face = new Face(vertexCount - 2,
+					var actualX = x + faceOffset;
+					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
+					face = new Face(0,
 									vertexOffset + nextX,
 									vertexOffset + x);
 					face.DiffuseA = face.A;
@@ -207,13 +275,14 @@ namespace Balder.Core.Objects.Geometries
 					faceIndex++;
 				}
 
-				vertexOffset = (actualStacks-1)*actualSegments;
-				for (var x = 0; x < actualSegments; x++)
+				vertexOffset = (actualStacks - 1) * nextSegmentOffset;
+				for (var x = 0; x < faceSegments; x++)
 				{
-					var nextX = (x + 1) % actualSegments;
+					var actualX = x + faceOffset;
+					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
 					face = new Face(vertexOffset + x,
 									vertexOffset + nextX,
-									vertexCount - 1);
+									vertexOffset);
 					face.DiffuseA = face.A;
 					face.DiffuseB = face.B;
 					face.DiffuseC = face.C;

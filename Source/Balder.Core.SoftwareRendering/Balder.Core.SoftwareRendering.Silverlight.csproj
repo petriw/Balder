@@ -96,6 +96,7 @@
     <Compile Include="Rendering\FlatTriangle.cs" />
     <Compile Include="Rendering\FlatTriangleAdditive.cs" />
     <Compile Include="Rendering\GouraudTriangle.cs" />
+    <Compile Include="Rendering\Point.cs" />
     <Compile Include="Rendering\RenderedSpan.cs" />
     <Compile Include="Rendering\Scanline.cs" />
     <Compile Include="Rendering\TextureTriangle.cs" />

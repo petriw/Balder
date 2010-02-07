@@ -6,10 +6,11 @@
     xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
     xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight" 
-    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core">
+    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core" 
+    xmlns:Debug="clr-namespace:Balder.Core.Debug;assembly=Balder.Core">
 
 	<UserControl.Resources>
-		<Materials:Material x:Key="Material"  Diffuse="Red" DoubleSided="False" Shade="Gouraud"/>
+		<Materials:Material x:Key="Material"  Diffuse="Red" DoubleSided="True" Shade="Gouraud"/>
 		<!-- ReflectionMap="/Balder.Silverlight.SampleBrowser;component/Samples/Primitives/Cylinder/BalderLogo.png"/>-->
 		<!-- -->
 	</UserControl.Resources>
@@ -29,6 +30,9 @@
 		</Grid.Triggers>
 
 		<Execution:Game Width="640" Height="480">
+			<Execution:Game.DebugLevel>
+				<Debug:DebugLevel ShowVertices="True"/>
+			</Execution:Game.DebugLevel>
 			<Execution:Game.Camera>
 				<View:Camera Position="100,50,-100" Target="0,0,0"/>
 			</Execution:Game.Camera>
@@ -41,6 +45,8 @@
 								 Stacks="1"
 								 Segments="16"
 								 CapEnds="True"
+								 StartAngle="90"
+								 EndAngle="180"
 								 Size="40"
 								 Material="{StaticResource Material}"
 								 />

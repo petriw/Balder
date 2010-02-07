@@ -33,6 +33,7 @@ namespace Balder.Core.SoftwareRendering
 		private static readonly FlatTriangleAdditive FlatTriangleAdditiveRenderer = new FlatTriangleAdditive();
 		private static readonly GouraudTriangle GouraudTriangleRenderer = new GouraudTriangle();
 		private static readonly TextureTriangle TextureTriangleRenderer = new TextureTriangle();
+		private static readonly Point PointRenderer = new Point();
 		private readonly IColorCalculator _colorCalculator;
 
 		private bool _hasPrepared;
@@ -161,7 +162,7 @@ namespace Balder.Core.SoftwareRendering
 
 		public void Render(Viewport viewport, RenderableNode node, Matrix view, Matrix projection, Matrix world)
 		{
-			if (null == Vertices )
+			if (null == Vertices)
 			{
 				return;
 			}
@@ -176,6 +177,11 @@ namespace Balder.Core.SoftwareRendering
 
 			RenderFaces(node, viewport, view, projection, world);
 			RenderLines(node, viewport, view, projection, world);
+
+			if (viewport.DebugLevel.ShowVertices)
+			{
+				RenderVertices(node, viewport, view, projection, world);
+			}
 		}
 
 		private static void TransformAndTranslateVertex(ref Vertex vertex, Viewport viewport, Matrix view, Matrix projection)
@@ -198,7 +204,7 @@ namespace Balder.Core.SoftwareRendering
 			{
 				var vertex = Vertices[vertexIndex];
 				vertex.Vector += negativePivot;
-				
+
 				TransformAndTranslateVertex(ref vertex, viewport, localView, projection);
 				CalculateColorForVertex(ref vertex, viewport, node);
 				vertex.Vector -= negativePivot;
@@ -211,6 +217,19 @@ namespace Balder.Core.SoftwareRendering
 		{
 			vertex.CalculatedColor = vertex.Color.Additive(_colorCalculator.Calculate(viewport, vertex.TransformedVector, vertex.TransformedNormal));
 		}
+
+		private void RenderVertices(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		{
+			for (var vertexIndex = 0; vertexIndex < Vertices.Length; vertexIndex++)
+			{
+				PointRenderer.Draw((int)Vertices[vertexIndex].TranslatedScreenCoordinates.X,
+									(int)Vertices[vertexIndex].TranslatedScreenCoordinates.Y,
+									Color.White,
+									4);
+			}
+		}
+
+
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
@@ -234,7 +253,7 @@ namespace Balder.Core.SoftwareRendering
 
 
 				var visible = mixedProduct < 0; // && viewport.View.IsInView(a.TransformedVector);
-				if( null != face.Material)
+				if (null != face.Material)
 				{
 					visible |= face.Material.DoubleSided;
 				}
@@ -250,12 +269,13 @@ namespace Balder.Core.SoftwareRendering
 						case MaterialShade.None:
 							{
 								face.Color = face.Material.Diffuse;
-								if( null != face.Material.DiffuseMap || null != face.Material.ReflectionMap )
+								if (null != face.Material.DiffuseMap || null != face.Material.ReflectionMap)
 								{
 									TextureTriangleRenderer.Draw(face, Vertices);
-								} else
+								}
+								else
 								{
-									FlatTriangleRenderer.Draw(face, Vertices);	 
+									FlatTriangleRenderer.Draw(face, Vertices);
 								}
 							}
 							break;

@@ -27,5 +27,6 @@ namespace Balder.Core.Debug
 		public bool Lights { get; set; }
 		public bool BoundingBoxes { get; set; }
 		public bool BoundingSpheres { get; set; }
+		public bool ShowVertices { get; set; }
 	}
 }
