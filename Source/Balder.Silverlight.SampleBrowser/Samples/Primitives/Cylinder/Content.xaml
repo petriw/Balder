@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.Primitives.Cylinder.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight" 
+    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core">
+
+	<UserControl.Resources>
+		<Materials:Material x:Key="Material"  Diffuse="Red" DoubleSided="False" Shade="Gouraud"/>
+		<!-- ReflectionMap="/Balder.Silverlight.SampleBrowser;component/Samples/Primitives/Cylinder/BalderLogo.png"/>-->
+		<!-- -->
+	</UserControl.Resources>
+	<Grid x:Name="LayoutRoot">
+
+		<Grid.Triggers>
+			<EventTrigger RoutedEvent="Grid.Loaded">
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever">
+						<Animation:StoryboardExtensions.CoordinateAnimation>
+							<Animation:CoordinateAnimation From="0,0,0" To="359,359,0" Duration="00:00:05" TargetName="Cylinder" TargetProperty="(Node.Rotation)"/>
+						</Animation:StoryboardExtensions.CoordinateAnimation>
+					</Storyboard>
+				</BeginStoryboard>
+
+			</EventTrigger>
+		</Grid.Triggers>
+
+		<Execution:Game Width="640" Height="480">
+			<Execution:Game.Camera>
+				<View:Camera Position="100,50,-100" Target="0,0,0"/>
+			</Execution:Game.Camera>
+
+			<Lighting:OmniLight Position="-100,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
+
+			<Geometries:Cylinder x:Name="Cylinder" 
+								TopRadius="10"
+								 BottomRadius="20"
+								 Stacks="1"
+								 Segments="16"
+								 CapEnds="True"
+								 Size="40"
+								 Material="{StaticResource Material}"
+								 />
+		</Execution:Game>
+
+	</Grid>
+</UserControl>

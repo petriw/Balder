@@ -178,6 +178,7 @@
     <Compile Include="Objects\Geometries\Heightmap.cs" />
     <Compile Include="Objects\Geometries\HeightmapEventArgs.cs" />
     <Compile Include="Objects\Geometries\Ring.cs" />
+    <Compile Include="Objects\Geometries\Sphere.cs" />
     <Compile Include="Rendering\IShapeContext.cs" />
     <Compile Include="Execution\ConstructorArgument.cs" />
     <Compile Include="Execution\IObjectFactory.cs" />

@@ -264,7 +264,14 @@ namespace Balder.Core.SoftwareRendering
 							{
 								var color = face.Material.Diffuse;
 								face.Color = color.Additive(_colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal));
-								FlatTriangleRenderer.Draw(face, Vertices);
+								if (null != face.Material.DiffuseMap || null != face.Material.ReflectionMap)
+								{
+									TextureTriangleRenderer.Draw(face, Vertices);
+								}
+								else
+								{
+									FlatTriangleRenderer.Draw(face, Vertices);
+								}
 							}
 							break;
 
@@ -274,7 +281,16 @@ namespace Balder.Core.SoftwareRendering
 								Vertices[face.A].CalculatedColor = color.Additive(Vertices[face.A].CalculatedColor);
 								Vertices[face.B].CalculatedColor = color.Additive(Vertices[face.B].CalculatedColor);
 								Vertices[face.C].CalculatedColor = color.Additive(Vertices[face.C].CalculatedColor);
-								GouraudTriangleRenderer.Draw(face, Vertices);
+
+								if (null != face.Material.DiffuseMap || null != face.Material.ReflectionMap)
+								{
+									TextureTriangleRenderer.Draw(face, Vertices);
+								}
+								else
+								{
+									GouraudTriangleRenderer.Draw(face, Vertices);
+								}
+
 							}
 							break;
 					}

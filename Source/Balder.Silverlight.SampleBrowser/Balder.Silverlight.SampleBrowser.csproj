@@ -200,6 +200,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Primitives\Cylinder\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Primitives\Heightmap\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Primitives\Sphere\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
     <Compile Include="Samples\Primitives\Sprites\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
@@ -302,7 +308,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
+    <Page Include="Samples\Primitives\Cylinder\Content.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Samples\Primitives\Heightmap\Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Samples\Primitives\Sphere\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
@@ -417,6 +431,9 @@
   <ItemGroup>
     <Resource Include="Samples\Materials\MaterialPicker\Assets\BalderLogo.png" />
     <Resource Include="Samples\Materials\MaterialPicker\Assets\VisualStudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Primitives\Cylinder\BalderLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
