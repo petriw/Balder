@@ -31,8 +31,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap
 
 			_sin += 0.03;
 
-			if( e.GridX == HeightMap.LengthSegments-1 && 
-			    e.GridY == HeightMap.HeightSegments-1 )
+			if( e.GridX == HeightMap.LengthSegments && 
+			    e.GridY == HeightMap.HeightSegments )
 			{
 				_sin = 0;
 				_movement += 0.05;

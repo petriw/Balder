@@ -211,7 +211,7 @@ namespace Balder.Core.Objects.Geometries
 			{
 				for (var x = 0; x < actualLength - 1; x++)
 				{
-					var offset = (y*LengthSegments)+x;
+					var offset = (y * actualLength) + x;
 					var offsetNextLine = offset + actualLength;
 					var face = new Face(offset, offset + 1, offsetNextLine);
 					face.Normal = Vector.Up;

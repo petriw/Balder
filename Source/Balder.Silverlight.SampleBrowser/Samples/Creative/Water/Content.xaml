@@ -4,7 +4,6 @@
     xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
-    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
     xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core" >
 	
 	<UserControl.Resources>
@@ -26,7 +25,7 @@
 			<Execution:Game.Camera>
 				<View:Camera Position="100,130,-100" Target="0,0,0"/>
 			</Execution:Game.Camera>
-			<Lighting:OmniLight Position="-100,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
+			
 			<Geometries:Heightmap x:Name="HeightMap" 
 								  Dimension="80,80" 
 								  LengthSegments="40" 
