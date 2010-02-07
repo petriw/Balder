@@ -10,5 +10,6 @@
 		public const string DebugInfo = "Debug Information";
 		public const string Primitives = "Primitives";
 		public const string Materials = "Materials";
+		public const string Creative = "Creative";
 	}
 }
