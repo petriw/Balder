@@ -28,14 +28,14 @@
 
 		<Execution:Game Width="640" Height="480">
 			<Execution:Game.Camera>
-				<View:Camera x:Name="Camera" Position="0,80,-150"/>
+				<View:Camera x:Name="Camera" Position="0,80,-150" Target="0,10,0"/>
 			</Execution:Game.Camera>
 
 			<Lighting:OmniLight Position="0,400,0" Ambient="Grey" Diffuse="Grey" Specular="White"/>
 			
 			<Geometries:Geometry x:Name="GeometryContainer">
 				<Geometries:Mesh x:Name="Teapot" AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase" IsVisible="True"/>
-				<Geometries:Box x:Name="Box" Dimension="40,40,40" IsVisible="False"/>
+				<Geometries:Box x:Name="Box" Dimension="40,40,40" Position="0,10,0" IsVisible="False"/>
 			</Geometries:Geometry>
 		</Execution:Game>
 
@@ -58,7 +58,7 @@
 			</ComboBox>
 
 			<TextBlock Text="Material type" Grid.Column="0" Grid.Row="1"/>
-			<ComboBox x:Name="MaterialComboBox" Grid.Column="1" Grid.Row="1" SelectedIndex="0" SelectionChanged="MaterialTypeChanged">
+			<ComboBox x:Name="MaterialComboBox" Grid.Column="1" Grid.Row="1" SelectedIndex="3" SelectionChanged="MaterialTypeChanged">
 				<ComboBoxItem Content="Flat Shaded"/>
 				<ComboBoxItem Content="Gouraud Shaded"/>
 				<ComboBoxItem Content="Textured"/>

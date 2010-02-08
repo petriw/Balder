@@ -21,6 +21,7 @@ using System.Collections.Generic;
 #if(!SILVERLIGHT)
 using System.IO;
 #endif
+using System.Globalization;
 using System.Xml.Linq;
 using Balder.Core.Content;
 using Balder.Core.Exceptions;
@@ -115,11 +116,11 @@ namespace Balder.Core.Assets.AssetLoaders
 				foreach( var vertex in vertices )
 				{
 					var index = int.Parse(vertex.Attribute("i").Value);
-					var x = float.Parse(vertex.Attribute("px").Value);
-					var y = float.Parse(vertex.Attribute("py").Value);
-					var z = float.Parse(vertex.Attribute("pz").Value);
-					var u = float.Parse(vertex.Attribute("u0").Value);
-					var v = float.Parse(vertex.Attribute("v0").Value);
+					var x = float.Parse(vertex.Attribute("px").Value, CultureInfo.InvariantCulture);
+					var y = float.Parse(vertex.Attribute("py").Value, CultureInfo.InvariantCulture);
+					var z = float.Parse(vertex.Attribute("pz").Value, CultureInfo.InvariantCulture);
+					var u = float.Parse(vertex.Attribute("u0").Value, CultureInfo.InvariantCulture);
+					var v = float.Parse(vertex.Attribute("v0").Value, CultureInfo.InvariantCulture);
 					
 					v = 1f - v;
 

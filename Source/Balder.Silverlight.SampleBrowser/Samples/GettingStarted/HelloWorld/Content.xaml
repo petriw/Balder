@@ -45,15 +45,15 @@
 		</Grid.Triggers>
 		<Execution:Game Width="800" Height="600">
 			<Execution:Game.Camera>
-				<View:Camera Position="0,60,-300" Target="0,30,0"/>
+				<View:Camera Position="0,60,-300" Target="0,20,0"/>
 			</Execution:Game.Camera>
 
 			<Lighting:OmniLight Position="0,40,-100" Ambient="Green" Diffuse="Green" Specular="White"/>
 
 			<Geometries:Mesh x:Name="Hello" 
 							 AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Hello.ASE"
-							 Position="0,50,0"
-							 Scale="0.5,0.5,0.5"
+							 Position="0,45,0"
+							 Scale="0.3,0.3,0.3"
 							 Material="{StaticResource HelloMaterial}"
 							 />
 

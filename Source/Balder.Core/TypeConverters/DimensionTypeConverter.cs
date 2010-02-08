@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Balder.Core.TypeConverters
 {
@@ -46,8 +47,8 @@ namespace Balder.Core.TypeConverters
 			}
 			var dimension = new Dimension
 			{
-				Width = float.Parse(values[0]),
-				Height = float.Parse(values[1]),
+				Width = float.Parse(values[0], CultureInfo.InvariantCulture),
+				Height = float.Parse(values[1], CultureInfo.InvariantCulture),
 			};
 			return dimension;
 		}
@@ -55,7 +56,7 @@ namespace Balder.Core.TypeConverters
 		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
 		{
 			var dimension = (Dimension)value;
-			var dimensionAsString = string.Format("{0},{1}", dimension.Width, dimension.Height);
+			var dimensionAsString = string.Format(CultureInfo.InvariantCulture, "{0},{1}", dimension.Width, dimension.Height);
 			return dimensionAsString;
 		}
 	}
