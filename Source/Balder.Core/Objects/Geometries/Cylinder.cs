@@ -18,6 +18,8 @@
 //
 
 #endregion
+
+using System;
 using Balder.Core.Execution;
 using Balder.Core.Math;
 
@@ -98,17 +100,52 @@ namespace Balder.Core.Objects.Geometries
 		protected override void OnLoaded()
 		{
 			_isLoaded = true;
-			PrepareCylinder();
+			Prepare();
 			base.OnLoaded();
 		}
 
+		private void Validate()
+		{
+			if( TopRadius <= 0 || BottomRadius <= 0 )
+			{
+				throw new ArgumentException("Top and Bottom radius must be set to a number higher than 0");
+			}
 
-		private void PrepareCylinder()
+			if( Segments <= 2 )
+			{
+				throw new ArgumentException("You must have at least 2 segments");
+			}
+
+			if( StartAngle > EndAngle )
+			{
+				throw new ArgumentException("StartAngle must be less than EndAngle");
+			}
+
+			if( StartAngle < 0 || EndAngle < 0 )
+			{
+				throw new ArgumentException("Start or End angle must be 0 or more");
+			}
+
+			if( StartAngle > 360 || EndAngle > 360 )
+			{
+				throw new ArgumentException("Start or End angle must be 360 or less");
+			}
+			
+			if( Stacks < 1 )
+			{
+				throw new ArgumentException("You must have at least 1 stack");
+			}
+		}
+
+
+		private void Prepare()
 		{
 			if (!_isLoaded)
 			{
 				return;
 			}
+
+			Validate();
 
 			var actualStacks = Stacks + 1;
 			var actualSegments = Segments;
@@ -117,13 +154,6 @@ namespace Balder.Core.Objects.Geometries
 			var deltaRadius = BottomRadius - TopRadius;
 			var radiusAdd = deltaRadius / actualStacks;
 			var currentRadius = TopRadius;
-
-			var vertexCount = (actualStacks * (actualSegments+1));
-			var vertexIndex = 0;
-
-			GeometryContext.AllocateVertices(vertexCount);
-			GeometryContext.AllocateTextureCoordinates(vertexCount);
-
 
 			var deltaY = Size;
 			var yAdd = (float)(deltaY / (actualStacks - 1));
@@ -168,8 +198,25 @@ namespace Balder.Core.Objects.Geometries
 				additionalFaceSegments = 0;
 			}
 
+			BuildVertices(actualSegments, actualStacks, startRadian, radianAdd, currentY, currentRadius, currentV, uAdd, radiusAdd, yAdd, vAdd);
+			var faceIndex = BuildFaces(actualSegments, actualStacks, nextSegmentOffset, faceSegments, faceOffset, additionalFaceSegments, isFull);
+			if (CapEnds)
+			{
+				BuildEnds(actualSegments, actualStacks, nextSegmentOffset, faceSegments, faceOffset, additionalFaceSegments, faceIndex);
+			}
 
+			GeometryHelper.CalculateFaceNormals(GeometryContext);
+			GeometryHelper.CalculateVertexNormals(GeometryContext);
+		}
+
+		private void BuildVertices(int actualSegments, int actualStacks, double startRadian, double radianAdd, float currentY, double currentRadius, float currentV, float uAdd, double radiusAdd, float yAdd, float vAdd)
+		{
 			Vertex vertex;
+			var vertexCount = (actualStacks * (actualSegments + 1));
+			var vertexIndex = 0;
+
+			GeometryContext.AllocateVertices(vertexCount);
+			GeometryContext.AllocateTextureCoordinates(vertexCount);
 
 			for (var y = 0; y < actualStacks; y++)
 			{
@@ -204,12 +251,11 @@ namespace Balder.Core.Objects.Geometries
 				currentY -= yAdd;
 				currentV += vAdd;
 			}
+		}
 
-
-
+		private int BuildFaces(int actualSegments, int actualStacks, int nextSegmentOffset, int faceSegments, int faceOffset, int additionalFaceSegments, bool isFull)
+		{
 			var faceIndex = 0;
-			Face face;
-
 			var faceCount = actualStacks * (actualSegments * 2);
 			if (CapEnds)
 			{
@@ -221,15 +267,11 @@ namespace Balder.Core.Objects.Geometries
 			}
 			GeometryContext.AllocateFaces(faceCount);
 
-			var vertexOffset = 0;
-			var nextSegmentVertexOffset = 0;
-
-
-
+			Face face;
 			for (var y = 0; y < actualStacks - 1; y++)
 			{
-				vertexOffset = (y * actualSegments);
-				nextSegmentVertexOffset = (y + 1) * nextSegmentOffset;
+				var vertexOffset = (y * actualSegments);
+				var nextSegmentVertexOffset = (y + 1) * nextSegmentOffset;
 
 				for (var x = 0; x < faceSegments; x++)
 				{
@@ -237,8 +279,8 @@ namespace Balder.Core.Objects.Geometries
 					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments))+faceOffset;
 
 					face = new Face(vertexOffset + actualX,
-									vertexOffset + nextX,
-									nextSegmentVertexOffset + actualX);
+					                vertexOffset + nextX,
+					                nextSegmentVertexOffset + actualX);
 					face.DiffuseA = face.A;
 					face.DiffuseB = face.B;
 					face.DiffuseC = face.C;
@@ -246,54 +288,51 @@ namespace Balder.Core.Objects.Geometries
 					faceIndex++;
 
 					face = new Face(nextSegmentVertexOffset + nextX,
-									nextSegmentVertexOffset + actualX,
-									vertexOffset + nextX);
+					                nextSegmentVertexOffset + actualX,
+					                vertexOffset + nextX);
 					face.DiffuseA = face.A;
 					face.DiffuseB = face.B;
 					face.DiffuseC = face.C;
 					GeometryContext.SetFace(faceIndex, face);
 
 					faceIndex++;
-					
 				}
 			}
+			return faceIndex;
+		}
 
-			if (CapEnds)
+		private void BuildEnds(int actualSegments, int actualStacks, int nextSegmentOffset, int faceSegments, int faceOffset, int additionalFaceSegments, int faceIndex)
+		{
+			var vertexOffset = 0;
+			Face face;
+			for (var x = 0; x < faceSegments; x++)
 			{
-				vertexOffset = 0;
-				for (var x = 0; x < faceSegments; x++)
-				{
-					var actualX = x + faceOffset;
-					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
-					face = new Face(0,
-									vertexOffset + nextX,
-									vertexOffset + x);
-					face.DiffuseA = face.A;
-					face.DiffuseB = face.B;
-					face.DiffuseC = face.C;
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-
-				vertexOffset = (actualStacks - 1) * nextSegmentOffset;
-				for (var x = 0; x < faceSegments; x++)
-				{
-					var actualX = x + faceOffset;
-					var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
-					face = new Face(vertexOffset + x,
-									vertexOffset + nextX,
-									vertexOffset);
-					face.DiffuseA = face.A;
-					face.DiffuseB = face.B;
-					face.DiffuseC = face.C;
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-
+				var actualX = x + faceOffset;
+				var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
+				face = new Face(vertexOffset,
+				                vertexOffset + nextX,
+				                vertexOffset + actualX);
+				face.DiffuseA = face.A;
+				face.DiffuseB = face.B;
+				face.DiffuseC = face.C;
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
 			}
 
-			GeometryHelper.CalculateFaceNormals(GeometryContext);
-			GeometryHelper.CalculateVertexNormals(GeometryContext);
+			vertexOffset = (actualStacks - 1) * nextSegmentOffset;
+			for (var x = 0; x < faceSegments; x++)
+			{
+				var actualX = x + faceOffset;
+				var nextX = ((x + 1) % (actualSegments + additionalFaceSegments)) + faceOffset;
+				face = new Face(vertexOffset + actualX,
+				                vertexOffset + nextX,
+				                vertexOffset);
+				face.DiffuseA = face.A;
+				face.DiffuseB = face.B;
+				face.DiffuseC = face.C;
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+			}
 		}
 	}
 }

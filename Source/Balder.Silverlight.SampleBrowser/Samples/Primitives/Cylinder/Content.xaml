@@ -5,15 +5,8 @@
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
     xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
-    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight" 
-    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core" 
-    xmlns:Debug="clr-namespace:Balder.Core.Debug;assembly=Balder.Core">
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight">
 
-	<UserControl.Resources>
-		<Materials:Material x:Key="Material"  Diffuse="Red" DoubleSided="True" Shade="Gouraud"/>
-		<!-- ReflectionMap="/Balder.Silverlight.SampleBrowser;component/Samples/Primitives/Cylinder/BalderLogo.png"/>-->
-		<!-- -->
-	</UserControl.Resources>
 	<Grid x:Name="LayoutRoot">
 
 		<Grid.Triggers>
@@ -21,7 +14,7 @@
 				<BeginStoryboard>
 					<Storyboard RepeatBehavior="Forever">
 						<Animation:StoryboardExtensions.CoordinateAnimation>
-							<Animation:CoordinateAnimation From="0,0,0" To="359,359,0" Duration="00:00:05" TargetName="Cylinder" TargetProperty="(Node.Rotation)"/>
+							<Animation:CoordinateAnimation From="0,0,0" To="359,359,0" Duration="00:00:05" TargetName="Container" TargetProperty="(Node.Rotation)"/>
 						</Animation:StoryboardExtensions.CoordinateAnimation>
 					</Storyboard>
 				</BeginStoryboard>
@@ -30,26 +23,15 @@
 		</Grid.Triggers>
 
 		<Execution:Game Width="640" Height="480">
-			<Execution:Game.DebugLevel>
-				<Debug:DebugLevel ShowVertices="True"/>
-			</Execution:Game.DebugLevel>
 			<Execution:Game.Camera>
 				<View:Camera Position="100,50,-100" Target="0,0,0"/>
 			</Execution:Game.Camera>
 
 			<Lighting:OmniLight Position="-100,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
 
-			<Geometries:Cylinder x:Name="Cylinder" 
-								TopRadius="10"
-								 BottomRadius="20"
-								 Stacks="1"
-								 Segments="16"
-								 CapEnds="True"
-								 StartAngle="90"
-								 EndAngle="180"
-								 Size="40"
-								 Material="{StaticResource Material}"
-								 />
+			<Geometries:Geometry x:Name="Container">
+				<Geometries:Cylinder TopRadius="20" BottomRadius="20" Size="15" Segments="16" Color="Red"/>
+			</Geometries:Geometry>
 		</Execution:Game>
 
 	</Grid>
