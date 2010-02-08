@@ -96,9 +96,9 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Data.NodesStack {
         ///    xmlns:local=&quot;clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.NodesControl&quot; 
         ///    xmlns:Vie [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Content_cs {
+        internal static string Content_xaml {
             get {
-                return ResourceManager.GetString("Content_cs", resourceCulture);
+                return ResourceManager.GetString("Content_xaml", resourceCulture);
             }
         }
         

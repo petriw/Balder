@@ -141,6 +141,11 @@
     <Compile Include="Samples\Creative\Water\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Creative\Water\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Data\BarChart\Bar.xaml.cs">
       <DependentUpon>Bar.xaml</DependentUpon>
     </Compile>
@@ -187,6 +192,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Samples\GettingStarted\HelloWorld\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Materials\MaterialPicker\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -205,6 +215,11 @@
     </Compile>
     <Compile Include="Samples\Primitives\Cylinder\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Primitives\Cylinder\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Primitives\Heightmap\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
@@ -242,7 +257,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Samples\GettingStarted\Content.xaml.cs">
+    <Compile Include="Samples\GettingStarted\HelloWorld\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Welcome\View.xaml.cs">
@@ -339,7 +354,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
-    <Page Include="Samples\GettingStarted\Content.xaml">
+    <Page Include="Samples\GettingStarted\HelloWorld\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
@@ -354,6 +369,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+    <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Earth.ASE" />
+    <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Hello.ASE" />
     <Resource Include="Samples\Materials\MaterialPicker\Assets\teapot.ASE" />
     <Resource Include="Samples\Data\NodesStack\Assets\box.ASE" />
     <Resource Include="Samples\Programatic\Teapot\Assets\box.ASE" />
@@ -380,6 +397,10 @@
     <Resource Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Samples\Creative\Water\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\Data\BarChart\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -396,11 +417,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Samples\GettingStarted\HelloWorld\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\Materials\MaterialPicker\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Samples\Primitives\Box\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\Primitives\Cylinder\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -440,10 +469,16 @@
     <Resource Include="Samples\Materials\MaterialPicker\Assets\VisualStudio.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Samples\Primitives\Cylinder\BalderLogo.png" />
+    <Resource Include="Samples\Creative\Water\sky.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Samples\Creative\Water\sky.jpg" />
+    <Resource Include="Samples\GettingStarted\HelloWorld\Assets\cloudless.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\GettingStarted\HelloWorld\Assets\ReflectionMap.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Star.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

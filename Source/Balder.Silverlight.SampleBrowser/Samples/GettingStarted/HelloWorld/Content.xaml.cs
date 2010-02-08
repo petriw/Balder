@@ -2,10 +2,10 @@
 using Balder.Silverlight.SampleBrowser.Constants;
 using Balder.Silverlight.SampleBrowser.Content;
 
-namespace Balder.Silverlight.SampleBrowser.Samples.GettingStarted
+namespace Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld
 {
 	[Category(Categories.GettingStarted)]
-	[SamplePage("Getting started")]
+	[SamplePage("Hello world")]
 	[Description("")]
 	public partial class Content
 	{

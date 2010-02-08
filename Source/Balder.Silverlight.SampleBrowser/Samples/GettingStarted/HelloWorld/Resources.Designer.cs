@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap {
+namespace Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,13 +61,13 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap.Content&quot;
+        ///   Looks up a localized string similar to &lt;UserControl x:Class=&quot;Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld.Content&quot;
         ///    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; 
         ///    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; 
         ///    xmlns:Execution=&quot;clr-namespace:Balder.Core.Execution;assembly=Balder.Core&quot; 
         ///    xmlns:Geometries=&quot;clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core&quot; 
         ///    xmlns:View=&quot;clr-namespace:Balder.Core.View;assembly=Balder.Core&quot; 
-        ///    xmlns:Lighting=&quot;clr-namespace:Balder.C [rest of string was truncated]&quot;;.
+        ///    xmlns:Animation=&quot;clr-namespace:Ba [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Content_xaml {
             get {
@@ -76,26 +76,23 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to using System;
-        ///using System.ComponentModel;
-        ///using Balder.Core;
-        ///using Balder.Core.Objects.Geometries;
+        ///   Looks up a localized string similar to using System.ComponentModel;
         ///using Balder.Silverlight.SampleBrowser.Constants;
         ///using Balder.Silverlight.SampleBrowser.Content;
         ///
-        ///namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap
+        ///namespace Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld
         ///{
-        ///	[Category(Categories.Primitives)]
-        ///	[SamplePage(&quot;Heightmap&quot;)]
-        ///	[Description(&quot;Sample showing how to use the Heightmap primitive&quot;)]
+        ///	[Category(Categories.GettingStarted)]
+        ///	[SamplePage(&quot;Hello world&quot;)]
+        ///	[Description(&quot;&quot;)]
         ///	public partial class Content
         ///	{
         ///		public Content()
         ///		{
         ///			InitializeComponent();
         ///		}
-        ///
-        ///		p [rest of string was truncated]&quot;;.
+        ///	}
+        ///}.
         /// </summary>
         internal static string Content_xaml_cs {
             get {

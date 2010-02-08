@@ -1,0 +1,73 @@
+<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.GettingStarted.HelloWorld.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight" 
+    xmlns:Materials="clr-namespace:Balder.Core.Materials;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:Flat="clr-namespace:Balder.Core.Objects.Flat;assembly=Balder.Core">
+
+	<UserControl.Resources>
+		<Materials:Material x:Key="HelloMaterial" Diffuse="Blue" Shade="Gouraud"/>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="Black">
+		<Grid.Triggers>
+			<EventTrigger RoutedEvent="Grid.Loaded">
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever">
+						<Animation:StoryboardExtensions.CoordinateAnimation>
+							<Animation:CoordinateAnimation TargetName="World" TargetProperty="(Node.Rotation)" From="0,0,0" To="0,359,0" Duration="00:00:05"/>
+						</Animation:StoryboardExtensions.CoordinateAnimation>
+
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetName="Hello" Storyboard.TargetProperty="(Node.Rotation).(Y)">
+							<EasingDoubleKeyFrame KeyTime="00:00:00" Value="-45">
+								<EasingDoubleKeyFrame.EasingFunction>
+									<ElasticEase/>
+								</EasingDoubleKeyFrame.EasingFunction>
+							</EasingDoubleKeyFrame>
+							<EasingDoubleKeyFrame KeyTime="00:00:02" Value="45">
+								<EasingDoubleKeyFrame.EasingFunction>
+									<ElasticEase/>
+								</EasingDoubleKeyFrame.EasingFunction>
+							</EasingDoubleKeyFrame>
+							<EasingDoubleKeyFrame KeyTime="00:00:05" Value="-46">
+								<EasingDoubleKeyFrame.EasingFunction>
+									<ElasticEase/>
+								</EasingDoubleKeyFrame.EasingFunction>
+							</EasingDoubleKeyFrame>
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger>
+		</Grid.Triggers>
+		<Execution:Game Width="800" Height="600">
+			<Execution:Game.Camera>
+				<View:Camera Position="0,60,-300" Target="0,30,0"/>
+			</Execution:Game.Camera>
+
+			<Lighting:OmniLight Position="0,40,-100" Ambient="Green" Diffuse="Green" Specular="White"/>
+
+			<Geometries:Mesh x:Name="Hello" 
+							 AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Hello.ASE"
+							 Position="0,50,0"
+							 Scale="0.5,0.5,0.5"
+							 Material="{StaticResource HelloMaterial}"
+							 />
+
+			<Geometries:Geometry x:Name="World">
+
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="50,0,0"/>
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="-50,20,-10"/>
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="0,-20,50"/>
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="20,0,-50"/>
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="-50,10,0"/>
+				<Flat:Sprite AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Star.png" Position="50,-30,-50"/>
+				
+				<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/GettingStarted/HelloWorld/Assets/Earth.ASE"/>
+			</Geometries:Geometry>
+		</Execution:Game>
+	</Grid>
+</UserControl>

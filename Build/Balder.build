@@ -196,6 +196,7 @@
 				<include name="System.Core.dll"/>
 				<include name="System.Net.dll"/>
 				<include name="System.Windows.dll"/>
+				<include name="System.Xml.dll"/>
 				<include name="${Current.Path.Components}/System.Windows.Browser.dll" if="${Build.Platform == 'silverlight-3.0'}"/>
 				<include name="${Current.Path.Components}/Ninject.Core.dll"/>
 				<include name="${Current.Path.Components}/System.ComponentModel.Composition.dll"/>

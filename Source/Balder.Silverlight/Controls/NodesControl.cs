@@ -49,11 +49,11 @@ namespace Balder.Silverlight.Controls
 		}
 
 
-		public static readonly DependencyProperty<NodesControl, IEnumerable> ItemsSourceProperty =
+		public static new readonly DependencyProperty<NodesControl, IEnumerable> ItemsSourceProperty =
 			DependencyProperty<NodesControl, IEnumerable>.Register(n => n.ItemsSource);
 
 		private IEnumerable _itemsSource;
-		public IEnumerable ItemsSource
+		public new IEnumerable ItemsSource
 		{
 			get { return ItemsSourceProperty.GetValue(this); }
 			set

@@ -3,11 +3,27 @@ Version 0.8.8.6
 
 * New drawing routines, optimized
 
-* Plane primitive
+* Heightmap primitive
 
 * Box primitive
 
 * Rotation, Scale on nodes
+
+* Cylinder primitive
+
+* DebugLevel is known as DebugInfo
+
+* Material system in place
+
+* Support for ReflectionMapping on materials
+
+* Double sided materials
+
+* Sprite rendering with alpha channel
+
+* NodesControl - datadriven nodes control with templating - In Balder.Silverlight.Controls
+
+* NodesStack - datadriven stacking of nodes with templating - in Balder.Silverlight.Controls
 
 
 Version 0.8.8.5

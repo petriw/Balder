@@ -7,10 +7,8 @@ using Balder.Silverlight.SoftwareRendering;
 
 namespace Balder.Silverlight.SampleBrowser
 {
-	public partial class MainPage : UserControl
+	public partial class MainPage
 	{
-
-
 		public MainPage()
 		{
 			InitializeComponent();
@@ -94,11 +92,13 @@ namespace Balder.Silverlight.SampleBrowser
 			{
 				return;
 			}
+
+			
 			_tabItemChanged = true;
 		}
 
 		private void ContentFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-		{
+		{			
 			_resourceView.Source = ContentFrame.Source;
 		}
 
@@ -108,6 +108,7 @@ namespace Balder.Silverlight.SampleBrowser
 			{
 				HandleGameInVisualTree(ContentFrame, false);
 			}
+			
 			_tabItemChanged = false;
 		}
 	}
