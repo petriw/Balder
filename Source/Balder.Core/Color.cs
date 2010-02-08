@@ -268,8 +268,14 @@ namespace Balder.Core
 				Alpha = (byte)(alpha>>2),
 			};
 			return result;
-			
 		}
+
+		public static implicit operator Color(SysColor color)
+		{
+			var newColor = FromSystemColor(color);
+			return newColor;
+		}
+
 
 
 		private static float ClampValue(float value)

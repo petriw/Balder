@@ -37,6 +37,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 		public override void OnLoadContent()
 		{
 			_teapot = ContentManager.Load<Mesh>("teapot.ase");
+			_teapot.Color = Colors.Blue;
 			Scene.AddNode(_teapot);
 
 			base.OnLoadContent();
