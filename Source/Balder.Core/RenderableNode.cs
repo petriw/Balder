@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -28,7 +28,7 @@ namespace Balder.Core
 
 		public virtual void RenderDebugInfo(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
-			if (viewport.DebugLevel.BoundingSpheres )
+			if (viewport.DebugInfo.BoundingSpheres )
 			{
 				DebugRenderer.Instance.RenderBoundingSphere(BoundingSphere, viewport, view, projection, world);
 			}

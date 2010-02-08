@@ -27,7 +27,6 @@ namespace Balder.Core.Debug
 	[Singleton]
 	public class DebugRenderer : IDebugRenderer
 	{
-		public static readonly Color DebugInfoColor = Color.FromArgb(0xFF,0xFF,0xFF,0);
 		private readonly IObjectFactory _objectFactory;
 
 		private DebugShape _boundingSphereDebugShape;
@@ -57,7 +56,6 @@ namespace Balder.Core.Debug
 			}
 		}
 
-
 		private void CreateShapes()
 		{
 			_boundingSphereDebugShape = _objectFactory.Get<BoundingSphereDebugShape>();
@@ -71,6 +69,7 @@ namespace Balder.Core.Debug
 			var rotateYMatrix = Matrix.CreateRotationY(90);
 			var rotateXMatrix = Matrix.CreateRotationX(90);
 
+			_boundingSphereDebugShape.Color = viewport.DebugInfo.Color;
 			_boundingSphereDebugShape.World = scaleMatrix * translationMatrix;
 			_boundingSphereDebugShape.Render(viewport, view, projection, world);
 

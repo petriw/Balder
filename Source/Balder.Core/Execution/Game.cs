@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -42,10 +42,10 @@ namespace Balder.Core.Execution
 
 		public Scene Scene { get; private set; }
 		public Viewport Viewport { get; private set; }
-		public DebugLevel DebugLevel
+		public DebugInfo DebugInfo
 		{
-			get { return Viewport.DebugLevel; }
-			set { Viewport.DebugLevel = value; }
+			get { return Viewport.DebugInfo; }
+			set { Viewport.DebugInfo = value; }
 		}
 
 

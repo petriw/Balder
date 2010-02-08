@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -178,7 +178,7 @@ namespace Balder.Core.SoftwareRendering
 			RenderFaces(node, viewport, view, projection, world);
 			RenderLines(node, viewport, view, projection, world);
 
-			if (viewport.DebugLevel.ShowVertices)
+			if (viewport.DebugInfo.ShowVertices)
 			{
 				RenderVertices(node, viewport, view, projection, world);
 			}
@@ -224,7 +224,7 @@ namespace Balder.Core.SoftwareRendering
 			{
 				PointRenderer.Draw((int)Vertices[vertexIndex].TranslatedScreenCoordinates.X,
 									(int)Vertices[vertexIndex].TranslatedScreenCoordinates.Y,
-									Color.White,
+									viewport.DebugInfo.Color,
 									4);
 			}
 		}
@@ -351,7 +351,7 @@ namespace Balder.Core.SoftwareRendering
 								(int)xstart,
 								(int)ystart,
 								(int)xend,
-								(int)yend, line.Color);
+								(int)yend, node.Color);
 			}
 		}
 	}

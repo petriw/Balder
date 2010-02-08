@@ -19,8 +19,14 @@
 
 namespace Balder.Core.Debug
 {
-	public class DebugLevel
+	public class DebugInfo
 	{
+		public DebugInfo()
+		{
+			Color = Color.FromArgb(0xFF, 0xFF, 0xFF, 0);
+		}
+
+
 		public bool Geometry { get; set; }
 		public bool FaceNormals { get; set; }
 		public bool VertexNormals { get; set; }
@@ -28,5 +34,8 @@ namespace Balder.Core.Debug
 		public bool BoundingBoxes { get; set; }
 		public bool BoundingSpheres { get; set; }
 		public bool ShowVertices { get; set; }
+
+
+		public Color Color { get; set; } 
 	}
 }

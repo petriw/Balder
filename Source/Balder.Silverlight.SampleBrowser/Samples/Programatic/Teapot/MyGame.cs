@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Media;
 using Balder.Core.Execution;
 using Balder.Core.Lighting;
@@ -9,14 +9,11 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 {
 	public class MyGame : Game
 	{
-		private double _sin = 0;
+		private Mesh _teapot;
 
 		public override void OnInitialize()
 		{
 			ContentManager.AssetsRoot = "Samples/Programatic/Teapot/Assets";
-
-			DebugLevel.BoundingSpheres = true;
-
 
 			var light = new OmniLight();
 			light.Diffuse = Color.FromArgb(0xff, 255, 121, 32);
@@ -28,28 +25,26 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Teapot
 			light.Position.Z = 0;
 			Scene.AddNode(light);
 
+			Camera.Position.X = 0;
+			Camera.Position.Y = 20;
+			Camera.Position.Z = -100;
+
+			Camera.Target.Y = 0;
+
 			base.OnInitialize();
 		}
 
 		public override void OnLoadContent()
 		{
-			var teapot = ContentManager.Load<Mesh>("teapot.ase");
-			Scene.AddNode(teapot);
-
-			
+			_teapot = ContentManager.Load<Mesh>("teapot.ase");
+			Scene.AddNode(_teapot);
 
 			base.OnLoadContent();
 		}
 
 		public override void OnUpdate()
 		{
-			Camera.Position.X = Math.Sin(_sin)*20.0;
-			Camera.Position.Y = 20;
-			Camera.Position.Z = Math.Cos(_sin)*20.0;
-
-			Camera.Target.Y = 10;
-
-			_sin += 0.05;
+			_teapot.Rotation.Y += 1;
 			base.OnUpdate();
 		}
 	}

@@ -209,7 +209,7 @@
     <Compile Include="ReadableRex\Range.cs" />
     <Compile Include="Execution\Actor.cs" />
     <Compile Include="Execution\AutoKernel.cs" />
-    <Compile Include="Debug\DebugLevel.cs" />
+    <Compile Include="Debug\DebugInfo.cs" />
     <Compile Include="Execution\Game.cs" />
     <Compile Include="Objects\Geometries\IGeometryContext.cs" />
     <Compile Include="Objects\Geometries\Mesh.cs" />

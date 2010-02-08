@@ -52,11 +52,9 @@ namespace Balder.Core.Debug
 			for (var vertexIndex = 0; vertexIndex < NumberOfCirclePoints-1; vertexIndex++)
 			{
 				var line = new Line(vertexIndex, vertexIndex + 1);
-				line.Color = DebugRenderer.DebugInfoColor;
 				GeometryContext.SetLine(vertexIndex,line);
 			}
 			var lastLine = new Line(NumberOfCirclePoints - 1, 0);
-			lastLine.Color = DebugRenderer.DebugInfoColor;
 			GeometryContext.SetLine(NumberOfCirclePoints-1, lastLine);
 		}
 	}

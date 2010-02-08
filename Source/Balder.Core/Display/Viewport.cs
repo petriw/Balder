@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -26,7 +26,7 @@ namespace Balder.Core.Display
 	{
 		public Viewport()
 		{
-			DebugLevel = new DebugLevel();
+			DebugInfo = new DebugInfo();
 		}
 
 		public int XPosition { get; set; }
@@ -37,7 +37,7 @@ namespace Balder.Core.Display
 		public Scene Scene { get; set; }
 		public IView View { get; set; }
 
-		public DebugLevel DebugLevel { get; set; }
+		public DebugInfo DebugInfo { get; set; }
 
 		public float AspectRatio { get { return ((float)Width) / ((float)Height); } }
 	}

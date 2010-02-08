@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -76,7 +76,7 @@ namespace Balder.Core
 		public IPlatform Platform { get { return _platform; } }
 		public IContentManager ContentManager { get; private set; }
 
-		public DebugLevel DebugLevel { get; set; }
+		public DebugInfo DebugInfo { get; set; }
 
 
 		public T CreateGame<T>() where T : Game
