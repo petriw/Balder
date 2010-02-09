@@ -16,6 +16,8 @@
 // limitations under the License.
 //
 #endregion
+
+using System;
 using Balder.Core.Execution;
 using Balder.Core.Objects.Geometries;
 
@@ -40,7 +42,8 @@ namespace Balder.Core.Content
 			where T : Node
 		{
 			var type = node.GetType();
-			var clone = _objectFactory.Get(type) as T;
+			//var clone = _objectFactory.Get(type) as T;
+			var clone = Activator.CreateInstance(type) as T;
 			clone.CopyFrom(node);
 			ReferenceCopyHierarchical(node, clone);
 			return clone;

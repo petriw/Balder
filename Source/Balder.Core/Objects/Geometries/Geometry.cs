@@ -26,9 +26,11 @@ namespace Balder.Core.Objects.Geometries
 {
 	public class Geometry : RenderableNode, IAssetPart
 	{
-		public IGeometryContext GeometryContext { get; private set; }
+		public IGeometryContext GeometryContext { get; set; }
 
 		private bool _materialSet = false;
+		private bool _isLoaded = false;
+
 
 		public Geometry()
 		{
@@ -38,6 +40,30 @@ namespace Balder.Core.Objects.Geometries
 				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
 			}
 		}
+
+		protected override void OnLoaded()
+		{
+			if (IsClone)
+			{
+				return;
+			}
+
+			_isLoaded = true;
+			OnPrepareGeometry();
+			
+			base.OnLoaded();
+		}
+
+		protected virtual void OnPrepareGeometry()
+		{
+			if(!_isLoaded)
+			{
+				return;
+			}
+			PrepareGeometry();
+		}
+
+		protected virtual void PrepareGeometry() { }
 
 		protected override void OnInitialize()
 		{

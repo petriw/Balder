@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Balder.Core.SoftwareRendering</RootNamespace>
-    <AssemblyName>Balder.Core.SoftwareRendering.Silverlight</AssemblyName>
+    <AssemblyName>Balder.Core.SoftwareRendering</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>

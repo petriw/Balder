@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Balder.Silverlight.SampleBrowser.Samples.Data.PieChart.Content"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
+    xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Lighting="clr-namespace:Balder.Core.Lighting;assembly=Balder.Core" 
+    xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.PieChart" 
+    xmlns:Controls1="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
+    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data" 
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight">
+	<UserControl.DataContext>
+		<local:ViewModel/>
+	</UserControl.DataContext>
+	<Grid x:Name="LayoutRoot">
+		
+		<Grid.Triggers>
+			<EventTrigger RoutedEvent="Grid.Loaded">
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever">
+						<Animation:StoryboardExtensions.CoordinateAnimation>
+							<Animation:CoordinateAnimation From="0,0,0" To="0,359,0" Duration="00:00:10" TargetName="Chart" TargetProperty="(Node.Rotation)"/>
+						</Animation:StoryboardExtensions.CoordinateAnimation>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger>
+		</Grid.Triggers>
+		
+		<Execution:Game Width="640" Height="480">
+			<Execution:Game.Camera>
+				<View:Camera Position="0,50,-100"/>
+			</Execution:Game.Camera>
+
+			<Lighting:OmniLight Position="0,30,0" Ambient="Black" Diffuse="Green" Specular="White"/>
+			
+			<local:PieChart x:Name="Chart" ValueMember="Value" ValuesSource="{Binding Objects}"/>
+		</Execution:Game>
+
+		<Controls1:DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" LastChildFill="true">
+			<Button Content="Add Value" Click="AddValueClick" Controls1:DockPanel.Dock="Top"/>
+			<Controls:DataGrid ItemsSource="{Binding Objects}" Width="200" AutoGenerateColumns="False">
+				<Controls:DataGrid.Columns>
+					<Controls:DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="80"/>
+					<Controls:DataGridTemplateColumn Width="100">
+						<Controls:DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Slider Value="{Binding Path=Value, Mode=TwoWay}" Minimum="0" Maximum="200"/>
+							</DataTemplate>
+						</Controls:DataGridTemplateColumn.CellTemplate>
+					</Controls:DataGridTemplateColumn>
+				</Controls:DataGrid.Columns>
+			</Controls:DataGrid>
+
+		</Controls1:DockPanel>
+
+	</Grid>
+</UserControl>

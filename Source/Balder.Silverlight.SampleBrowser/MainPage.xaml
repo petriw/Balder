@@ -58,7 +58,7 @@
 					</navigation:Frame>
 				</controls:TabItem>
 
-				<controls:TabItem Header="Resources">
+				<controls:TabItem Header="Source Code">
 					<resources:View x:Name="_resourceView" Source="{Binding Path=Source, ElementName=ContentFrame}"/>
 				</controls:TabItem>
 			</controls:TabControl>

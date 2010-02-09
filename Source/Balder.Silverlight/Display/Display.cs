@@ -132,7 +132,6 @@ namespace Balder.Silverlight.Display
 		{
 			if (_initialized)
 			{
-				_bitmapQueue.UpdateStatistics();
 				if (null != _image)
 				{
 					if( null != _currentFrontBitmap )

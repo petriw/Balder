@@ -18,6 +18,7 @@
 #endregion
 using System;
 using System.ComponentModel;
+using System.Windows.Data;
 using Balder.Core.Collections;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -222,5 +223,15 @@ namespace Balder.Core
 			CommandParameter = source.CommandParameter;
 			PrepareWorld();
 		}
+
+
+		public virtual Node Clone()
+		{
+			var clone = NodeCloner.Instance.Clone(this);
+			clone.IsClone = true;
+			return clone as Node;
+		}
+
+		protected bool IsClone { get; private set; }
 	}
 }

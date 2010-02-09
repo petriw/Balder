@@ -26,6 +26,7 @@ namespace Balder.Core
 			Children.CollectionChanged += ChildrenChanged;
 		}
 
+		
 		private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			switch( e.Action )

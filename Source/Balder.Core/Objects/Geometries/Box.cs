@@ -25,35 +25,19 @@ namespace Balder.Core.Objects.Geometries
 {
 	public class Box : Geometry
 	{
-		private bool _isLoaded = false;
-
-		public static Property<Box, Coordinate> DimensionProperty = Property<Box, Coordinate>.Register(p => p.Dimension);
+		public static readonly Property<Box, Coordinate> DimensionProperty = Property<Box, Coordinate>.Register(p => p.Dimension);
 		public Coordinate Dimension
 		{
 			get { return DimensionProperty.GetValue(this); }
 			set
 			{
 				DimensionProperty.SetValue(this, value);
-				PrepareBox();
+				OnPrepareGeometry();
 			}
 		}
 
-
-		protected override void OnLoaded()
+		protected override void  PrepareGeometry()
 		{
-			_isLoaded = true;
-			PrepareBox();
-			base.OnLoaded();
-		}
-
-
-		private void PrepareBox()
-		{
-			if (!_isLoaded)
-			{
-				return;
-			}
-
 			var dimensionAsVector = (Vector)Dimension;
 			var halfDimension = dimensionAsVector / 2f;
 

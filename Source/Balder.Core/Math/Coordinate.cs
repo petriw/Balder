@@ -3,7 +3,7 @@ using Balder.Core.Execution;
 
 namespace Balder.Core.Math
 {
-	public partial class Coordinate
+	public partial class Coordinate : ICloneable
 	{
 		public Coordinate()
 		{
@@ -88,6 +88,11 @@ namespace Balder.Core.Math
 			return v1 - v2;
 		}
 
+
+		public object Clone()
+		{
+			return new Coordinate(X,Y,Z);
+		}
 
 		public override string ToString()
 		{

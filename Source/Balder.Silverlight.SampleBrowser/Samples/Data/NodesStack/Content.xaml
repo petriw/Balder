@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Controls="clr-namespace:Balder.Silverlight.Controls;assembly=Balder.Silverlight" 
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
-    xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.NodesControl" 
+    xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.NodesStack" 
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
     xmlns:Execution="clr-namespace:Balder.Core.Execution;assembly=Balder.Core" 
     >
@@ -17,11 +17,12 @@
 				
 				<Controls:NodesStack.NodeTemplate>
 					<DataTemplate>
-						<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Data/NodesStack/Assets/box.ase" 
+						<Geometries:Mesh AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Programatic/Teapot/Assets/teapot.ASE"
 										 Color="{Binding Color}" /> 
 					</DataTemplate>
 				</Controls:NodesStack.NodeTemplate>
 			</Controls:NodesStack>
+				<!--Data/NodesStack/Assets/box.ase" -->
 
 			<Execution:Game.Camera>
 				<View:Camera Position="0,250,-1000"/>

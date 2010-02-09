@@ -18,8 +18,8 @@
 #endregion
 namespace Balder.Core.Execution
 {
-	public interface ICloneable<T>
+	public interface ICloneable
 	{
-		T Clone();
+		object Clone();
 	}
 }

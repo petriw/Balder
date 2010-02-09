@@ -24,28 +24,41 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using Balder.Core;
+using Balder.Core.Content;
 using Balder.Core.Helpers;
+using Ninject.Core;
 
 namespace Balder.Silverlight.Controls
 {
 	public class NodesControl : RenderableNode
 	{
+		private Node _templateContent;
+		private List<object> _items;
+		private Stack<object> _addedItems;
+
 		public NodesControl()
 		{
-			Loaded += NodesControlLoaded;
+			_items = new List<object>();
+			_addedItems = new Stack<object>();
 		}
 
-		private void NodesControlLoaded(object sender, RoutedEventArgs e)
+		protected override void OnLoaded()
 		{
 			PopulateFromItemsSource();
+			base.OnLoaded();
 		}
+
 
 		public static readonly DependencyProperty<NodesControl, DataTemplate> NodeTemplateProperty =
 			DependencyProperty<NodesControl, DataTemplate>.Register(n => n.NodeTemplate);
 		public DataTemplate NodeTemplate
 		{
 			get { return NodeTemplateProperty.GetValue(this); }
-			set { NodeTemplateProperty.SetValue(this, value); }
+			set
+			{
+				NodeTemplateProperty.SetValue(this, value);
+				_templateContent = null;
+			}
 		}
 
 
@@ -62,7 +75,6 @@ namespace Balder.Silverlight.Controls
 				_itemsSource = value;
 				ItemsSourceProperty.SetValue(this, value);
 				HandleNewItemsSource();
-
 			}
 		}
 
@@ -118,6 +130,7 @@ namespace Balder.Silverlight.Controls
 				case NotifyCollectionChangedAction.Reset:
 					{
 						Children.Clear();
+						_items.Clear();
 					}
 					break;
 
@@ -127,37 +140,79 @@ namespace Balder.Silverlight.Controls
 
 		private void PopulateFromItemsSource()
 		{
+			var before = DateTime.Now;
+			
 			foreach (var item in _itemsSource)
 			{
 				LoadAndAddChild(item);
 			}
+			
+			var after = DateTime.Now;
+			var delta = after.Subtract(before);
+			int i = 0;
+			i++;
 		}
+
+		[Inject]
+		public IContentManager ContentManager { get; set; }
+
 
 		private void LoadAndAddChild(object item)
 		{
+			if( _items.Contains(item))
+			{
+				return;
+			}
+
 			if (null != NodeTemplate)
 			{
-				var content = NodeTemplate.LoadContent() as Node;
-				if (null == content)
+				if( null == _templateContent )
 				{
-					throw new ArgumentException("Content of the template for NodeTemplate must be a derivative of Node");
+					_templateContent = NodeTemplate.LoadContent() as Node;
+					if (null == _templateContent)
+					{
+						throw new ArgumentException("Content of the template for NodeTemplate must be a derivative of Node");
+					}
+					AddItemAsChild(item, _templateContent);
+				} 
+				else
+				{
+					_addedItems.Push(item);	
+				}
+			}
+			_items.Add(item);
+		}
+
+		private void AddItemAsChild(object item, Node node)
+		{
+			node.DataContext = item;
+			var modifier = Modifier;
+			if (null != modifier)
+			{
+				var index = 0;
+				if (_itemsSource is IList)
+				{
+					index = ((IList)_itemsSource).IndexOf(item);
 				}
 
-				var modifier = Modifier;
-				if( null != modifier )
-				{
-					var index = 0;
-					if( _itemsSource is IList )
-					{
-						index = ((IList) _itemsSource).IndexOf(item);
-					}
-					
-					
-					modifier.Apply(content, index, item);
-				}
-				content.DataContext = item;
-				Children.Add(content);
+				modifier.Apply(node, index, item);
 			}
+			if( !Children.Contains(node))
+			{
+				Children.Add(node);	
+			}
+		}
+
+		public override void PrepareForRendering(Balder.Core.Display.Viewport viewport, Balder.Core.Math.Matrix view, Balder.Core.Math.Matrix projection, Balder.Core.Math.Matrix world)
+		{
+			while( _addedItems.Count > 0 )
+			{
+				var item = _addedItems.Pop();
+				var node = _templateContent.Clone();
+				AddItemAsChild(item, node);
+			}
+
+			base.PrepareForRendering(viewport, view, projection, world);
 		}
 
 		private void RemoveChildBasedOnItem(object item)
@@ -175,6 +230,8 @@ namespace Balder.Silverlight.Controls
 			{
 				Children.Remove(node);
 			}
+
+			_items.Remove(item);
 		}
 	}
 }

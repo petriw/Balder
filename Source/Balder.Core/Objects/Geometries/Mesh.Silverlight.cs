@@ -15,7 +15,7 @@ namespace Balder.Core.Objects.Geometries
 
 		protected override void OnLoaded()
 		{
-			if (null != AssetName)
+			if (null != AssetName && !IsClone)
 			{
 				Load(AssetName.ToString());
 			}

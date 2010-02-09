@@ -16,7 +16,6 @@
 						</Animation:StoryboardExtensions.CoordinateAnimation>
 					</Storyboard>
 				</BeginStoryboard>
-
 			</EventTrigger>
 		</Grid.Triggers>
 

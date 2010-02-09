@@ -181,6 +181,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Data\NodesStack\ViewModel.cs" />
+    <Compile Include="Samples\Data\PieChart\BusinessObject.cs" />
+    <Compile Include="Samples\Data\PieChart\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Data\PieChart\PieChart.xaml.cs">
+      <DependentUpon>PieChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Data\PieChart\PieChartValue.cs" />
+    <Compile Include="Samples\Data\PieChart\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Data\PieChart\ViewModel.cs" />
     <Compile Include="Samples\Events\Mouse\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -317,6 +331,14 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Samples\Data\PieChart\Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Samples\Data\PieChart\PieChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
     <Page Include="Samples\Events\Mouse\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
@@ -417,6 +439,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Samples\Data\NodesStack\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\Data\PieChart\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>

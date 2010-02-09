@@ -159,6 +159,8 @@
     <Compile Include="Node.Silverlight.cs">
       <DependentUpon>Node.cs</DependentUpon>
     </Compile>
+    <Compile Include="NodeCloneInfo.cs" />
+    <Compile Include="NodeCloner.cs" />
     <Compile Include="Objects\Flat\ISpriteContext.cs" />
     <Compile Include="ColorSpace.cs" />
     <Compile Include="ColorSpaces.cs" />

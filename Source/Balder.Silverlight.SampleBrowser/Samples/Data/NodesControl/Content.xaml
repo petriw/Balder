@@ -5,17 +5,30 @@
     xmlns:Geometries="clr-namespace:Balder.Core.Objects.Geometries;assembly=Balder.Core" 
     xmlns:local="clr-namespace:Balder.Silverlight.SampleBrowser.Samples.Data.NodesControl" 
     xmlns:View="clr-namespace:Balder.Core.View;assembly=Balder.Core" 
+    xmlns:Animation="clr-namespace:Balder.Silverlight.Animation;assembly=Balder.Silverlight" 
     >
 	<UserControl.DataContext>
 		<local:ViewModel/>
 	</UserControl.DataContext>
     <Grid x:Name="LayoutRoot">
-		
+		<Grid.Triggers>
+			<EventTrigger RoutedEvent="Grid.Loaded">
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever">
+						<Animation:StoryboardExtensions.CoordinateAnimation>
+							<Animation:CoordinateAnimation From="0,0,0" To="0,359,0" Duration="00:00:05" TargetName="Nodes" TargetProperty="(Node.Rotation)"/>
+						</Animation:StoryboardExtensions.CoordinateAnimation>
+					</Storyboard>
+				</BeginStoryboard>
+
+			</EventTrigger>
+		</Grid.Triggers>
+
 		<local:MyGame Width="800" Height="600">
-			<Controls:NodesControl ItemsSource="{Binding Objects}">
+			<Controls:NodesControl x:Name="Nodes" ItemsSource="{Binding Objects}">
 				<Controls:NodesControl.NodeTemplate>
 					<DataTemplate>
-						<Geometries:Box Color="{Binding Color}" Position="{Binding Position}" Dimension="60,60,60"/>
+						<Geometries:Box Color="{Binding Color}" Position="{Binding Position}" Dimension="10,10,10"/>
 					</DataTemplate>
 				</Controls:NodesControl.NodeTemplate>
 			</Controls:NodesControl>

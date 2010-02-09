@@ -27,62 +27,92 @@ namespace Balder.Core.Objects.Geometries
 {
 	public class Cylinder : Geometry
 	{
-		private bool _isLoaded = false;
-
 		public static readonly Property<Cylinder, double> TopRadiusProp = Property<Cylinder, double>.Register(c => c.TopRadius);
 		public double TopRadius
 		{
 			get { return TopRadiusProp.GetValue(this); }
-			set { TopRadiusProp.SetValue(this, value); }
+			set
+			{
+				TopRadiusProp.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, double> BottomRadiusProp = Property<Cylinder, double>.Register(c => c.BottomRadius);
 		public double BottomRadius
 		{
 			get { return BottomRadiusProp.GetValue(this); }
-			set { BottomRadiusProp.SetValue(this, value); }
+			set
+			{
+				BottomRadiusProp.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, bool> CapEndsProp = Property<Cylinder, bool>.Register(c => c.CapEnds);
 		public bool CapEnds
 		{
 			get { return CapEndsProp.GetValue(this); }
-			set { CapEndsProp.SetValue(this, value); }
+			set
+			{
+				CapEndsProp.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, int> SegmentsProp = Property<Cylinder, int>.Register(c => c.Segments);
 		public int Segments
 		{
 			get { return SegmentsProp.GetValue(this); }
-			set { SegmentsProp.SetValue(this, value); }
+			set
+			{
+				SegmentsProp.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, int> StacksProp = Property<Cylinder, int>.Register(c => c.Stacks);
 		public int Stacks
 		{
 			get { return StacksProp.GetValue(this); }
-			set { StacksProp.SetValue(this, value); }
+			set
+			{
+				StacksProp.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, double> SizeProperty = Property<Cylinder, double>.Register(c => c.Size);
 		public double Size
 		{
 			get { return SizeProperty.GetValue(this); }
-			set { SizeProperty.SetValue(this, value); }
+			set
+			{
+				SizeProperty.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, double> StartAngleProperty = Property<Cylinder, double>.Register(c => c.StartAngle);
 		public double StartAngle
 		{
 			get { return StartAngleProperty.GetValue(this); }
-			set { StartAngleProperty.SetValue(this, value); }
+			set
+			{
+				StartAngleProperty.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 		public static readonly Property<Cylinder, double> EndAngleProperty = Property<Cylinder, double>.Register(c => c.EndAngle);
 		public double EndAngle
 		{
 			get { return EndAngleProperty.GetValue(this); }
-			set { EndAngleProperty.SetValue(this, value); }
+			set
+			{
+				EndAngleProperty.SetValue(this, value);
+				OnPrepareGeometry();
+			}
 		}
 
 
@@ -95,13 +125,6 @@ namespace Balder.Core.Objects.Geometries
 			CapEnds = true;
 		}
 
-
-		protected override void OnLoaded()
-		{
-			_isLoaded = true;
-			Prepare();
-			base.OnLoaded();
-		}
 
 		private void Validate()
 		{
@@ -137,13 +160,9 @@ namespace Balder.Core.Objects.Geometries
 		}
 
 
-		private void Prepare()
+		//private void OnPrepareGeometry()
+		protected override void PrepareGeometry()
 		{
-			if (!_isLoaded)
-			{
-				return;
-			}
-
 			Validate();
 
 			var actualStacks = Stacks + 1;
