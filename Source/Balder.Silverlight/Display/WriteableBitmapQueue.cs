@@ -19,11 +19,8 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows.Media.Imaging;
-using Balder.Silverlight.Notification;
 
 namespace Balder.Silverlight.Display
 {
@@ -37,32 +34,6 @@ namespace Balder.Silverlight.Display
 
 	public class WriteableBitmapQueue
 	{
-		public class WriteableBitmapQueueStatistics
-		{
-			public virtual int ClearCount { get; set; }
-			public virtual int RenderCount { get; set; }
-			public virtual int ShowCount { get; set; }
-
-			private static object InstanceLockObject = new object();
-			private static WriteableBitmapQueueStatistics _instance;
-			public static WriteableBitmapQueueStatistics	Instance
-			{
-				get
-				{
-					lock( InstanceLockObject )
-					{
-						if( null == _instance )
-						{
-							var weaver = new NotifyingObjectWeaver();
-							var proxyType = weaver.GetProxyType<WriteableBitmapQueueStatistics>();
-							_instance = Activator.CreateInstance(proxyType) as WriteableBitmapQueueStatistics;
-						}
-						return _instance;
-					}
-					
-				}
-			}
-		}
 
 
 		private readonly Dictionary<BufferType,Queue<WriteableBitmap>> _bufferQueues;
@@ -93,16 +64,6 @@ namespace Balder.Silverlight.Display
 		{
 			var writeableBitmap = new WriteableBitmap(_width, _height);
 			Enqueue(bufferType,writeableBitmap);
-		}
-
-
-
-
-		public void UpdateStatistics()
-		{
-			WriteableBitmapQueueStatistics.Instance.ClearCount = _bufferQueues[BufferType.Clear].Count;
-			WriteableBitmapQueueStatistics.Instance.RenderCount = _bufferQueues[BufferType.Render].Count;
-			WriteableBitmapQueueStatistics.Instance.ShowCount = _bufferQueues[BufferType.Show].Count;
 		}
 
 		public WriteableBitmap GetClearBitmap()

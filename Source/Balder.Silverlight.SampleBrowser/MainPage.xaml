@@ -62,64 +62,6 @@
 					<resources:View x:Name="_resourceView" Source="{Binding Path=Source, ElementName=ContentFrame}"/>
 				</controls:TabItem>
 			</controls:TabControl>
-
-			<StackPanel Orientation="Vertical" Grid.Column="1" Visibility="Collapsed">
-				<Grid x:Name="BufferStatisticsGrid" Margin="0,30,0,0">
-					<Grid.Resources>
-						<Style x:Key="DebugText" TargetType="TextBlock">
-							<Setter Property="FontFamily" Value="Verdana"/>
-							<Setter Property="FontSize" Value="24"/>
-						</Style>
-					</Grid.Resources>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="150"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-					</Grid.RowDefinitions>
-
-					<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding ClearCount}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
-
-					<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding ShowCount}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
-
-					<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding RenderCount}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
-				</Grid>
-
-				<Grid x:Name="RenderStatisticsGrid" Margin="0,30,0,0">
-					<Grid.Resources>
-						<Style x:Key="DebugText" TargetType="TextBlock">
-							<Setter Property="FontFamily" Value="Verdana"/>
-							<Setter Property="FontSize" Value="24"/>
-						</Style>
-					</Grid.Resources>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="150"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="30"/>
-					</Grid.RowDefinitions>
-
-					<TextBlock Text="Clear" Grid.Column="0" Grid.Row="0" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding ClearTime}" Grid.Column="1" Grid.Row="0" Style="{StaticResource DebugText}"/>
-
-					<TextBlock Text="Show" Grid.Column="0" Grid.Row="1" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding ShowTime}" Grid.Column="1" Grid.Row="1" Style="{StaticResource DebugText}"/>
-
-					<TextBlock Text="Render" Grid.Column="0" Grid.Row="2" Style="{StaticResource DebugText}"/>
-					<TextBlock Text="{Binding RenderTime}" Grid.Column="1" Grid.Row="2" Style="{StaticResource DebugText}"/>
-				</Grid>
-			</StackPanel>
 		</Grid>
 	</Grid>
 </UserControl>

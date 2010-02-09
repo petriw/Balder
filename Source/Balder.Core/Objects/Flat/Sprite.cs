@@ -21,7 +21,6 @@ using Balder.Core.Display;
 using Balder.Core.Execution;
 using Balder.Core.Imaging;
 using Balder.Core.Math;
-using Balder.Core.Objects.Geometries;
 using Ninject.Core;
 
 namespace Balder.Core.Objects.Flat

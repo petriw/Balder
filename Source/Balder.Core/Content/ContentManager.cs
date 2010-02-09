@@ -36,14 +36,14 @@ namespace Balder.Core.Content
 		}
 
 		public T Load<T>(string assetName)
-			where T:IAsset
+			where T : IAsset
 		{
 			var asset = _objectFactory.Get<T>();
 			asset.Load(assetName);
 			return asset;
 		}
 
-		public T CreateAssetPart<T>() where T:IAssetPart
+		public T CreateAssetPart<T>() where T : IAssetPart
 		{
 			var part = _objectFactory.Get<T>();
 			return part;
@@ -51,6 +51,6 @@ namespace Balder.Core.Content
 
 		public ContentCreator Creator { get; private set; }
 
-		public string AssetsRoot { get; set;}
+		public string AssetsRoot { get; set; }
 	}
 }

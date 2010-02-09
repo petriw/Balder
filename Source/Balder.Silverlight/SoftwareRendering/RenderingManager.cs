@@ -28,37 +28,6 @@ namespace Balder.Silverlight.SoftwareRendering
 {
 	public delegate void RenderEventHandler();
 
-	public class RenderingStatistics
-	{
-
-		public virtual long ShowTime { get; set; }
-		public virtual long ClearTime { get; set; }
-		public virtual long RenderTime { get; set; }
-
-		private static object InstanceLockObject = new object();
-		private static RenderingStatistics _instance;
-
-		public static RenderingStatistics Instance
-		{
-			get
-			{
-				lock( InstanceLockObject )
-				{
-					if( null == _instance )
-					{
-						var weaver = new NotifyingObjectWeaver();
-						var proxyType = weaver.GetProxyType<RenderingStatistics>();
-						_instance = Activator.CreateInstance(proxyType) as RenderingStatistics;
-					}
-
-					return _instance;
-				}
-			}
-		}
-		
-	}
-
-
 	public class RenderingManager
 	{
 		public static readonly RenderingManager Instance = new RenderingManager();
@@ -124,8 +93,6 @@ namespace Balder.Silverlight.SoftwareRendering
 			}
 		}
 
-		Stopwatch stopwatch = Stopwatch.StartNew();
-
 		private void ShowTimer(object sender, EventArgs e)
 		{
 			//_renderWait.Set();
@@ -134,31 +101,13 @@ namespace Balder.Silverlight.SoftwareRendering
 			Updated();
 			//return;
 			//if (_hasCleared && _hasRendered)
-			{
-				
-				stopwatch.Start();
-				
+			{			
 				Render();
-
-				stopwatch.Stop();
-				RenderingStatistics.Instance.RenderTime = stopwatch.ElapsedMilliseconds;
-				stopwatch.Reset();
-
 				Swapped();
 
-				stopwatch.Start();
 				Clear();
-				stopwatch.Stop();
-				RenderingStatistics.Instance.ClearTime = stopwatch.ElapsedMilliseconds;
-				stopwatch.Reset();
 
-				stopwatch.Start();
 				Show();
-				stopwatch.Stop();
-				RenderingStatistics.Instance.ShowTime = stopwatch.ElapsedMilliseconds;
-				stopwatch.Reset();
-
-				
 			}
 		}
 

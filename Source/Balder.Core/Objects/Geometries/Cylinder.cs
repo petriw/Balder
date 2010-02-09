@@ -43,7 +43,6 @@ namespace Balder.Core.Objects.Geometries
 			set { BottomRadiusProp.SetValue(this, value); }
 		}
 
-
 		public static readonly Property<Cylinder, bool> CapEndsProp = Property<Cylinder, bool>.Register(c => c.CapEnds);
 		public bool CapEnds
 		{
