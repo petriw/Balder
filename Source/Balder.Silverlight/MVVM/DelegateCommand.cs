@@ -147,6 +147,11 @@ namespace Balder.Silverlight.MVVM
 			}
 		}
 
+		public void FireCanExecuteChanged()
+		{
+			OnCanExecuteChanged();
+		}
+
 
 		public static DelegateCommand	Create(ExecuteEventHandler<object> execute)
 		{
