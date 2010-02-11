@@ -86,6 +86,34 @@ namespace Balder.Core
 			}
 		}
 
+		public void Clear()
+		{
+			lock (_renderableNodes)
+			{
+				_renderableNodes.Clear();
+			}
+
+			lock (_flatNodes)
+			{
+				_flatNodes.Clear();
+			}
+
+			lock (_environmentalNodes)
+			{
+				_environmentalNodes.Clear();
+			}
+
+			lock (_lights)
+			{
+				_lights.Clear();
+			}
+
+			lock (_allNodes)
+			{
+				_allNodes.Clear();
+			}
+		}
+
 		/// <summary>
 		/// Gets all the renderable nodes in the scene
 		/// </summary>
