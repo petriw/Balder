@@ -126,6 +126,7 @@
     <Compile Include="Controls\ViewModels\Category.cs" />
     <Compile Include="Controls\ViewModels\SampleNavigationViewModel.cs" />
     <Compile Include="Controls\ViewModels\SamplePage.cs" />
+    <Compile Include="Effects\ReflectionShader.cs" />
     <Compile Include="Features\Resources\FileExtensionToImageConverter.cs" />
     <Compile Include="Features\Resources\ResourceFile.cs" />
     <Compile Include="Features\Resources\View.xaml.cs">
@@ -397,6 +398,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Effects\Reflection.fx" />
+    <Resource Include="Effects\Reflection.ps" />
     <None Include="Properties\AppManifest.xml" />
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Earth.ASE" />
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Hello.ASE" />

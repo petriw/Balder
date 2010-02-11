@@ -18,6 +18,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Data.NodesControl
 
 			Objects = new ObservableCollection<BusinessObject>();
 
+
+
 			var zCount = 25;
 			var xCount = 25;
 
