@@ -47,8 +47,8 @@ namespace Balder.Core.View
 
 		#region Public Properties
 
-		public Matrix ViewMatrix { get; private set; }
-		public Matrix ProjectionMatrix { get; private set; }
+		public virtual Matrix ViewMatrix { get; private set; }
+		public virtual Matrix ProjectionMatrix { get; private set; }
 
 		public static readonly Property<Camera, Coordinate> PositionProp = Property<Camera, Coordinate>.Register(c => c.Position);
 		/// <summary>
