@@ -71,6 +71,10 @@ namespace Balder.Silverlight.Controls
 			get { return ItemsSourceProperty.GetValue(this); }
 			set
 			{
+				if( null == value )
+				{
+					return;
+				}
 				HandlePreviousItemsSource();
 				_itemsSource = value;
 				ItemsSourceProperty.SetValue(this, value);
@@ -141,7 +145,12 @@ namespace Balder.Silverlight.Controls
 		private void PopulateFromItemsSource()
 		{
 			var before = DateTime.Now;
-			
+
+			if (null == _itemsSource)
+			{
+				return;
+			}
+
 			foreach (var item in _itemsSource)
 			{
 				LoadAndAddChild(item);

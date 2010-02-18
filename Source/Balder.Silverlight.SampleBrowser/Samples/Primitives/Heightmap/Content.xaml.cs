@@ -1,15 +1,9 @@
 using System;
-using System.ComponentModel;
 using Balder.Core;
 using Balder.Core.Objects.Geometries;
-using Balder.Silverlight.SampleBrowser.Constants;
-using Balder.Silverlight.SampleBrowser.Content;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.Primitives.Heightmap
 {
-	[Category(Categories.Primitives)]
-	[SamplePage("Heightmap")]
-	[Description("Sample showing how to use the Heightmap primitive")]
 	public partial class Content
 	{
 		public Content()

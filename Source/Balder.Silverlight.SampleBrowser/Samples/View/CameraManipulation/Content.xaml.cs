@@ -1,13 +1,7 @@
-﻿using System.ComponentModel;
-using Balder.Core.Math;
-using Balder.Silverlight.SampleBrowser.Constants;
-using Balder.Silverlight.SampleBrowser.Content;
+﻿using Balder.Core.Math;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.View.CameraManipulation
 {
-	[Category(Categories.View)]
-	[SamplePage("Camera Manipulation")]
-	[Description("Sample showing how to manipulate camera in Xaml")]
 	public partial class Content
 	{
 		public Content()

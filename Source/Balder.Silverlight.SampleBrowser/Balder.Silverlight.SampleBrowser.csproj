@@ -116,7 +116,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Constants\Categories.cs" />
-    <Compile Include="Content\SamplePageAttribute.cs" />
     <Compile Include="Controls\ResourceViewer.xaml.cs">
       <DependentUpon>ResourceViewer.xaml</DependentUpon>
     </Compile>
@@ -139,6 +138,16 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Categories.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Categories.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Sample.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sample.resx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Creative\Water\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -429,6 +438,14 @@
     <Resource Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Categories.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Categories.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Sample.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sample.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\Creative\Water\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -515,9 +532,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Star.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

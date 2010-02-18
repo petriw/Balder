@@ -1,15 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Animation;
 using Balder.Core.Math;
-using Balder.Silverlight.SampleBrowser.Constants;
-using Balder.Silverlight.SampleBrowser.Content;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.View.FollowObject
 {
-	[Category(Categories.View)]
-	[SamplePage("Follow Object")]
-	[Description("Sample showing how to follow an object with the camera")]
 	public partial class Content
 	{
 		private Storyboard _positionStoryboard;

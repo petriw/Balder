@@ -1,7 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Balder.Silverlight.SampleBrowser.Content;
 
 namespace Balder.Silverlight.SampleBrowser.Controls.ViewModels
 {
@@ -17,34 +15,35 @@ namespace Balder.Silverlight.SampleBrowser.Controls.ViewModels
 
 		public void AddPageFromType(Type type)
 		{
-			SamplePageAttribute samplePageAttribute = null;
-			DescriptionAttribute descriptionAttribute = null;
-			var customAttributes = type.GetCustomAttributes(true);
-			foreach( var attribute in customAttributes )
-			{
-				if( attribute is SamplePageAttribute )
-				{
-					samplePageAttribute = attribute as SamplePageAttribute;
-				}
-				if( attribute is DescriptionAttribute )
-				{
-					descriptionAttribute = attribute as DescriptionAttribute;
-				}
-			}
-			
-			if( null != samplePageAttribute )
-			{
-				var page = new SamplePage
-				           	{
-				           		Type = type,
-				           		Name = samplePageAttribute.Name
-				           	};
-				if( null != descriptionAttribute )
-				{
-					page.Description = descriptionAttribute.Description;
-				}
-				Pages.Add(page);
-			}
+			var page = new SamplePage
+			           	{
+			           		Type = type,
+			           		Name = GetSampleName(type),
+							Description = GetSampleDescription(type)
+			           	};
+			Pages.Add(page);
 		}
+
+		private static string GetSampleName(Type type)
+		{
+			var ns = GetSampleNamespaceName(type);
+			return ns;
+		}
+
+		private static string GetSampleNamespaceName(Type type)
+		{
+			var ns = type.Namespace;
+			var lastDot = ns.LastIndexOf('.');
+			var sampleNamespace = ns.Substring(lastDot + 1);
+			return sampleNamespace;
+		}
+
+		private static string GetSampleDescription(Type type)
+		{
+			var ns = GetSampleNamespaceName(type);
+
+			return string.Empty;
+		}
+
 	}
 }

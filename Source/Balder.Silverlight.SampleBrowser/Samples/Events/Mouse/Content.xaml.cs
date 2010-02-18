@@ -1,13 +1,7 @@
-﻿using System.ComponentModel;
-using Balder.Core;
-using Balder.Silverlight.SampleBrowser.Constants;
-using Balder.Silverlight.SampleBrowser.Content;
+﻿using Balder.Core;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.Events.Mouse
 {
-	[Category(Categories.Events)]
-	[SamplePage("Mouse")]
-	[Description("")]
 	public partial class Content
 	{
 		public Content()

@@ -1,14 +1,8 @@
 using System;
-using System.ComponentModel;
 using Balder.Core.Objects.Geometries;
-using Balder.Silverlight.SampleBrowser.Constants;
-using Balder.Silverlight.SampleBrowser.Content;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.Creative.Water
 {
-	[Category(Categories.Creative)]
-	[SamplePage("Water")]
-	[Description("Sample showing how to use the heightmap as a water surface")]
 	public partial class Content
 	{
 		private static readonly Random rnd = new Random();
