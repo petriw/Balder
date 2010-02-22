@@ -16,8 +16,7 @@
 // limitations under the License.
 //
 #endregion
-using System;
-using System.Collections.Generic;
+
 using Balder.Core.Display;
 using Balder.Core.Materials;
 using Balder.Core.Math;
@@ -168,7 +167,7 @@ namespace Balder.Core.SoftwareRendering
 			if (!_hasPrepared)
 			{
 				Prepare();
-				_hasPrepared = false;
+				_hasPrepared = true;
 			}
 
 

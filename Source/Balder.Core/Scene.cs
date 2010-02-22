@@ -128,6 +128,10 @@ namespace Balder.Core
 		{
 			lock( _allNodes )
 			{
+				foreach (var node in _allNodes)
+				{
+					Prepare(node);
+				}
 				foreach( var node in _allNodes )
 				{
 					var world = Matrix.Identity;
@@ -144,6 +148,15 @@ namespace Balder.Core
 			}
 		}
 
+		private static void Prepare(Node node)
+		{
+			node.OnPrepare();
+			foreach (var child in node.Children)
+			{
+				Prepare(child);
+			}
+		}
+
 		private static void PrepareRender(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( !node.IsVisible )
@@ -152,7 +165,7 @@ namespace Balder.Core
 			}
 			world = node.World * world;
 			node.RenderingWorld = world;
-			node.OnPrepare();
+			
 			node.OnBeforeRendering(viewport,view,projection,node.RenderingWorld);
 			foreach (var child in node.Children)
 			{

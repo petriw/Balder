@@ -59,7 +59,11 @@ namespace Balder.Silverlight.Controls
 		public Coordinate StartPosition
 		{
 			get { return StartPositionProperty.GetValue(this); }
-			set { StartPositionProperty.SetValue(this, value); }
+			set
+			{
+				StartPositionProperty.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly DependencyProperty<NodesStack, Coordinate> ItemAddProperty =
@@ -67,7 +71,11 @@ namespace Balder.Silverlight.Controls
 		public Coordinate ItemAdd
 		{
 			get { return ItemAddProperty.GetValue(this); }
-			set { ItemAddProperty.SetValue(this, value); }
+			set
+			{
+				ItemAddProperty.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 	}
 }
