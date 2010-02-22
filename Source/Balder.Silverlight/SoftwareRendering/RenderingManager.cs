@@ -109,6 +109,8 @@ namespace Balder.Silverlight.SoftwareRendering
 
 				Show();
 			}
+
+			
 		}
 
 		

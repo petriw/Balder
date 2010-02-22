@@ -21,7 +21,7 @@
 		</Grid.Triggers>
 		
 		
-		<Execution:Game Width="640" Height="480" Update="Game_Update" >
+		<Execution:Game x:Name="Game" Width="640" Height="480">
 			<Execution:Game.Camera>
 				<View:Camera Position="100,130,-100" Target="0,0,0"/>
 			</Execution:Game.Camera>

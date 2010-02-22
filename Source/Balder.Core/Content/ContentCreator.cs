@@ -37,26 +37,5 @@ namespace Balder.Core.Content
 			var geometry = _objectFactory.Get<T>();
 			return geometry;
 		}
-
-		public T ReferenceCopy<T>(T node)
-			where T : Node
-		{
-			var type = node.GetType();
-			//var clone = _objectFactory.Get(type) as T;
-			var clone = Activator.CreateInstance(type) as T;
-			clone.CopyFrom(node);
-			ReferenceCopyHierarchical(node, clone);
-			return clone;
-		}
-
-		private void ReferenceCopyHierarchical<T>(T parent, T clonedParent)
-			where T : Node
-		{
-			foreach( var child in parent.Children )
-			{
-				var clone = ReferenceCopy(child);
-				clonedParent.Children.Add(clone);
-			}
-		}
 	}
 }

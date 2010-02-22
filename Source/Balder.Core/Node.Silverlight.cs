@@ -57,7 +57,6 @@ namespace Balder.Core
 
 		private void NodeLoaded(object sender, RoutedEventArgs e)
 		{
-			Runtime.Instance.WireUpDependencies(this);
 			OnInitialize();
 		}
 

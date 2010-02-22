@@ -42,14 +42,6 @@ namespace Balder.Core.Tests.Content
 			public int SomeProperty { get; set; }
 
 
-			public bool CopyFromCalled = false;
-			public override void CopyFrom(Node source)
-			{
-				CopyFromCalled = true;
-				SomeProperty = ((DeviceContextNode) source).SomeProperty;
-				Context = ((DeviceContextNode)source).Context;
-				base.CopyFrom(source);
-			}
 		}
 
 		private static IObjectFactory GetObjectFactory()
@@ -59,44 +51,6 @@ namespace Balder.Core.Tests.Content
 		}
 
 
-		[Test, SilverlightUnitTest]
-		public void ReferenceCopyingShouldReturnNewObject()
-		{
-			var objectFactory = GetObjectFactory();
-			var node = new DeviceContextNode();
-			var contentCreator = new ContentCreator(objectFactory);
-
-			var clone = contentCreator.ReferenceCopy(node);
-			Assert.That(clone,Is.Not.Null);
-			Assert.That(clone,Is.Not.EqualTo(node));
-		}
-
-
-		[Test, SilverlightUnitTest]
-		public void ReferenceCopyingShouldCallCopyFrom()
-		{
-			var objectFactory = GetObjectFactory();
-			var node = new DeviceContextNode();
-			node.SomeProperty = 42;
-			var contentCreator = new ContentCreator(objectFactory);
-
-			var clone = contentCreator.ReferenceCopy(node);
-			Assert.That(clone.CopyFromCalled, Is.True);
-			Assert.That(clone.SomeProperty, Is.EqualTo(node.SomeProperty));
-		}
-
-		[Test, SilverlightUnitTest]
-		public void ReferenceCopyingWithChildrenShouldCloneChildren()
-		{
-			var objectFactory = GetObjectFactory();
-			var parent = new DeviceContextNode();
-			var child = new DeviceContextNode();
-			parent.Children.Add(child);
-			var contentCreator = new ContentCreator(objectFactory);
-
-			var clone = contentCreator.ReferenceCopy(parent);
-			Assert.That(clone.Children.Count, Is.EqualTo(parent.Children.Count));
-		}
 	}
 }
 

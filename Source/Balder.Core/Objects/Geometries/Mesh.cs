@@ -44,11 +44,5 @@ namespace Balder.Core.Objects.Geometries
 			// Todo: This has to be done since Loading of the node is done after Xaml has been bound - but we will get color from the File loaded
 			SetColorForChildren();
 		}
-
-		public override void CopyFrom(Node source)
-		{
-			AssetName = ((Mesh) source).AssetName;
-			base.CopyFrom(source);
-		}
 	}
 }

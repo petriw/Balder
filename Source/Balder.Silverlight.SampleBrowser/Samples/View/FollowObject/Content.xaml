@@ -48,7 +48,7 @@
 
 
 
-		<Execution:Game x:Name="Game"  Width="640" Height="480" Update="GameUpdate">
+		<Execution:Game x:Name="Game"  Width="640" Height="480">
 			<Execution:Game.Camera>
 				<View:Camera x:Name="Camera" Position="0,20,-200"/>
 			</Execution:Game.Camera>

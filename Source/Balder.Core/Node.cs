@@ -29,7 +29,7 @@ namespace Balder.Core
 	/// <summary>
 	/// Abstract class representing a node in a scene
 	/// </summary>
-	public abstract partial class Node : IAmCopyable<Node>
+	public abstract partial class Node
 	{
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
 		public event EventHandler Hover = (s, e) => { };
@@ -38,6 +38,7 @@ namespace Balder.Core
 		private bool _isWired = false;
 		private bool _isInitializingTransform;
 		private bool _isPrepared = false;
+		private bool _isInitialized = false;
 
 		protected Node()
 		{
@@ -203,19 +204,6 @@ namespace Balder.Core
 		}
 
 
-		public virtual void CopyFrom(Node source)
-		{
-			BoundingSphere = source.BoundingSphere;
-			Position.Set(source.Position);
-			Scale.Set(source.Scale);
-			Rotation.Set(source.Rotation);
-			Color = source.Color;
-			Command = source.Command;
-			CommandParameter = source.CommandParameter;
-			PrepareWorld();
-		}
-
-
 		public virtual Node Clone()
 		{
 			var clone = NodeCloner.Instance.Clone(this);
@@ -237,7 +225,12 @@ namespace Balder.Core
 
 		internal void OnInitialize()
 		{
-			if( !_isWired)
+			if (_isInitialized)
+			{
+				return;
+			}
+
+			if (!_isWired)
 			{
 				Runtime.Instance.WireUpDependencies(this);
 				_isWired = true;
@@ -264,9 +257,13 @@ namespace Balder.Core
 
 		internal void OnPrepare()
 		{
-			if (IsClone || _isPrepared )
+			if (IsClone || _isPrepared)
 			{
 				return;
+			}
+			if (!_isInitialized)
+			{
+				OnInitialize();
 			}
 
 			_isPrepared = true;

@@ -1,4 +1,5 @@
 using System;
+using Balder.Core.Execution;
 using Balder.Core.Objects.Geometries;
 
 namespace Balder.Silverlight.SampleBrowser.Samples.Creative.Water
@@ -16,6 +17,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Creative.Water
 			InitializeComponent();
 
 			_waveMap = new float[2, (int)HeightMap.LengthSegments, (int)HeightMap.HeightSegments];
+
+			Game.Update += Game_Update;
 		}
 
 
@@ -45,7 +48,7 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Creative.Water
 			e.Height = n;
 		}
 
-		private void Game_Update(object sender, EventArgs e)
+		private void Game_Update(Game game)
 		{
 			var frame1 = _frameNumber;
 
@@ -61,8 +64,15 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Creative.Water
 				_waveMap[frame1, x, z] = -10;
 			}
 
-			GeometryHelper.CalculateFaceNormals(HeightMap.GeometryContext);
-			GeometryHelper.CalculateVertexNormals(HeightMap.GeometryContext);
+			if( HeightMap.GeometryContext.FaceCount > 0 &&
+				HeightMap.GeometryContext.VertexCount > 0 )
+			{
+				GeometryHelper.CalculateFaceNormals(HeightMap.GeometryContext);
+				GeometryHelper.CalculateVertexNormals(HeightMap.GeometryContext);
+				
+			}
+
+
 			_frameNumber ^= 1;
 		}
 	}

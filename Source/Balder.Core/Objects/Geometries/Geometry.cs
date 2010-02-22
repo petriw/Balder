@@ -113,12 +113,6 @@ namespace Balder.Core.Objects.Geometries
 			GeometryContext.Render(viewport, this, view, projection, world);
 		}
 
-		public override void CopyFrom(Node source)
-		{
-			GeometryContext = ((Geometry)source).GeometryContext;
-			base.CopyFrom(source);
-		}
-
 
 		public Property<Geometry, Material> MaterialProperty = Property<Geometry, Material>.Register(g => g.Material);
 		public Material Material

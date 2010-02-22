@@ -49,15 +49,14 @@ namespace Balder.Core.SoftwareRendering
 		public TextureCoordinate[] TextureCoordinates { get; private set; }
 		public Line[] Lines { get; private set; }
 
-		public int FaceCount { get { return Faces.Length; } }
-		public int VertexCount { get { return Vertices.Length; } }
-		public int TextureCoordinateCount { get { return TextureCoordinates.Length; } }
-		public int LineCount { get { return Lines.Length; } }
+		public int FaceCount { get { return null == Faces ? 0 : Faces.Length; } }
+		public int VertexCount { get { return null == Vertices ? 0 : Vertices.Length; } }
+		public int TextureCoordinateCount { get { return null == TextureCoordinates ? 0 : TextureCoordinates.Length; } }
+		public int LineCount { get { return null == Lines ? 0 : Lines.Length; } }
 
 		public void AllocateFaces(int count)
 		{
 			Faces = new Face[count];
-
 		}
 
 		public void SetFace(int index, Face face)
