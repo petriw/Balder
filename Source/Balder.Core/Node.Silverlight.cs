@@ -19,7 +19,7 @@ namespace Balder.Core
 		public new event MouseButtonEventHandler MouseLeftButtonDown = (s, e) => { };
 		public new event MouseButtonEventHandler MouseLeftButtonUp = (s, e) => { };
 
-		partial void Initialize()
+		partial void Construct()
 		{
 			Loaded += NodeLoaded;
 			Children.CollectionChanged += ChildrenChanged;
@@ -59,7 +59,6 @@ namespace Balder.Core
 		{
 			Runtime.Instance.WireUpDependencies(this);
 			OnInitialize();
-			OnLoaded();
 		}
 
 

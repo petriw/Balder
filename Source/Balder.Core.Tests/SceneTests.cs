@@ -33,13 +33,13 @@ namespace Balder.Core.Tests
 		{
 
 			public bool PrepareCalled = false;
-			public override void Prepare()
+			protected override void Prepare()
 			{
 				PrepareCalled = true;
 			}
 
 			public bool RenderCalled = false;
-			public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+			protected override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 			{
 				RenderCalled = true;
 			}
@@ -59,7 +59,7 @@ namespace Balder.Core.Tests
 			}
 
 			public Matrix WorldResult;
-			public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+			protected override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 			{
 				WorldResult = world;
 				if (null != _actionToCall)
@@ -193,5 +193,28 @@ namespace Balder.Core.Tests
 
 			Assert.That(node.PrepareCalled,Is.True);
 		}
+
+		[Test, SilverlightUnitTest]
+		public void AddingChildProgramaticallyShouldCallPrepareOnNodeBeforeRenderingOnlyFirstTime()
+		{
+			var viewport = new Viewport { Width = 640, Height = 480 };
+			var camera = new Camera();
+			viewport.View = camera;
+			camera.Position.Z = -100;
+			camera.Update(viewport);
+			var scene = new Scene();
+
+			var node = new MyRenderableNode();
+			scene.AddNode(node);
+
+			scene.Render(viewport, camera.ViewMatrix, camera.ProjectionMatrix);
+
+			node.PrepareCalled = false;
+
+			scene.Render(viewport, camera.ViewMatrix, camera.ProjectionMatrix);
+
+			Assert.That(node.PrepareCalled, Is.False);
+		}
+
 	}
 }

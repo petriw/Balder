@@ -29,7 +29,6 @@ namespace Balder.Core.Objects.Geometries
 	{
 		private static readonly HeightmapEventArgs EventArgs = new HeightmapEventArgs();
 		public event EventHandler<HeightmapEventArgs> HeightInput;
-		private bool _isLoaded = false;
 
 		public Heightmap()
 		{
@@ -44,7 +43,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				LengthSegmentsProperty.SetValue(this, value);
-				PreparePlane();
+				InvalidatePrepare();
 			}
 		}
 
@@ -55,7 +54,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				HeightSegmentsProperty.SetValue(this, value);
-				PreparePlane();
+				InvalidatePrepare();
 			}
 		}
 		
@@ -66,18 +65,13 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				DimensionProperty.SetValue(this, value);
-				PreparePlane();
+				InvalidatePrepare();
 			}
 		}
 
-		protected override void OnLoaded()
-		{
-			_isLoaded = true;
-			PreparePlane();
-			base.OnLoaded();
-		}
+		
 
-		public override void PrepareForRendering(Display.Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		protected override void BeforeRendering(Display.Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( null != HeightInput )
 			{
@@ -113,7 +107,7 @@ namespace Balder.Core.Objects.Geometries
 					}
 				}
 			}
-			base.PrepareForRendering(viewport, view, projection, world);
+			base.BeforeRendering(viewport, view, projection, world);
 		}
 
 		public void SetHeightForGridPoint(int gridX, int gridY, float height)
@@ -148,12 +142,8 @@ namespace Balder.Core.Objects.Geometries
 		}
 
 
-		private void PreparePlane()
+		protected override void Prepare()
 		{
-			if (!_isLoaded)
-			{
-				return;
-			}
 			if (LengthSegments <= 0 || HeightSegments <= 0)
 			{
 				throw new ArgumentException("LengthSegments and HeightSegments must be 1 or more");
@@ -161,6 +151,7 @@ namespace Balder.Core.Objects.Geometries
 
 			PrepareVertices();
 			PrepareFaces();
+			base.Prepare();
 		}
 
 

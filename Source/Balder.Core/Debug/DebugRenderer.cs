@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -59,7 +59,7 @@ namespace Balder.Core.Debug
 		private void CreateShapes()
 		{
 			_boundingSphereDebugShape = _objectFactory.Get<BoundingSphereDebugShape>();
-			_boundingSphereDebugShape.Initialize();
+			_boundingSphereDebugShape.OnInitialize();
 		}
 
 		public void RenderBoundingSphere(BoundingSphere sphere, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -71,13 +71,13 @@ namespace Balder.Core.Debug
 
 			_boundingSphereDebugShape.Color = viewport.DebugInfo.Color;
 			_boundingSphereDebugShape.World = scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection, world);
+			_boundingSphereDebugShape.OnRender(viewport, view, projection, world);
 
 			_boundingSphereDebugShape.World = rotateYMatrix * scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection, world);
+			_boundingSphereDebugShape.OnRender(viewport, view, projection, world);
 
 			_boundingSphereDebugShape.World = rotateXMatrix * scaleMatrix * translationMatrix;
-			_boundingSphereDebugShape.Render(viewport, view, projection, world);
+			_boundingSphereDebugShape.OnRender(viewport, view, projection, world);
 		}
 	}
 }

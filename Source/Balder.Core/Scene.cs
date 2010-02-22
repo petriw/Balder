@@ -144,7 +144,7 @@ namespace Balder.Core
 			}
 		}
 
-		private void PrepareRender(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		private static void PrepareRender(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( !node.IsVisible )
 			{
@@ -152,15 +152,15 @@ namespace Balder.Core
 			}
 			world = node.World * world;
 			node.RenderingWorld = world;
-			node.Prepare();
-			node.PrepareForRendering(viewport,view,projection,node.RenderingWorld);
+			node.OnPrepare();
+			node.OnBeforeRendering(viewport,view,projection,node.RenderingWorld);
 			foreach (var child in node.Children)
 			{
 				PrepareRender(child, viewport, view, projection, world);
 			}
 		}
 
-		private void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection)
+		private static void RenderNode(RenderableNode node, Viewport viewport, Matrix view, Matrix projection)
 		{
 			if( !node.IsVisible )
 			{
@@ -168,7 +168,7 @@ namespace Balder.Core
 			}
 
 			
-			node.Render(viewport, view, projection, node.RenderingWorld);
+			node.OnRender(viewport, view, projection, node.RenderingWorld);
 
 			foreach (var child in node.Children)
 			{
@@ -177,7 +177,7 @@ namespace Balder.Core
 					RenderNode((RenderableNode)child, viewport, view, projection);
 				}
 			}
-			node.RenderDebugInfo(viewport, view, projection, node.RenderingWorld);
+			node.OnRenderDebugInfo(viewport, view, projection, node.RenderingWorld);
 		}
 
 

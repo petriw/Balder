@@ -25,7 +25,7 @@ namespace Balder.Core.Debug
 	{
 		private const int NumberOfCirclePoints = 32;
 
-		public override void Initialize()
+		protected override void Initialize()
 		{
 			InitializeVertices();
 			InitializeLines();

@@ -34,7 +34,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				TopRadiusProp.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				BottomRadiusProp.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				CapEndsProp.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				SegmentsProp.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				StacksProp.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				SizeProperty.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				StartAngleProperty.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				EndAngleProperty.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
@@ -160,8 +160,7 @@ namespace Balder.Core.Objects.Geometries
 		}
 
 
-		//private void OnPrepareGeometry()
-		protected override void PrepareGeometry()
+		protected override void Prepare()
 		{
 			Validate();
 

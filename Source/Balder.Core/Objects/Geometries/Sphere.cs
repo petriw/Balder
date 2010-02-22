@@ -25,8 +25,6 @@ namespace Balder.Core.Objects.Geometries
 {
 	public class Sphere : Geometry
 	{
-		private bool _isLoaded = false;
-
 		public static readonly Property<Sphere, double> RadiusProperty = Property<Sphere, double>.Register(s => s.Radius);
 		public double Radius
 		{
@@ -34,7 +32,7 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				RadiusProperty.SetValue(this, value);
-				PrepareSphere();
+				InvalidatePrepare();
 			}
 		}
 
@@ -45,25 +43,13 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				SegmentsProperty.SetValue(this, value);
-				PrepareSphere();
+				InvalidatePrepare();
 			}
 		}
 
-		protected override void OnLoaded()
+
+		protected override void Prepare()
 		{
-			_isLoaded = true;
-			PrepareSphere();
-			base.OnLoaded();
-		}
-
-
-		private void PrepareSphere()
-		{
-			if (!_isLoaded)
-			{
-				return;
-			}
-
 			var radius = (float)Radius;
 			var segments = Segments;
 			var segmentRadius = System.Math.PI / 2 / (segments + 1);
@@ -148,6 +134,8 @@ namespace Balder.Core.Objects.Geometries
 			}*/
 
 			GeometryHelper.CalculateVertexNormals(GeometryContext);
+
+			base.Prepare();
 		}
 
 

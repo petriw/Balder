@@ -18,7 +18,6 @@
 #endregion
 using System;
 using System.ComponentModel;
-using System.Windows.Data;
 using Balder.Core.Collections;
 using Balder.Core.Display;
 using Balder.Core.Execution;
@@ -36,17 +35,19 @@ namespace Balder.Core
 		public event EventHandler Hover = (s, e) => { };
 		public event EventHandler Click = (s, e) => { };
 
+		private bool _isWired = false;
 		private bool _isInitializingTransform;
+		private bool _isPrepared = false;
 
 		protected Node()
 		{
 			IsVisible = true;
 			InitializeTransform();
 			InitializeColor();
-			Initialize();
+			Construct();
 		}
 
-		partial void Initialize();
+		partial void Construct();
 
 		private void InitializeColor()
 		{
@@ -191,17 +192,7 @@ namespace Balder.Core
 		}
 		#endregion
 
-		public virtual void PrepareForRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world) { }
 
-		internal void OnHover()
-		{
-			Hover(this, DefaultEventArgs);
-		}
-
-		internal void OnClick()
-		{
-			Click(this, DefaultEventArgs);
-		}
 
 		protected void SetColorForChildren()
 		{
@@ -234,10 +225,52 @@ namespace Balder.Core
 
 		protected bool IsClone { get; private set; }
 
-		public virtual void Prepare() { }
+		protected void InvalidatePrepare()
+		{
+			_isPrepared = false;
+		}
 
-		protected virtual void OnInitialize() { }
-		protected virtual void OnLoaded() { }
-		
+		protected virtual void BeforeRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world) { }
+		protected virtual void Prepare() { }
+		protected virtual void Initialize() { }
+
+
+		internal void OnInitialize()
+		{
+			if( !_isWired)
+			{
+				Runtime.Instance.WireUpDependencies(this);
+				_isWired = true;
+			}
+
+			Initialize();
+		}
+
+		internal void OnBeforeRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		{
+			BeforeRendering(viewport, view, projection, world);
+		}
+
+		internal void OnHover()
+		{
+			Hover(this, DefaultEventArgs);
+		}
+
+		internal void OnClick()
+		{
+			Click(this, DefaultEventArgs);
+		}
+
+
+		internal void OnPrepare()
+		{
+			if (IsClone || _isPrepared )
+			{
+				return;
+			}
+
+			_isPrepared = true;
+			Prepare();
+		}
 	}
 }

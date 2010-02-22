@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Petri Wilhelmsen
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -31,12 +31,6 @@ namespace Balder.Core.Lighting
 			Strength = 1f;
             Range = 10.0f;
 		}
-
-		public override void PrepareForRendering(Viewport viewport, Matrix view, Matrix projection, Matrix world)
-		{
-			base.PrepareForRendering(viewport, view, projection, world);
-		}
-
 
 		public override Color Calculate(Viewport viewport, Vector point, Vector normal)
 		{

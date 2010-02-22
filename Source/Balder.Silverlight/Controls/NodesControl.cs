@@ -42,10 +42,10 @@ namespace Balder.Silverlight.Controls
 			_addedItems = new Stack<object>();
 		}
 
-		protected override void OnLoaded()
+		protected override void Prepare()
 		{
 			PopulateFromItemsSource();
-			base.OnLoaded();
+			base.Prepare();
 		}
 
 
@@ -212,7 +212,9 @@ namespace Balder.Silverlight.Controls
 			}
 		}
 
-		public override void PrepareForRendering(Balder.Core.Display.Viewport viewport, Balder.Core.Math.Matrix view, Balder.Core.Math.Matrix projection, Balder.Core.Math.Matrix world)
+		
+
+		protected override void BeforeRendering(Balder.Core.Display.Viewport viewport, Balder.Core.Math.Matrix view, Balder.Core.Math.Matrix projection, Balder.Core.Math.Matrix world)
 		{
 			while( _addedItems.Count > 0 )
 			{
@@ -221,7 +223,7 @@ namespace Balder.Silverlight.Controls
 				AddItemAsChild(item, node);
 			}
 
-			base.PrepareForRendering(viewport, view, projection, world);
+			base.BeforeRendering(viewport, view, projection, world);
 		}
 
 		private void RemoveChildBasedOnItem(object item)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -32,12 +32,7 @@ namespace Balder.Core.Debug
 			GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
 		}
 
-		public virtual void Initialize()
-		{
-			
-		}
-
-		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		protected override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			GeometryContext.Render(viewport, this, view, projection, World);
 		}

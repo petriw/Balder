@@ -32,11 +32,11 @@ namespace Balder.Core.Objects.Geometries
 			set
 			{
 				DimensionProperty.SetValue(this, value);
-				OnPrepareGeometry();
+				InvalidatePrepare();
 			}
 		}
 
-		protected override void  PrepareGeometry()
+		protected override void  Prepare()
 		{
 			var dimensionAsVector = (Vector)Dimension;
 			var halfDimension = dimensionAsVector / 2f;

@@ -27,27 +27,37 @@ namespace Balder.Core.Objects.Geometries
 {
 	public class Ring : Geometry
 	{
-		private bool _isLoaded = false;
-
 		public static readonly Property<Ring, double> InnerRadiusProp = Property<Ring, double>.Register(c => c.InnerRadius);
 		public double InnerRadius
 		{
 			get { return InnerRadiusProp.GetValue(this); }
-			set { InnerRadiusProp.SetValue(this, value); }
+			set
+			{
+				InnerRadiusProp.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, double> OuterRadiusProp = Property<Ring, double>.Register(c => c.OuterRadius);
 		public double OuterRadius
 		{
 			get { return OuterRadiusProp.GetValue(this); }
-			set { OuterRadiusProp.SetValue(this, value); }
+			set
+			{
+				OuterRadiusProp.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, bool> CapEndsProp = Property<Ring, bool>.Register(c => c.CapEnds);
 		public bool CapEnds
 		{
 			get { return CapEndsProp.GetValue(this); }
-			set { CapEndsProp.SetValue(this, value); }
+			set
+			{
+				CapEndsProp.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 
@@ -55,35 +65,55 @@ namespace Balder.Core.Objects.Geometries
 		public int Segments
 		{
 			get { return SegmentsProp.GetValue(this); }
-			set { SegmentsProp.SetValue(this, value); }
+			set
+			{
+				SegmentsProp.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, int> StacksProp = Property<Ring, int>.Register(c => c.Stacks);
 		public int Stacks
 		{
 			get { return StacksProp.GetValue(this); }
-			set { StacksProp.SetValue(this, value); }
+			set
+			{
+				StacksProp.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, double> SizeProperty = Property<Ring, double>.Register(c => c.Size);
 		public double Size
 		{
 			get { return SizeProperty.GetValue(this); }
-			set { SizeProperty.SetValue(this, value); }
+			set
+			{
+				SizeProperty.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, double> StartAngleProperty = Property<Ring, double>.Register(c => c.StartAngle);
 		public double StartAngle
 		{
 			get { return StartAngleProperty.GetValue(this); }
-			set { StartAngleProperty.SetValue(this, value); }
+			set
+			{
+				StartAngleProperty.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 		public static readonly Property<Ring, double> EndAngleProperty = Property<Ring, double>.Register(c => c.EndAngle);
 		public double EndAngle
 		{
 			get { return EndAngleProperty.GetValue(this); }
-			set { EndAngleProperty.SetValue(this, value); }
+			set
+			{
+				EndAngleProperty.SetValue(this, value);
+				InvalidatePrepare();
+			}
 		}
 
 
@@ -96,12 +126,6 @@ namespace Balder.Core.Objects.Geometries
 			CapEnds = true;
 		}
 
-		protected override void OnLoaded()
-		{
-			_isLoaded = true;
-			Prepare();
-			base.OnLoaded();
-		}
 
 		private void Validate()
 		{
@@ -141,13 +165,8 @@ namespace Balder.Core.Objects.Geometries
 			}
 		}
 
-		private void Prepare()
+		protected override void  Prepare()
 		{
-			if (!_isLoaded)
-			{
-				return;
-			}
-
 			Validate();
 
 			var actualStacks = Stacks + 1;
@@ -192,6 +211,7 @@ namespace Balder.Core.Objects.Geometries
 
 				currentY -= yAdd;
 			}
+			base.Prepare();
 		}
 	}
 }

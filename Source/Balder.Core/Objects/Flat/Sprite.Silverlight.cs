@@ -1,6 +1,5 @@
 ﻿using System;
 using Balder.Core.Helpers;
-using Balder.Core.Objects.Geometries;
 
 namespace Balder.Core.Objects.Flat
 {
@@ -14,13 +13,13 @@ namespace Balder.Core.Objects.Flat
 			set { AssetNameProperty.SetValue(this, value); }
 		}
 
-		protected override void OnLoaded()
+		protected override void Prepare()
 		{
 			if (null != AssetName)
 			{
 				Load(AssetName.ToString());
 			}
+			base.Prepare();
 		}
-
 	}
 }

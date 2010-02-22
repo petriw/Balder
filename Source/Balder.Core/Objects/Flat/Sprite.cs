@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 //
 // Author: Einar Ingebrigtsen <einar@dolittle.com>
 // Copyright (c) 2007-2010, DoLittle Studios
@@ -41,7 +41,7 @@ namespace Balder.Core.Objects.Flat
 			}
 		}
 
-		protected override void OnInitialize()
+		protected override void Initialize()
 		{
 			// Todo : This should not be necessary.
 			if (null == _spriteContext)
@@ -49,7 +49,7 @@ namespace Balder.Core.Objects.Flat
 				_spriteContext = ObjectFactory.Instance.Get<ISpriteContext>();
 			}
 
-			base.OnInitialize();
+			base.Initialize();
 		}
 
 
@@ -58,7 +58,7 @@ namespace Balder.Core.Objects.Flat
 
 		public Image CurrentFrame { get { return _frames[0]; } }
 
-		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		protected override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			/* From DirectX sample
 				w = width passed to D3DXMatrixPerspectiveLH

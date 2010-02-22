@@ -29,7 +29,6 @@ namespace Balder.Core.Objects.Geometries
 		public IGeometryContext GeometryContext { get; set; }
 
 		private bool _materialSet = false;
-		private bool _isLoaded = false;
 
 
 		public Geometry()
@@ -41,30 +40,8 @@ namespace Balder.Core.Objects.Geometries
 			}
 		}
 
-		public override void Prepare()
-		{
-			if (IsClone)
-			{
-				return;
-			}
 
-			_isLoaded = true;
-			OnPrepareGeometry();
-			base.Prepare();
-		}
-
-		protected virtual void OnPrepareGeometry()
-		{
-			if(!_isLoaded)
-			{
-				return;
-			}
-			PrepareGeometry();
-		}
-
-		protected virtual void PrepareGeometry() { }
-
-		protected override void OnInitialize()
+		protected override void Initialize()
 		{
 			// Todo : This should not be necessary.
 			if (null == GeometryContext)
@@ -72,8 +49,9 @@ namespace Balder.Core.Objects.Geometries
 				GeometryContext = ObjectFactory.Instance.Get<IGeometryContext>();
 			}
 			
-			base.OnInitialize();
+			base.Initialize();
 		}
+
 
 		public void InitializeBoundingSphere()
 		{
@@ -116,7 +94,7 @@ namespace Balder.Core.Objects.Geometries
 		}
 
 
-		public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
+		protected override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 		{
 			if( null != Material && !_materialSet )
 			{

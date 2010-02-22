@@ -13,12 +13,13 @@ namespace Balder.Core.Objects.Geometries
 			set { AssetNameProperty.SetValue(this, value); }
 		}
 
-		protected override void OnLoaded()
+		protected override void Prepare()
 		{
 			if (null != AssetName && !IsClone)
 			{
 				Load(AssetName.ToString());
 			}
+			base.Prepare();
 		}
 	}
 }
