@@ -21,6 +21,13 @@ namespace Balder.Core.Math
 			Z = z;
 		}
 
+		public void Set(double x, double y, double z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
+
 		public void Set(Coordinate coordinate)
 		{
 			if (null != coordinate)

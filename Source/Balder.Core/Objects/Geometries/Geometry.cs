@@ -41,7 +41,7 @@ namespace Balder.Core.Objects.Geometries
 			}
 		}
 
-		protected override void OnLoaded()
+		public override void Prepare()
 		{
 			if (IsClone)
 			{
@@ -50,8 +50,7 @@ namespace Balder.Core.Objects.Geometries
 
 			_isLoaded = true;
 			OnPrepareGeometry();
-			
-			base.OnLoaded();
+			base.Prepare();
 		}
 
 		protected virtual void OnPrepareGeometry()

@@ -152,6 +152,7 @@ namespace Balder.Core
 			}
 			world = node.World * world;
 			node.RenderingWorld = world;
+			node.Prepare();
 			node.PrepareForRendering(viewport,view,projection,node.RenderingWorld);
 			foreach (var child in node.Children)
 			{

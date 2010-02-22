@@ -7,7 +7,7 @@
 	<Application.Resources>
 		<SampleBrowser:ViewModels x:Key="ViewModels"/>
 		<navigationCore:UriMapper x:Key="uriMapper">
-			<navigationCore:UriMapping Uri="Home" MappedUri="/Samples/Data/BarChart/Content.xaml"/>
+			<navigationCore:UriMapping Uri="Home" MappedUri="/Samples/Programatic/Materials/Content.xaml"/>
 									    <!--  
 				Materials/MaterialPicker/Content.xaml"/>
 			Primitives/Ring/Content.xaml"/>

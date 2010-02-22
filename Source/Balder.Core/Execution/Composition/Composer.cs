@@ -17,51 +17,12 @@
 //
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Windows;
 
-namespace Balder.Core.Execution
+namespace Balder.Core.Execution.Composition
 {
-	public class Container : CompositionContainer
-	{
-		private readonly IObjectFactory _objectFactory;
-
-		public Container(PackageCatalog catalog, IObjectFactory objectFactory, params ExportProvider[] providers)
-			: base(catalog, providers)
-		{
-			_objectFactory = objectFactory;
-		}
-
-		protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
-		{
-			//Export e = new Export(definition.ContractName,()=>_objectFactory.Get(definition.));
-			
-			
-			
-			return base.GetExportsCore(definition, atomicComposition);
-		}
-	}
-
-
-	public class Exporter : ExportProvider
-	{
-		private readonly IObjectFactory _objectFactory;
-
-		public Exporter(IObjectFactory objectFactory)
-		{
-			_objectFactory = objectFactory;
-		}
-
-		protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
 	public class Composer : IComposer
 	{
 		private readonly IObjectFactory _objectFactory;
@@ -71,16 +32,18 @@ namespace Balder.Core.Execution
 		{
 			_objectFactory = objectFactory;
 			var packageCatalog = new PackageCatalog();
+			
 			packageCatalog.AddPackage(Package.Current);
 
 			var provider = new Exporter(objectFactory);
-			_compositionContainer = new Container(packageCatalog,objectFactory, provider);
+			
+			_compositionContainer = new Container(packageCatalog,objectFactory); //, provider);
+			
 		}
 
 		public void SatisfyImportsFor(object component)
 		{
 			_compositionContainer.SatisfyImportsOnce(component);
-			//_compositionContainer.ComposeParts(component);
 		}
 	}
 }

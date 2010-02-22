@@ -139,7 +139,7 @@
     <Compile Include="ColorTests.cs" />
     <Compile Include="Content\ContentCreatorTests.cs" />
     <Compile Include="Content\ContentManagerTests.cs" />
-    <Compile Include="Execution\ComposerTests.cs" />
+    <Compile Include="Execution\Composition\ComposerTests.cs" />
     <Compile Include="Execution\PropertyTests.cs" />
     <Compile Include="Extensions\ViewportExtensionsTests.cs" />
     <Compile Include="Fakes\AssetLoaders\Nested\NestedAssetLoader.cs">

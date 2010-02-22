@@ -19,7 +19,6 @@ namespace Balder.Core
 		public new event MouseButtonEventHandler MouseLeftButtonDown = (s, e) => { };
 		public new event MouseButtonEventHandler MouseLeftButtonUp = (s, e) => { };
 
-
 		partial void Initialize()
 		{
 			Loaded += NodeLoaded;
@@ -129,9 +128,5 @@ namespace Balder.Core
 		{
 			MouseLeave(this, e);
 		}
-
-		protected virtual void OnInitialize() { }
-		protected virtual void OnLoaded() { }
-		
 	}
 }

@@ -31,7 +31,7 @@
 				<View:Camera x:Name="Camera" Position="0,80,-150" Target="0,10,0"/>
 			</Execution:Game.Camera>
 
-			<Lighting:OmniLight Position="0,400,0" Ambient="Grey" Diffuse="Grey" Specular="White"/>
+			<Lighting:OmniLight Position="0,400,0" Ambient="Gray" Diffuse="Gray" Specular="White"/>
 			
 			<Geometries:Geometry x:Name="GeometryContainer">
 				<Geometries:Mesh x:Name="Teapot" AssetName="/Balder.Silverlight.SampleBrowser;component/Samples/Materials/MaterialPicker/Assets/teapot.ase" IsVisible="True"/>

@@ -58,7 +58,6 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Materials.MaterialPicker
 			return null;
 		}
 
-
 		
 
 

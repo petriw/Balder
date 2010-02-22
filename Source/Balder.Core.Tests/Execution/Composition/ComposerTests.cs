@@ -24,6 +24,7 @@ using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Windows;
 using Balder.Core.Execution;
+using Balder.Core.Execution.Composition;
 using CThru.Silverlight;
 using Moq;
 using NUnit.Framework;

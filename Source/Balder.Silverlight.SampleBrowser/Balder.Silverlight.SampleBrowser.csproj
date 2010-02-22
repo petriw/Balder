@@ -115,7 +115,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Constants\Categories.cs" />
     <Compile Include="Controls\ResourceViewer.xaml.cs">
       <DependentUpon>ResourceViewer.xaml</DependentUpon>
     </Compile>
@@ -267,6 +266,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Samples\Programatic\Materials\Content.xaml.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Programatic\Materials\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Programatic\Teapot\Content.xaml.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -385,6 +392,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
+    <Page Include="Samples\Programatic\Materials\Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
     <Page Include="Samples\Programatic\Teapot\Content.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
@@ -410,6 +421,7 @@
     <None Include="Effects\Reflection.fx" />
     <Resource Include="Effects\Reflection.ps" />
     <None Include="Properties\AppManifest.xml" />
+    <Resource Include="Samples\Programatic\Materials\Assets\teapot.ASE" />
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Earth.ASE" />
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Hello.ASE" />
     <Resource Include="Samples\Materials\MaterialPicker\Assets\teapot.ASE" />
@@ -494,6 +506,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Samples\Programatic\Materials\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Samples\Programatic\Teapot\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -532,6 +548,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Samples\GettingStarted\HelloWorld\Assets\Star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Programatic\Materials\Assets\BalderLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Programatic\Materials\Assets\ReflectionMap.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Samples\Programatic\Materials\Assets\VisualStudio.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

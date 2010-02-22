@@ -25,10 +25,16 @@ using Balder.Core.View;
 
 namespace Balder.Core.Execution
 {
+	public delegate void GameEventHandler(Game game);
+
+
 	public partial class Game : Actor
 	{
 		private static readonly EventArgs DefaultEventArgs = new EventArgs();
-		public event EventHandler Update = (s, e) => { };
+
+		public event GameEventHandler Update = (s) => { };
+		public event GameEventHandler Initialize = (s) => { };
+		public event GameEventHandler LoadContent = (s) => { };
 
 		public Game()
 		{
@@ -59,9 +65,19 @@ namespace Balder.Core.Execution
 			}
 		}
 
+		public override void OnInitialize()
+		{
+			Initialize(this);
+		}
+
+		public override void OnLoadContent()
+		{
+			LoadContent(this);
+		}
+
 		public override void OnUpdate()
 		{
-			Update(this, DefaultEventArgs);
+			Update(this);
 		}
 
 		public virtual void OnRender()

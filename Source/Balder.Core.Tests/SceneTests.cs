@@ -16,7 +16,6 @@
 // limitations under the License.
 //
 #endregion
-
 using System;
 using Balder.Core.Display;
 using Balder.Core.Math;
@@ -32,6 +31,13 @@ namespace Balder.Core.Tests
 	{
 		public class MyRenderableNode : RenderableNode
 		{
+
+			public bool PrepareCalled = false;
+			public override void Prepare()
+			{
+				PrepareCalled = true;
+			}
+
 			public bool RenderCalled = false;
 			public override void Render(Viewport viewport, Matrix view, Matrix projection, Matrix world)
 			{
@@ -167,6 +173,25 @@ namespace Balder.Core.Tests
 			actualPosition.Y = childNode.WorldResult[3, 1];
 			actualPosition.Z = childNode.WorldResult[3, 2];
 			Assert.That(actualPosition.X, Is.EqualTo(topLevelNode.Position.X));
+		}
+
+
+		[Test, SilverlightUnitTest]
+		public void AddingChildProgramaticallyShouldCallPrepareOnNodeBeforeRendering()
+		{
+			var viewport = new Viewport { Width = 640, Height = 480 };
+			var camera = new Camera();
+			viewport.View = camera;
+			camera.Position.Z = -100;
+			camera.Update(viewport);
+			var scene = new Scene();
+
+			var node = new MyRenderableNode();
+			scene.AddNode(node);
+
+			scene.Render(viewport, camera.ViewMatrix, camera.ProjectionMatrix);
+
+			Assert.That(node.PrepareCalled,Is.True);
 		}
 	}
 }

@@ -114,7 +114,9 @@
     <Compile Include="Exceptions\UnsupportedImageFormatException.cs" />
     <Compile Include="Execution\Actor.Silverlight.cs" />
     <Compile Include="Execution\ActorState.cs" />
-    <Compile Include="Execution\Composer.cs" />
+    <Compile Include="Execution\Composition\Composer.cs" />
+    <Compile Include="Execution\Composition\Container.cs" />
+    <Compile Include="Execution\Composition\Exporter.cs" />
     <Compile Include="Execution\Game.Silverlight.cs" />
     <Compile Include="Execution\IAmCopyable.cs" />
     <Compile Include="Execution\ICanNotifyChanges.cs" />

@@ -233,5 +233,11 @@ namespace Balder.Core
 		}
 
 		protected bool IsClone { get; private set; }
+
+		public virtual void Prepare() { }
+
+		protected virtual void OnInitialize() { }
+		protected virtual void OnLoaded() { }
+		
 	}
 }
