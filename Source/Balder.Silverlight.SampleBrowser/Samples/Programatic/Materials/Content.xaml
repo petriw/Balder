@@ -24,6 +24,8 @@
 			<ComboBox x:Name="ObjectComboBox" Grid.Column="1" Grid.Row="0" SelectedIndex="0" SelectionChanged="ObjectTypeChanged">
 				<ComboBoxItem Content="Teapot"/>
 				<ComboBoxItem Content="Box"/>
+				<ComboBoxItem Content="Cylinder"/>
+				<ComboBoxItem Content="Ring"/>
 			</ComboBox>
 
 			<TextBlock Text="Material type" Grid.Column="0" Grid.Row="1"/>

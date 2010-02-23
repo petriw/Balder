@@ -23,16 +23,22 @@
 
 		<Execution:Game Width="640" Height="480">
 			<Execution:Game.DebugInfo>
-				<Debug:DebugInfo ShowVertices="True"/>
+				<Debug:DebugInfo ShowVertices="False"/>
 			</Execution:Game.DebugInfo>
 			
 			<Execution:Game.Camera>
-				<View:Camera Position="100,50,-120" Target="0,0,0"/>
+				<View:Camera Position="0,50,-150" Target="0,0,0"/>
 			</Execution:Game.Camera>
 
 			<Lighting:OmniLight Position="-100,100,0" Ambient="Brown" Diffuse="Green" Specular="Blue"/>
 
-			<Geometries:Ring x:Name="Ring" InnerRadius="10" OuterRadius="30" Segments="16"/>
+			<Geometries:Ring x:Name="Ring" 
+							 InnerRadius="10" 
+							 OuterRadius="30"
+							 StartAngle="0"
+							 EndAngle="300"
+							 Segments="16" 
+							 Size="20"/>
 		</Execution:Game>
 
 	</Grid>

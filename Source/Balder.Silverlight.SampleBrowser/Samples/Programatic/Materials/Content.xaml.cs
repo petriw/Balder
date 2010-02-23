@@ -13,8 +13,12 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Materials
 	public partial class Content
 	{
 		private Geometry _container;
-		private Box _box;
+
 		private Mesh _teapot;
+		private Box _box;
+		private Cylinder _cylinder;
+		private Ring _ring;
+
 		private Geometry _selectedNode;
 		private Material _selectedMaterial;
 
@@ -45,13 +49,22 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Materials
 			_container = new Geometry();
 			game.Scene.AddNode(_container);
 
+			_teapot = game.ContentManager.Load<Mesh>("teapot.ASE");
+			_container.Children.Add(_teapot);
+			_teapot.IsVisible = false;
+
 			_box = new Box {Dimension = new Coordinate(40, 40, 40)};
 			_box.Position.Set(0,10,0);
 			_container.Children.Add(_box);
 
-			_teapot = game.ContentManager.Load<Mesh>("teapot.ASE");
-			_container.Children.Add(_teapot);
-			_teapot.IsVisible = false;
+			_cylinder = new Cylinder {Segments = 16, Size = 20, TopRadius = 20, BottomRadius = 40};
+			_cylinder.Position.Set(0, 10, 0);
+			_container.Children.Add(_cylinder);
+
+			_ring = new Ring {Segments = 16, Size = 20, InnerRadius = 20, OuterRadius = 40};
+			_ring.Position.Set(0, 10, 0);
+			_container.Children.Add(_ring);
+
 
 
 			_reflectionMapTexture = LoadTexture("/Balder.Silverlight.SampleBrowser;component/Samples/Programatic/Materials/Assets/ReflectionMap.jpg");
@@ -166,6 +179,8 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Materials
 
 						_teapot.IsVisible = true;
 						_box.IsVisible = false;
+						_cylinder.IsVisible = false;
+						_ring.IsVisible = false;
 					}
 					break;
 				case 1:
@@ -174,6 +189,28 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Materials
 
 						_teapot.IsVisible = false;
 						_box.IsVisible = true;
+						_cylinder.IsVisible = false;
+						_ring.IsVisible = false;
+					}
+					break;
+				case 2:
+					{
+						_selectedNode = _cylinder;
+
+						_teapot.IsVisible = false;
+						_box.IsVisible = false;
+						_cylinder.IsVisible = true;
+						_ring.IsVisible = false;
+					}
+					break;
+				case 3:
+					{
+						_selectedNode = _ring;
+
+						_teapot.IsVisible = false;
+						_box.IsVisible = false;
+						_cylinder.IsVisible = false;
+						_ring.IsVisible = true;
 					}
 					break;
 			}
