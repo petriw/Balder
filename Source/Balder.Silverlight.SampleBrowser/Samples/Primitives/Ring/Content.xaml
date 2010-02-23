@@ -35,11 +35,13 @@
 			<Geometries:Ring x:Name="Ring" 
 							 InnerRadius="10" 
 							 OuterRadius="30"
-							 StartAngle="0"
-							 EndAngle="300"
+							 StartAngle="{Binding Path=Value, ElementName=AngleSlider}"
+							 EndAngle="360"
 							 Segments="16" 
 							 Size="20"/>
 		</Execution:Game>
+		
+		<Slider x:Name="AngleSlider" Width="200" Minimum="0" Maximum="359" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
 	</Grid>
 </UserControl>

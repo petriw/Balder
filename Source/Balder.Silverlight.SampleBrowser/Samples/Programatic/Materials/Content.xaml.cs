@@ -65,8 +65,6 @@ namespace Balder.Silverlight.SampleBrowser.Samples.Programatic.Materials
 			_ring.Position.Set(0, 10, 0);
 			_container.Children.Add(_ring);
 
-
-
 			_reflectionMapTexture = LoadTexture("/Balder.Silverlight.SampleBrowser;component/Samples/Programatic/Materials/Assets/ReflectionMap.jpg");
 			_visualStudioTexture = LoadTexture("/Balder.Silverlight.SampleBrowser;component/Samples/Programatic/Materials/Assets/VisualStudio.png");
 			_balderLogoTexture = LoadTexture("/Balder.Silverlight.SampleBrowser;component/Samples/Programatic/Materials/Assets/BalderLogo.png");
