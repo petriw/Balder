@@ -172,6 +172,146 @@ namespace Balder.Core.Objects.Geometries
 			var actualStacks = Stacks + 1;
 			var actualSegments = Segments;
 
+			var vertexCount = (actualSegments * 2) * actualStacks;
+			BuildVertices(actualSegments, actualStacks, vertexCount);
+			BuildFaces(actualSegments, actualStacks, vertexCount);
+
+			GeometryHelper.CalculateFaceNormals(GeometryContext);
+			GeometryHelper.CalculateVertexNormals(GeometryContext);
+
+			base.Prepare();
+		}
+
+		private void BuildFaces(int actualSegments, int actualStacks, int vertexCount)
+		{
+			var topFaceCount = vertexCount;
+			var bottomFaceCount = vertexCount;
+			var innerSidesFaceCount = vertexCount;
+			var outerSidesFaceCount = vertexCount;
+			var faceCount = (innerSidesFaceCount + outerSidesFaceCount) * Stacks;
+			var faceOffset = 0;
+			if (CapEnds)
+			{
+				faceCount += topFaceCount;
+				faceCount += bottomFaceCount;
+			}
+
+			var verticesPerStack = actualSegments * 2;
+
+			var openRing = false;
+			if (StartAngle > 0 || EndAngle < 360)
+			{
+				actualSegments--;
+				openRing = true;
+				faceOffset = 2;
+				faceCount += (2 * Stacks);
+			}
+
+			GeometryContext.AllocateFaces(faceCount);
+
+			var faceIndex = 0;
+
+			Face face;
+
+			for (var stack = 0; stack < actualStacks - 1; stack++)
+			{
+				var currentStack = (verticesPerStack * stack);
+				var nextStack = currentStack + verticesPerStack;
+				if (openRing)
+				{
+					face = CreateFace(nextStack + 1, nextStack, currentStack);
+					GeometryContext.SetFace(faceIndex, face);
+					faceIndex++;
+
+					face = CreateFace(nextStack + 1, currentStack, currentStack + 1);
+					GeometryContext.SetFace(faceIndex, face);
+					faceIndex++;
+				}
+				faceIndex = BuildInteriorAndExteriorFaces(actualSegments, verticesPerStack, currentStack, faceIndex);
+				if (openRing)
+				{
+					currentStack += (verticesPerStack - 2);
+					nextStack += (verticesPerStack - 2);
+					face = CreateFace(currentStack, nextStack, nextStack + 1);
+					GeometryContext.SetFace(faceIndex, face);
+					faceIndex++;
+
+					face = CreateFace(currentStack + 1, currentStack, nextStack + 1);
+					GeometryContext.SetFace(faceIndex, face);
+					faceIndex++;
+				}
+			}
+
+			if (CapEnds)
+			{
+				BuildCapFaces(vertexCount, actualSegments, verticesPerStack, faceIndex);
+			}
+		}
+
+		private int BuildInteriorAndExteriorFaces(int actualSegments, int verticesPerStack, int currentStack, int faceIndex)
+		{
+			Face face;
+			for (var segment = 0; segment < actualSegments; segment++)
+			{
+				var segmentOffset = (segment * 2) + currentStack;
+				var nextSegmentOffset = (((segment * 2) + 2) % verticesPerStack) + currentStack;
+				var nextStackOffset = segmentOffset + (verticesPerStack);
+				var nextStackAndSegmentOffset = nextSegmentOffset + (verticesPerStack);
+
+				face = CreateFace(nextStackOffset, nextSegmentOffset, segmentOffset);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+				face = CreateFace(nextSegmentOffset, nextStackOffset, nextStackAndSegmentOffset);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+
+
+				face = CreateFace(segmentOffset + 1, nextSegmentOffset + 1, nextStackOffset + 1);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+				face = CreateFace(nextStackAndSegmentOffset + 1, nextStackOffset + 1, nextSegmentOffset + 1);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+			}
+			return faceIndex;
+		}
+
+		private void BuildCapFaces(int vertexCount, int actualSegments, int verticesPerStack, int faceIndex)
+		{
+			Face face;
+			for (var segment = 0; segment < actualSegments; segment++)
+			{
+				var segmentOffset = segment * 2;
+				var nextSegmentOffset = (segmentOffset + 2) % verticesPerStack;
+
+				face = CreateFace(nextSegmentOffset + 1, segmentOffset + 1, segmentOffset);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+				face = CreateFace(nextSegmentOffset, nextSegmentOffset + 1, segmentOffset);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+			}
+
+			var bottomCapOffset = vertexCount - verticesPerStack;
+			for (var segment = 0; segment < actualSegments; segment++)
+			{
+				var segmentOffset = bottomCapOffset + (segment * 2);
+				var nextSegmentOffset = bottomCapOffset + ((segmentOffset + 2) % verticesPerStack);
+
+				face = CreateFace(segmentOffset, segmentOffset + 1, nextSegmentOffset + 1);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+				face = CreateFace(segmentOffset, nextSegmentOffset + 1, nextSegmentOffset);
+				GeometryContext.SetFace(faceIndex, face);
+				faceIndex++;
+			}
+		}
+
+		private void BuildVertices(int actualSegments, int actualStacks, int vertexCount)
+		{
+			GeometryContext.AllocateVertices(vertexCount);
+			GeometryContext.AllocateTextureCoordinates(vertexCount);
+
 			var yStart = (float)Size / 2;
 			var yEnd = (float)-Size / 2;
 
@@ -188,10 +328,6 @@ namespace Balder.Core.Objects.Geometries
 
 			var uAdd = uDelta / actualSegments;
 			var vAdd = vDelta / actualStacks;
-
-			var vertexCount = (actualSegments * 2) * actualStacks;
-			GeometryContext.AllocateVertices(vertexCount);
-			GeometryContext.AllocateTextureCoordinates(vertexCount);
 
 			var vertexIndex = 0;
 			var currentY = yStart;
@@ -232,123 +368,6 @@ namespace Balder.Core.Objects.Geometries
 				currentY += yAdd;
 				currentV += vAdd;
 			}
-
-			var topFaceCount = vertexCount;
-			var bottomFaceCount = vertexCount;
-			var innerSidesFaceCount = vertexCount;
-			var outerSidesFaceCount = vertexCount;
-			var faceCount = (innerSidesFaceCount + outerSidesFaceCount) * Stacks;
-			var faceOffset = 0;
-			if (CapEnds)
-			{
-				faceCount += topFaceCount;
-				faceCount += bottomFaceCount;
-			}
-
-			var verticesPerStack = actualSegments * 2;
-
-			var openRing = false;
-			if (StartAngle > 0 || EndAngle < 360)
-			{
-				actualSegments--;
-				openRing = true;
-				faceOffset = 2;
-				faceCount += (2 * Stacks);
-			}
-
-			GeometryContext.AllocateFaces(faceCount);
-
-
-			var faceIndex = 0;
-
-			Face face;
-
-			for (var stack = 0; stack < actualStacks - 1; stack++)
-			{
-				var currentStack = (verticesPerStack * stack);
-				var nextStack = currentStack + verticesPerStack;
-				if (openRing)
-				{
-					face = CreateFace(nextStack + 1, nextStack, currentStack);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-
-					face = CreateFace(nextStack + 1, currentStack, currentStack + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-
-				for (var segment = 0; segment < actualSegments; segment++)
-				{
-					var segmentOffset = (segment * 2) + currentStack;
-					var nextSegmentOffset = (((segment * 2) + 2) % verticesPerStack) + currentStack;
-					var nextStackOffset = segmentOffset + (verticesPerStack);
-					var nextStackAndSegmentOffset = nextSegmentOffset + (verticesPerStack);
-
-					face = CreateFace(nextStackOffset, nextSegmentOffset, segmentOffset);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-					face = CreateFace(nextSegmentOffset, nextStackOffset, nextStackAndSegmentOffset);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-
-
-					face = CreateFace(segmentOffset + 1, nextSegmentOffset + 1, nextStackOffset + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-					face = CreateFace(nextStackAndSegmentOffset + 1, nextStackOffset + 1, nextSegmentOffset + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-
-				if (openRing)
-				{
-					currentStack += (verticesPerStack - 2);
-					nextStack += (verticesPerStack - 2);
-					face = CreateFace(currentStack, nextStack, nextStack + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-
-					face = CreateFace(currentStack + 1, currentStack, nextStack + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-			}
-
-			if (CapEnds)
-			{
-				for (var segment = 0; segment < actualSegments; segment++)
-				{
-					var segmentOffset = segment * 2;
-					var nextSegmentOffset = (segmentOffset + 2) % verticesPerStack;
-
-					face = CreateFace(nextSegmentOffset + 1, segmentOffset + 1, segmentOffset);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-					face = CreateFace(nextSegmentOffset, nextSegmentOffset + 1, segmentOffset);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-
-				var bottomCapOffset = vertexCount - verticesPerStack;
-				for (var segment = 0; segment < actualSegments; segment++)
-				{
-					var segmentOffset = bottomCapOffset + (segment * 2);
-					var nextSegmentOffset = bottomCapOffset + ((segmentOffset + 2) % verticesPerStack);
-
-					face = CreateFace(segmentOffset, segmentOffset + 1, nextSegmentOffset + 1);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-					face = CreateFace(segmentOffset, nextSegmentOffset + 1, nextSegmentOffset);
-					GeometryContext.SetFace(faceIndex, face);
-					faceIndex++;
-				}
-			}
-
-			GeometryHelper.CalculateFaceNormals(GeometryContext);
-			GeometryHelper.CalculateVertexNormals(GeometryContext);
-
-			base.Prepare();
 		}
 
 		private Face CreateFace(int a, int b, int c)
