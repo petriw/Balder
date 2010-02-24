@@ -64,6 +64,12 @@ namespace Balder.Core.Objects.Geometries
 			C = c;
 		}
 
+		public void Transform(Matrix matrix)
+		{
+			TransformedNormal = Vector.TransformNormal(Normal, matrix);
+			TransformedPosition = Vector.Transform(Position, matrix);
+		}
+
 		public void Transform(Matrix world, Matrix view)
 		{
 			TransformedNormal = Vector.TransformNormal(Normal, world);

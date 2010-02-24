@@ -253,6 +253,9 @@ namespace Balder.Core.SoftwareRendering
 			{
 				return;
 			}
+
+			var matrix = world*view;
+
 			for (var faceIndex = 0; faceIndex < Faces.Length; faceIndex++)
 			{
 				var face = Faces[faceIndex];
@@ -260,9 +263,6 @@ namespace Balder.Core.SoftwareRendering
 				var a = Vertices[face.A];
 				var b = Vertices[face.B];
 				var c = Vertices[face.C];
-
-				face.Transform(world, view);
-				face.Translate(projection, viewport.Width, viewport.Height);
 
 				var mixedProduct = (b.TranslatedVector.X - a.TranslatedVector.X) * (c.TranslatedVector.Y - a.TranslatedVector.Y) -
 								   (c.TranslatedVector.X - a.TranslatedVector.X) * (b.TranslatedVector.Y - a.TranslatedVector.Y);
@@ -299,6 +299,7 @@ namespace Balder.Core.SoftwareRendering
 
 						case MaterialShade.Flat:
 							{
+								face.Transform(matrix);
 								var color = face.Material.Diffuse;
 								face.Color = color.Additive(_colorCalculator.Calculate(viewport, face.TransformedPosition, face.TransformedNormal));
 								if (null != face.Material.DiffuseMap || null != face.Material.ReflectionMap)
