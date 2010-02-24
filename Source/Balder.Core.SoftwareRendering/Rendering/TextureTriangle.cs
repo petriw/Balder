@@ -79,21 +79,21 @@ namespace Balder.Core.SoftwareRendering.Rendering
 			var xa = vertexA.TranslatedScreenCoordinates.X;
 			var ya = vertexA.TranslatedScreenCoordinates.Y;
 			var za = vertexA.DepthBufferAdjustedZ;
-			var ua = vertexA.TextureCoordinate.U;
-			var va = vertexA.TextureCoordinate.V;
+			var ua = vertexA.TextureCoordinate.U * image.Width;
+			var va = vertexA.TextureCoordinate.V * image.Height;
 
 			var xb = vertexB.TranslatedScreenCoordinates.X;
 			var yb = vertexB.TranslatedScreenCoordinates.Y;
 			var zb = vertexB.DepthBufferAdjustedZ;
-			var ub = vertexB.TextureCoordinate.U;
-			var vb = vertexB.TextureCoordinate.V;
+			var ub = vertexB.TextureCoordinate.U * image.Width;
+			var vb = vertexB.TextureCoordinate.V * image.Height;
 
 
 			var xc = vertexC.TranslatedScreenCoordinates.X;
 			var yc = vertexC.TranslatedScreenCoordinates.Y;
 			var zc = vertexC.DepthBufferAdjustedZ;
-			var uc = vertexC.TextureCoordinate.U;
-			var vc = vertexC.TextureCoordinate.V;
+			var uc = vertexC.TextureCoordinate.U * image.Width;
+			var vc = vertexC.TextureCoordinate.V * image.Height;
 
 
 			var deltaX1 = xb - xa;
@@ -360,10 +360,10 @@ namespace Balder.Core.SoftwareRendering.Rendering
 					zStart < 1f
 					)
 				{
-					var intu = (int)(uStart * image.Width) & (image.Width - 1);
-					var intv = (int)(vStart * image.Height) & (image.Height - 1);
+					var intu = ((int)uStart) & (image.Width - 1);
+					var intv = ((int)vStart) & (image.Height - 1);
 
-					var texel = ((intv * image.Width) + intu);
+					var texel = ((intv << image.WidthBitCount) + intu);
 					
 					framebuffer[offset] = imageContext.Pixels[texel];
 					depthBuffer[offset] = bufferZ;

@@ -29,6 +29,7 @@ namespace Balder.Core.Objects.Geometries
 			TranslatedVector = new Math.Vector(x, y, z);
 			Normal = Vector.Zero;
 			TranslatedScreenCoordinates = Vector.Zero;
+			IsColorCalculated = false;
 		}
 
 		public static Vertex Zero = new Vertex(0,0,0);
@@ -43,6 +44,7 @@ namespace Balder.Core.Objects.Geometries
 		public float DepthBufferAdjustedZ;
 		public Color Color;
 		public Color CalculatedColor;
+		public bool IsColorCalculated;
 
 		public TextureCoordinate TextureCoordinate;
 

@@ -204,7 +204,7 @@ namespace Balder.Core.SoftwareRendering
 				vertex.Vector += negativePivot;
 
 				TransformAndTranslateVertex(ref vertex, viewport, localView, projection);
-				CalculateColorForVertex(ref vertex, viewport, node);
+				//CalculateColorForVertex(ref vertex, viewport, node);
 				vertex.Vector -= negativePivot;
 				Vertices[vertexIndex] = vertex;
 			}
@@ -227,6 +227,24 @@ namespace Balder.Core.SoftwareRendering
 			}
 		}
 
+		private void CalculateVertexColorsForFace(ref Face face, Viewport viewport, Node node)
+		{
+			if (null == face.Material || face.Material.Shade == MaterialShade.Gouraud)
+			{
+				if (!Vertices[face.A].IsColorCalculated)
+				{
+					CalculateColorForVertex(ref Vertices[face.A], viewport, node);
+				}
+				if (!Vertices[face.B].IsColorCalculated)
+				{
+					CalculateColorForVertex(ref Vertices[face.B], viewport, node);
+				}
+				if (!Vertices[face.C].IsColorCalculated)
+				{
+					CalculateColorForVertex(ref Vertices[face.C], viewport, node);
+				}
+			}
+		}
 
 
 		private void RenderFaces(Node node, Viewport viewport, Matrix view, Matrix projection, Matrix world)
@@ -260,6 +278,7 @@ namespace Balder.Core.SoftwareRendering
 					continue;
 				}
 
+				CalculateVertexColorsForFace(ref face, viewport, node);
 				if (null != face.Material)
 				{
 					switch (face.Material.Shade)
@@ -316,6 +335,8 @@ namespace Balder.Core.SoftwareRendering
 				else
 				{
 					var color = node.Color;
+
+
 					var aColor = Vertices[face.A].CalculatedColor;
 					var bColor = Vertices[face.B].CalculatedColor;
 					var cColor = Vertices[face.C].CalculatedColor;
