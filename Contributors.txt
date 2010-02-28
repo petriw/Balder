@@ -5,8 +5,4 @@ Developers:
 Petri Wilhelmsen (petriw@gmail.com)
 Clinton Rocksmith (clintonrocksmith@hotmail.com)
 
-
-Help on Math:
-Dan Strandberg
-Marcus Knight
-Raymond Holmboe
+Test from Petris
